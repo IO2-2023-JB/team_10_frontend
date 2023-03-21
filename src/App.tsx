@@ -1,6 +1,6 @@
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import { ThemeProvider } from '@mui/material';
 import theme from './theme';
 import Layout from './components/Layout';
 import Homepage from './pages/Homepage';
@@ -12,6 +12,7 @@ function App() {
     <BrowserRouter>
       <RecoilRoot>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Layout>
             <Routes>
               <Route path='/' element={<Homepage />} />
