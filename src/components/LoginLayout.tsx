@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface LoginLayoutProps {
   form: ReactNode;
@@ -30,7 +31,7 @@ function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProp
         }}
       >
         <Typography>{hintText}</Typography>
-        <Button variant='contained' href={buttonHref}>
+        <Button variant='contained' component={Link} to={buttonHref}>
           {buttonText}
         </Button>
       </Box>

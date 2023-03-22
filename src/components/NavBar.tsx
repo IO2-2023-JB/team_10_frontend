@@ -1,5 +1,6 @@
 import { AccountCircle } from '@mui/icons-material';
 import { IconButton, Paper } from '@mui/material';
+import { Link } from 'react-router-dom';
 import Logo from './Logo';
 
 function NavBar() {
@@ -17,7 +18,7 @@ function NavBar() {
       }}
     >
       <Logo sx={{ marginInlineEnd: 'auto' }} />
-      <IconButton color='inherit' href='/login'>
+      <IconButton color='inherit' component={Link} to={'/login'}>
         <AccountCircle fontSize='large' />
       </IconButton>
     </Paper>

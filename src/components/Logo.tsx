@@ -1,4 +1,5 @@
 import { Box, SxProps } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 interface LogoProps {
   sx?: SxProps;
@@ -16,8 +17,8 @@ function Logo({ sx }: LogoProps) {
         color: 'inherit',
         ...sx,
       }}
-      component='a'
-      href='/'
+      component={Link}
+      to='/'
     >
       <Box
         sx={{
