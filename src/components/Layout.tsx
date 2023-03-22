@@ -8,10 +8,18 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
+    >
       <NavBar />
-      <Box component='main'>{children}</Box>
-    </>
+      <Box component='main' flex={1}>
+        {children}
+      </Box>
+    </Box>
   );
 }
 

@@ -10,6 +10,13 @@ const theme = createTheme({
       main: '#F7971D',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: { fontWeight: 600 },
+      },
+    },
+  },
 });
 
 export default theme;
