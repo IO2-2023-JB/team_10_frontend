@@ -1,4 +1,5 @@
-import { Paper } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import { IconButton, Paper } from '@mui/material';
 import Logo from './Logo';
 
 function NavBar() {
@@ -7,10 +8,18 @@ function NavBar() {
       component='header'
       sx={{
         display: 'flex',
-        padding: 2,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        gap: 2,
+        paddingY: 2,
+        paddingX: 4,
+        color: 'primary.main',
       }}
     >
-      <Logo />
+      <Logo sx={{ marginInlineEnd: 'auto' }} />
+      <IconButton color='inherit'>
+        <AccountCircle fontSize='large' />
+      </IconButton>
     </Paper>
   );
 }

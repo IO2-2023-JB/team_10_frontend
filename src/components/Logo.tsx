@@ -1,17 +1,27 @@
-import { Box } from '@mui/material';
+import { Box, SxProps } from '@mui/material';
 
-function Logo() {
+interface LogoProps {
+  sx?: SxProps;
+}
+function Logo({ sx }: LogoProps) {
   return (
     <Box
       sx={{
         display: 'flex',
-        gap: 1,
+        gap: '0.5rem',
         alignItems: 'baseline',
         fontSize: '2rem',
         fontWeight: 900,
+        ...sx,
       }}
     >
-      <Box>Moje</Box>
+      <Box
+        sx={{
+          color: 'text.primary',
+        }}
+      >
+        Moje
+      </Box>
       <Box
         sx={{
           backgroundColor: 'primary.main',
