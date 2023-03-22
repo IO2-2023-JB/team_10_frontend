@@ -12,8 +12,12 @@ function Logo({ sx }: LogoProps) {
         alignItems: 'baseline',
         fontSize: '2rem',
         fontWeight: 900,
+        textDecoration: 'none',
+        color: 'inherit',
         ...sx,
       }}
+      component='a'
+      href='/'
     >
       <Box
         sx={{

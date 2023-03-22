@@ -17,7 +17,7 @@ function NavBar() {
       }}
     >
       <Logo sx={{ marginInlineEnd: 'auto' }} />
-      <IconButton color='inherit'>
+      <IconButton color='inherit' href='/login'>
         <AccountCircle fontSize='large' />
       </IconButton>
     </Paper>
