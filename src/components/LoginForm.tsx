@@ -60,7 +60,7 @@ function LoginForm({}: LoginFormProps) {
         <Form style={{ marginTop: 30, width: '100%' }}>
           <Stack spacing={2}>
             <FormikTextField name='username' label='Nazwa użytkownika' required />
-            <FormikTextField name='password' label='Hasło' required />
+            <FormikTextField name='password' label='Hasło' required autoComplete='off' />
           </Stack>
           <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             Zaloguj się

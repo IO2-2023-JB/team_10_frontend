@@ -79,8 +79,8 @@ function RegisterForm({}: RegisterFormProps) {
             <FormikTextField name='nickname' label='Nazwa użytkownika' required />
             <FormikTextField name='name' label='Imię' required />
             <FormikTextField name='surname' label='Nazwisko' required />
-            <FormikTextField name='password' label='Hasło' required />
-            <FormikTextField name='repeatPassword' label='Powtórz hasło' required />
+            <FormikTextField name='password' label='Hasło' required autoComplete='off' />
+            <FormikTextField name='repeatPassword' label='Powtórz hasło' required autoComplete='off'/>
           </Stack>
           <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             Zarejestruj się
