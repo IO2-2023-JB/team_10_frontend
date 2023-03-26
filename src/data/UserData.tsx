@@ -1,19 +1,19 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const UserData = atom({
-    key: "UserData",
-    default: {} as UserDetails,
-  });
+  key: 'UserData',
+  default: {} as UserDetails,
+});
 
-  export const LoggedFlag = atom({
-    key: "LoggedFlag",
-    default: false,
-  });
-  
-  export interface UserDetails {
-    username: string;
-    accountType: string;
-    token: string;
-    email: string;
-  }
-  
+export interface UserDetails {
+  username: string;
+  accountType: AccountType;
+  token: string;
+  email: string;
+}
+
+export enum AccountType {
+  Simple,
+  Creator,
+  Administrator,
+}

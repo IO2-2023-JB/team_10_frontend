@@ -28,10 +28,11 @@ function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProp
           flexDirection: 'column',
           alignItems: 'center',
           gap: 2,
+          width: '60%',
         }}
       >
         <Typography>{hintText}</Typography>
-        <Button variant='contained' component={Link} to={buttonHref}>
+        <Button variant='outlined' component={Link} to={buttonHref}>
           {buttonText}
         </Button>
       </Box>
