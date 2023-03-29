@@ -44,11 +44,8 @@ function BaseForm<T extends FormikValues>({
           marginBottom: 2,
           display: 'flex',
           alignContent: 'stretch',
-          width: 60,
-          height: 60,
-          '& > *': {
-            width: '100%',
-            height: '100%',
+          '& > .MuiSvgIcon-root': {
+            fontSize: 60,
           },
         }}
       >
