@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
 import { LoginOutlined } from '@mui/icons-material';
-import { userDetailsState } from '../data/UserData';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import FormikTextField from './FormikTextField';
