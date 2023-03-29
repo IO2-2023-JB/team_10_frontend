@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import LoginIcon from '@mui/icons-material/LoginOutlined';
+import { LoginOutlined } from '@mui/icons-material';
 import { userDetailsState } from '../data/UserData';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
@@ -43,7 +43,7 @@ function LoginForm() {
     <BaseForm<LoginFormValues>
       title='Logowanie'
       buttonText='Zaloguj się'
-      icon={<LoginIcon />}
+      icon={<LoginOutlined />}
       formFields={formFields}
       initialValues={formikInitialValues}
       validationSchema={validationSchema}
