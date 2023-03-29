@@ -8,9 +8,6 @@ type BaseFormProps<T> = {
   buttonText: string;
   icon: ReactNode;
   formFields: ReactNode;
-  initialValues: Object;
-  validationSchema: any;
-  onSubmit: any;
   errorMessage: string;
 } & FormikConfig<T>;
 
@@ -36,7 +33,7 @@ function BaseForm<T extends FormikValues>({
         sx={{
           visibility: errorMessage == '' ? 'hidden' : 'visible',
           marginY: 5,
-          width: 'inherit',
+          width: '100%',
         }}
         severity='error'
       >
@@ -45,10 +42,12 @@ function BaseForm<T extends FormikValues>({
       <Box
         sx={{
           marginBottom: 2,
-          height: '60px',
-          width: '60px',
           display: 'flex',
           alignContent: 'stretch',
+          '& > *': {
+            width: 60,
+            height: 60,
+          },
         }}
       >
         {icon}

@@ -50,13 +50,13 @@ const formFields = (
       name='repeatPassword'
       label='Powtórz hasło'
       required
-      autoComplete='off'
+      type='password'
     />
   </>
 );
 
 function RegisterForm() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = (
     values: RegisterFormValues,

@@ -19,10 +19,6 @@ const formikInitialValues = {
 
 const validationSchema = Yup.object({
   username: Yup.string().matches(/([A-Za-z0-9])$/, 'Dozwolone tylko litery i cyfry'),
-  password: Yup.string().matches(
-    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/,
-    'Hasło za słabe (minimum 8 znaków, mała litera, wielka litera, cyfra i znak specjalny)'
-  ),
 });
 
 const formFields = (
@@ -44,17 +40,16 @@ function LoginForm() {
   };
 
   return (
-      <BaseForm<LoginFormValues>
-        title='Logowanie'
-        buttonText='Zaloguj się'
-        icon={<LoginIcon />}
-        formFields={formFields}
-        initialValues={formikInitialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
-        errorMessage={errorMessage}
-        
-      />
+    <BaseForm<LoginFormValues>
+      title='Logowanie'
+      buttonText='Zaloguj się'
+      icon={<LoginIcon />}
+      formFields={formFields}
+      initialValues={formikInitialValues}
+      validationSchema={validationSchema}
+      onSubmit={onSubmit}
+      errorMessage={errorMessage}
+    />
   );
 }
 
