@@ -45,7 +45,7 @@ const formFields = (
     <FormikTextField name='nickname' label='Nazwa użytkownika' required />
     <FormikTextField name='name' label='Imię' required />
     <FormikTextField name='surname' label='Nazwisko' required />
-    <FormikTextField name='password' label='Hasło' required autoComplete='off' />
+    <FormikTextField name='password' label='Hasło' required autoComplete='off' type='password' />
     <FormikTextField
       name='repeatPassword'
       label='Powtórz hasło'

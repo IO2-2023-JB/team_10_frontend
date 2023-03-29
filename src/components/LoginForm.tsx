@@ -29,7 +29,7 @@ const formFields = (
   <>
     {' '}
     <FormikTextField name='username' label='Nazwa użytkownika' required />
-    <FormikTextField name='password' label='Hasło' required autoComplete='off' />
+    <FormikTextField name='password' label='Hasło' required type='password' />
   </>
 );
 
