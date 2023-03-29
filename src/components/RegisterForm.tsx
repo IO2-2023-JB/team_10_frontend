@@ -56,7 +56,7 @@ const formFields = (
 );
 
 function RegisterForm() {
-  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [errorMessage, _setErrorMessage] = useState<string>('');
 
   const onSubmit = (
     values: RegisterFormValues,
