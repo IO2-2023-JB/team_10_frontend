@@ -12,11 +12,10 @@ interface LoginLayoutProps {
 function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProps) {
   return (
     <Stack
+      spacing={3}
       sx={{
-        justifyContent: 'center',
         alignItems: 'center',
-        gap: 3,
-        height: '100%',
+        paddingBottom: 10,
       }}
     >
       <Box>{form}</Box>
@@ -31,7 +30,6 @@ function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProp
           {buttonText}
         </Button>
       </Stack>
-      <Box height={40} />
     </Stack>
   );
 }

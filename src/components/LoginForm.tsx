@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import LoginIcon from '@mui/icons-material/LoginOutlined';
 import { userDetailsState } from '../data/UserData';
-import { FormikHelpers, ErrorMessage } from 'formik';
+import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import FormikTextField from './FormikTextField';
 import BaseForm from './BaseForm';
@@ -12,7 +12,7 @@ interface LoginFormValues {
   password: string;
 }
 
-const formikInitialValues: LoginFormValues = {
+const formikInitialValues = {
   username: '',
   password: '',
 };
@@ -34,8 +34,8 @@ const formFields = (
 );
 
 function LoginForm() {
-  const [userLogged, setUserLogged] = useRecoilState(userDetailsState);
-  const [errorMessage, setErrorMessage] = useState('');
+  const setUserDetails = useSetRecoilState(userDetailsState);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmit = (
     values: LoginFormValues,
@@ -45,7 +45,7 @@ function LoginForm() {
   };
 
   return (
-      <BaseForm
+      <BaseForm<LoginFormValues>
         title='Logowanie'
         buttonText='Zaloguj się'
         icon={<LoginIcon sx={{ marginBottom: 2, height: 60, width: 60 }} />}

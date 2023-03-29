@@ -10,7 +10,6 @@ function Layout({ children }: LayoutProps) {
   return (
     <Stack
       sx={{
-        flexDirection: 'column',
         height: '100%',
       }}
     >

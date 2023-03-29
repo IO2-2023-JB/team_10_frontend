@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { Alert, Stack, Typography, Button } from '@mui/material';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikConfig, FormikValues } from 'formik';
 import { Box } from '@mui/system';
 
-interface BaseFormProps {
+type BaseFormProps<T> = {
   title: string;
   buttonText: string;
   icon: ReactNode;
@@ -12,18 +12,16 @@ interface BaseFormProps {
   validationSchema: any;
   onSubmit: any;
   errorMessage: string;
-}
+} & FormikConfig<T>;
 
-function BaseForm({
+function BaseForm<T extends FormikValues>({
   title,
   buttonText,
   icon,
   formFields,
-  initialValues,
-  validationSchema,
-  onSubmit,
   errorMessage,
-}: BaseFormProps) {
+  ...formikConfig
+}: BaseFormProps<T>) {
   return (
     <Stack
       sx={{
@@ -46,11 +44,7 @@ function BaseForm({
       </Alert>
       {icon}
       <Typography variant='h5'>{title}</Typography>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
+      <Formik {...formikConfig}>
         <Box component={Form} sx={{ marginTop: 3, width: '100%' }}>
           <Stack spacing={2}>{formFields}</Stack>
           <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>

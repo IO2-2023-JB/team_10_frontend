@@ -8,14 +8,14 @@ type FormikTextFieldProps = {
 function FormikTextField({ name, ...others }: FormikTextFieldProps) {
   const [field, meta] = useField(name);
 
-  const config = {
+  const config: TextFieldProps = {
     ...field,
-    ...others,
     fullWidth: true,
     variant: 'outlined',
     error: false,
     helperText: '',
-  } as TextFieldProps;
+    ...others,
+  };
 
   if (meta && meta.touched && meta.error) {
     config.error = true;
