@@ -16,6 +16,7 @@ function NavBar() {
         paddingX: 4,
         color: 'primary.main',
       }}
+      square
     >
       <Logo sx={{ marginInlineEnd: 'auto' }} />
       <IconButton color='inherit' component={Link} to={'/login'}>

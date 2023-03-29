@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import NavBar from './NavBar';
 
@@ -8,10 +8,8 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   return (
-    <Box
+    <Stack
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
         height: '100%',
       }}
     >
@@ -19,7 +17,7 @@ function Layout({ children }: LayoutProps) {
       <Box component='main' flex={1}>
         {children}
       </Box>
-    </Box>
+    </Stack>
   );
 }
 

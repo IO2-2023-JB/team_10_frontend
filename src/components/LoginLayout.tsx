@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Typography, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -11,31 +11,26 @@ interface LoginLayoutProps {
 
 function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProps) {
   return (
-    <Box
+    <Stack
+      spacing={3}
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
         alignItems: 'center',
-        gap: 3,
-        height: '100%',
+        paddingBottom: 10,
       }}
     >
       <Box>{form}</Box>
-      <Box
+      <Stack
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
           alignItems: 'center',
           gap: 2,
         }}
       >
         <Typography>{hintText}</Typography>
-        <Button variant='contained' component={Link} to={buttonHref}>
+        <Button variant='outlined' component={Link} to={buttonHref}>
           {buttonText}
         </Button>
-      </Box>
-    </Box>
+      </Stack>
+    </Stack>
   );
 }
 

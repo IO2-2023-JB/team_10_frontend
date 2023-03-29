@@ -1,10 +1,10 @@
-import { Box } from '@mui/system';
 import LoginLayout from '../../components/LoginLayout';
+import RegisterForm from '../../components/RegisterForm';
 
 function Register() {
   return (
     <LoginLayout
-      form={<Box>Formularz rejestracji</Box>}
+      form={<RegisterForm />}
       hintText='Masz już konto?'
       buttonText='Zaloguj się'
       buttonHref='/login'
