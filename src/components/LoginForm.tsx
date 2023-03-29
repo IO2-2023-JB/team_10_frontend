@@ -29,7 +29,6 @@ const formFields = (
 );
 
 function LoginForm() {
-  const _setUserDetails = useSetRecoilState(userDetailsState);
   const [errorMessage, _setErrorMessage] = useState<string>('');
 
   const onSubmit = (
