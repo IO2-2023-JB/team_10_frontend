@@ -69,7 +69,7 @@ function RegisterForm() {
     <BaseForm<RegisterFormValues>
       title='Rejestracja'
       buttonText='Zarejestruj się'
-      icon={<HowToReg sx={{ marginBottom: '20px', height: '60px', width: '60px' }} />}
+      icon={<HowToReg />}
       formFields={formFields}
       initialValues={formikInitialValues}
       validationSchema={validationSchema}

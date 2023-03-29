@@ -42,7 +42,17 @@ function BaseForm<T extends FormikValues>({
       >
         {errorMessage}
       </Alert>
-      {icon}
+      <Box
+        sx={{
+          marginBottom: 2,
+          height: '60px',
+          width: '60px',
+          display: 'flex',
+          alignContent: 'stretch',
+        }}
+      >
+        {icon}
+      </Box>
       <Typography variant='h5'>{title}</Typography>
       <Formik {...formikConfig}>
         <Box component={Form} sx={{ marginTop: 3, width: '100%' }}>

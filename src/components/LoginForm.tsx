@@ -27,7 +27,6 @@ const validationSchema = Yup.object({
 
 const formFields = (
   <>
-    {' '}
     <FormikTextField name='username' label='Nazwa użytkownika' required />
     <FormikTextField name='password' label='Hasło' required type='password' />
   </>
@@ -48,7 +47,7 @@ function LoginForm() {
       <BaseForm<LoginFormValues>
         title='Logowanie'
         buttonText='Zaloguj się'
-        icon={<LoginIcon sx={{ marginBottom: 2, height: 60, width: 60 }} />}
+        icon={<LoginIcon />}
         formFields={formFields}
         initialValues={formikInitialValues}
         validationSchema={validationSchema}
