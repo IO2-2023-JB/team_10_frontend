@@ -1,8 +1,14 @@
 import { atom } from 'recoil';
 
-export const UserData = atom({
+export enum AccountType {
+  Simple,
+  Creator,
+  Administrator,
+}
+
+export const userDetailsState = atom<UserDetails | null>({
   key: 'UserData',
-  default: {} as UserDetails,
+  default: null,
 });
 
 export interface UserDetails {
@@ -10,10 +16,4 @@ export interface UserDetails {
   accountType: AccountType;
   token: string;
   email: string;
-}
-
-export enum AccountType {
-  Simple,
-  Creator,
-  Administrator,
 }

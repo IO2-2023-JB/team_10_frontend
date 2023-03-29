@@ -1,73 +1,61 @@
-import { Box } from '@mui/system';
-import { CssBaseline, Typography, Button, Stack } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import LoginIcon from '@mui/icons-material/LoginOutlined';
-import { UserData } from '../data/UserData';
-import { Form, Formik, FormikHelpers } from 'formik';
+import { userDetailsState } from '../data/UserData';
+import { FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import FormikTextField from './FormikTextField';
-interface LoginFormProps {}
+import BaseForm from './BaseForm';
 
-interface Values {
+interface LoginFormValues {
   username: string;
   password: string;
 }
 
-function LoginForm({}: LoginFormProps) {
-  const [userLogged, setUserLogged] = useRecoilState(UserData);
+const formikInitialValues: LoginFormValues = {
+  username: '',
+  password: '',
+};
+
+const validationSchema = Yup.object({
+  username: Yup.string().matches(/([A-Za-z0-9])$/, 'Dozwolone tylko litery i cyfry'),
+  password: Yup.string().matches(
+    /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/,
+    'Hasło za słabe (minimum 8 znaków, mała litera, wielka litera, cyfra i znak specjalny)'
+  ),
+});
+
+const formFields = (
+  <>
+    {' '}
+    <FormikTextField name='username' label='Nazwa użytkownika' required />
+    <FormikTextField name='password' label='Hasło' required autoComplete='off' />
+  </>
+);
+
+function LoginForm() {
+  const [userLogged, setUserLogged] = useRecoilState(userDetailsState);
   const [errorMessage, setErrorMessage] = useState('');
 
-  return (
-    <Box
-      sx={{
-        ml: 2,
-        mr: 2,
-        width: 400,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <CssBaseline />
-      <Typography variant='h5' mb={3} style={{ fontWeight: 3 }} color='error'>
-        {errorMessage}
-      </Typography>
-      <LoginIcon sx={{ marginBottom: '20px', height: '60px', width: '60px' }} />
-      <Typography component='h1' variant='h5'>
-        Logowanie
-      </Typography>
+  const onSubmit = (
+    values: LoginFormValues,
+    { setSubmitting }: FormikHelpers<LoginFormValues>
+  ) => {
+    // TBD backend login call
+  };
 
-      <Formik
-        initialValues={{
-          username: '',
-          password: '',
-        }}
-        onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
-          // TBD backend login call
-        }}
-        validationSchema={Yup.object({
-          username: Yup.string().matches(
-            /([A-Za-z0-9])$/,
-            'Only letters and numbers allowed'
-          ),
-          password: Yup.string().matches(
-            /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/,
-            'Password too weak (must be at least 8-character long and contain one lower case letter, one upper case letter, one number and one special character)'
-          ),
-        })}
-      >
-        <Form style={{ marginTop: 30, width: '100%' }}>
-          <Stack spacing={2}>
-            <FormikTextField name='username' label='Nazwa użytkownika' required />
-            <FormikTextField name='password' label='Hasło' required autoComplete='off' />
-          </Stack>
-          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-            Zaloguj się
-          </Button>
-        </Form>
-      </Formik>
-    </Box>
+  return (
+      <BaseForm
+        title='Logowanie'
+        buttonText='Zaloguj się'
+        icon={<LoginIcon sx={{ marginBottom: 2, height: 60, width: 60 }} />}
+        formFields={formFields}
+        initialValues={formikInitialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        errorMessage={errorMessage}
+        
+      />
   );
 }
 

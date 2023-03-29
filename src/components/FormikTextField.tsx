@@ -1,10 +1,9 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { useField } from 'formik';
 
-interface FormikTextFieldProps {
+type FormikTextFieldProps = {
   name: string;
-  [others: string]: any;
-}
+} & TextFieldProps;
 
 function FormikTextField({ name, ...others }: FormikTextFieldProps) {
   const [field, meta] = useField(name);
@@ -12,7 +11,7 @@ function FormikTextField({ name, ...others }: FormikTextFieldProps) {
   const config = {
     ...field,
     ...others,
-    fullwidth: true,
+    fullWidth: true,
     variant: 'outlined',
     error: false,
     helperText: '',
