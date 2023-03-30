@@ -10,8 +10,9 @@ const theme = createTheme({
       main: '#FF9000',
     },
     background: {
-      paper: '#0E0E0E'
-    }
+      light: '#0E0E0E',
+      default: '#000000',
+    },
   },
   components: {
     MuiButton: {
@@ -21,5 +22,11 @@ const theme = createTheme({
     },
   },
 });
+
+declare module '@mui/material/styles' {
+  interface TypeBackground {
+    light: string;
+  }
+}
 
 export default theme;
