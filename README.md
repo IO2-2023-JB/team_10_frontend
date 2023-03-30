@@ -55,7 +55,7 @@ This repository contains the frontend of the MojeWideło application - a video s
 
 - Vite
 
-  Build tool providing fast development experience for modern web applications. Contains development server and build tool that bundles code into optimized production assets.
+  Build tool providing fast development experience for modern web applications. Contains a development server and a build tool that bundles code into optimized production assets.
 
 - MUI
 
