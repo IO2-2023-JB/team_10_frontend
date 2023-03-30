@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { HowToReg } from '@mui/icons-material';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import FormikTextField from './FormikTextField';
-import BaseForm from './BaseForm';
+import FormikTextField from '../../components/formikFields/FormikTextField';
+import BaseForm from '../Login/BaseForm';
+import { useRegister } from '../../api/UserQueries';
 
-interface RegisterFormValues {
+export interface RegisterFormValues {
   email: string;
   nickname: string;
   name: string;
@@ -56,14 +57,13 @@ const formFields = (
 );
 
 function RegisterForm() {
-  const [errorMessage, _setErrorMessage] = useState<string>('');
+  const { isLoading, error, mutate } = useRegister();
 
-  const onSubmit = (
-    values: RegisterFormValues,
-    { setSubmitting }: FormikHelpers<RegisterFormValues>
-  ) => {
-    // TBD backend login call
+  const onSubmit = (values: RegisterFormValues) => {
+    mutate(values);
   };
+
+  const errorMessage = error?.message ?? '';
 
   return (
     <BaseForm<RegisterFormValues>
@@ -75,6 +75,7 @@ function RegisterForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       errorMessage={errorMessage}
+      isLoading={isLoading}
     />
   );
 }

@@ -1,5 +1,5 @@
-import LoginLayout from '../../components/LoginLayout';
-import LoginForm from '../../components/LoginForm';
+import LoginLayout from './LoginLayout';
+import LoginForm from './LoginForm';
 
 function Login() {
   return (

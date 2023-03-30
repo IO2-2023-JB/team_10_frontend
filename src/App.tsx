@@ -1,15 +1,19 @@
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import Layout from './components/Layout';
+import Layout from './components/layout/Layout';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import theme from './theme';
+import axios from 'axios';
+
+const backendURL = 'https://localhost:7004/api/';
 
 const queryClient = new QueryClient();
+axios.defaults.baseURL = backendURL;
 
 function App() {
   return (

@@ -1,17 +1,16 @@
-import { useState } from 'react';
 import { LoginOutlined } from '@mui/icons-material';
 import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
-import FormikTextField from './FormikTextField';
+import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from './BaseForm';
-
-interface LoginFormValues {
-  username: string;
+import { useLogin } from '../../api/UserQueries';
+export interface LoginFormValues {
+  email: string;
   password: string;
 }
 
 const formikInitialValues = {
-  username: '',
+  email: '',
   password: '',
 };
 
@@ -21,20 +20,22 @@ const validationSchema = Yup.object({
 
 const formFields = (
   <>
-    <FormikTextField name='username' label='Nazwa użytkownika' required />
+    <FormikTextField name='email' label='E-mail' required type='email' />
     <FormikTextField name='password' label='Hasło' required type='password' />
   </>
 );
 
 function LoginForm() {
-  const [errorMessage, _setErrorMessage] = useState<string>('');
-
+  const { data, mutate, error, isLoading } = useLogin();
+  // const [errorMessage, setErrorMessage] = useState<string>('');
   const onSubmit = (
     values: LoginFormValues,
     { setSubmitting }: FormikHelpers<LoginFormValues>
   ) => {
-    // TBD backend login call
+    mutate(values);
   };
+
+  const errorMessage = error?.message ?? '';
 
   return (
     <BaseForm<LoginFormValues>
@@ -46,6 +47,7 @@ function LoginForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       errorMessage={errorMessage}
+      isLoading={isLoading}
     />
   );
 }

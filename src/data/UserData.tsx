@@ -17,3 +17,7 @@ export interface UserDetails {
   token: string;
   email: string;
 }
+
+export interface LoginRequestResponse {
+  token: string;
+}
