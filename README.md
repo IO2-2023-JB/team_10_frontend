@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains frontend of MojeWideło application - video streaming platform implemented during software engineering course at Faculty of Mathematics and Information Science of Warsaw Technology University.
+This repository contains the frontend of the MojeWideło application - a video streaming platform implemented during the software engineering course at the Faculty of Mathematics and Information Science of the Warsaw University of Technology.
 
 ## Requirements
 
@@ -59,7 +59,7 @@ This repository contains frontend of MojeWideło application - video streaming p
 
 - MUI
 
-  UI tools suite implementing Google's Material Design principles. Offers collection of production-ready components and features.
+  UI tools suite implementing Google's Material Design principles. Offers a collection of production-ready components and features.
 
 - React Query
 
@@ -67,7 +67,7 @@ This repository contains frontend of MojeWideło application - video streaming p
 
 - Recoil
 
-  React state management library, alterniative to Redux.
+  React state management library, alternative to Redux.
 
 ## Code formatting
 
