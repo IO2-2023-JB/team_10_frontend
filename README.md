@@ -1,6 +1,10 @@
 # MojeWideło Team 10 Front-End
 
-## Dependencies
+## Overview
+
+This repository contains frontend of MojeWideło application - video streaming platform implemented during software engineering course at Faculty of Mathematics and Information Science of Warsaw Technology University.
+
+## Requirements
 
 - NodeJS & NPM
 
@@ -47,6 +51,24 @@
   ```
   Production build will be generated in the `build` directory. It is a static HTML/CSS/JS page which can be hosted with any web server.
 
+## Key dependancies
+
+- Vite
+
+  Build tool providing fast development experience for modern web applications. Contains development server and build tool that bundles code into optimized production assets.
+
+- MUI
+
+  UI tools suite implementing Google's Material Design principles. Offers collection of production-ready components and features.
+
+- React Query
+
+  React data-fetching library offering useful tools for asynchronous fetching and updating data via REST API.
+
+- Recoil
+
+  React state management library, alterniative to Redux.
+
 ## Code formatting
 
 This project uses Prettier for code formatting. Please always format your code before commiting.
@@ -64,6 +86,7 @@ How to format:
   yarn global add prettier
   prettier --write .
   ```
+
 ## Code quality
 
 This command should be run before each commit to ensure code quality
@@ -77,3 +100,16 @@ This runs a TypeScript check and an ESLint check
 ## Bundle size analysis
 
 This project uses `rollup-plugin-visualizer` which lets you easily analyze the production build bundle (sizes of all dependencies). Run `yarn build` to generate a report into the `stats.html` file. Open the file in a browser to see the report.
+
+## API
+
+The REST API specification that this project is compatible with is available at:
+https://app.swaggerhub.com/apis-docs/MATEUSZZAGORSKI2/VideIO/1.0.2
+
+## Development team
+
+- Norbert Niziołek
+- Mikołaj Nowak
+- Patryk Saj
+- Jakub Sosnowski
+- Mateusz Zagórski
