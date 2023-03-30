@@ -32,7 +32,7 @@ function Logo({ sx }: LogoProps) {
           backgroundColor: 'primary.main',
           color: 'background.default',
           padding: '0.1rem 0.4rem',
-          borderRadius: '1rem',
+          borderRadius: '0.3rem',
         }}
       >
         Wideło
