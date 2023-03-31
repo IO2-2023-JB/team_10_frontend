@@ -1,8 +1,9 @@
 import { ReactNode, useEffect } from 'react';
-import { Alert, Stack, Typography, Button, CircularProgress } from '@mui/material';
+import { Alert, Stack, Typography } from '@mui/material';
 import { Formik, Form, FormikConfig, FormikValues } from 'formik';
 import { Box } from '@mui/system';
 import { useLocation } from 'react-router-dom';
+import SpinningButton from '../../components/SpinningButton';
 
 type BaseFormProps<T> = {
   title: string;
@@ -25,8 +26,8 @@ function BaseForm<T extends FormikValues>({
   const { state } = useLocation();
   const successfulRegister = state?.successfulRegister ?? false;
   useEffect(() => {
-    window.history.replaceState({}, document.title)
-  }, [])
+    window.history.replaceState({}, document.title);
+  }, []);
   return (
     <Stack
       sx={{
@@ -64,13 +65,15 @@ function BaseForm<T extends FormikValues>({
       <Formik {...formikConfig}>
         <Box component={Form} sx={{ marginTop: 3, width: '100%' }}>
           <Stack spacing={2}>{formFields}</Stack>
-          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
-            {isLoading ? (
-              <CircularProgress size='1.53rem' sx={{ color: 'inherit' }} />
-            ) : (
-              <>{buttonText}</>
-            )}
-          </Button>
+          <SpinningButton
+            type='submit'
+            fullWidth
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}
+            isLoading={isLoading}
+          >
+            {buttonText}
+          </SpinningButton>
         </Box>
       </Formik>
     </Stack>
