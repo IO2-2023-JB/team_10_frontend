@@ -6,6 +6,7 @@ import { RecoilRoot } from 'recoil';
 import AppLayout from './components/layout/AppLayout';
 import Homepage from './pages/Homepage';
 import Login from './pages/Login';
+import PageNotFound from './pages/PageNotFound';
 import Register from './pages/Register';
 import theme from './theme';
 import axios from 'axios';
@@ -24,6 +25,7 @@ function App() {
             <CssBaseline />
             <AppLayout>
               <Routes>
+                <Route path='*' element={<PageNotFound />} />
                 <Route path='/' element={<Homepage />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
