@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Register from './pages/Register';
 import User from './pages/User';
+import Video from './pages/Video';
 import theme from './theme';
 import axios from 'axios';
 import { BACKEND_URL } from './const';
@@ -34,6 +35,7 @@ function App() {
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/user/:userId' element={<User />} />
+                    <Route path='/video/:videoId' element={<Video />} />
                   </Routes>
                 </AppLayout>
               </AuthGate>
