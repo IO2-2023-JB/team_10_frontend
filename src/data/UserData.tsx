@@ -18,6 +18,6 @@ export interface UserDetails {
   email: string;
 }
 
-export interface LoginRequestResponse {
+export interface PostLoginResponse {
   token: string;
 }

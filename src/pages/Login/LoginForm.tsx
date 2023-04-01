@@ -1,9 +1,8 @@
 import { LoginOutlined } from '@mui/icons-material';
-import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from './BaseForm';
-import { useLogin } from '../../api/UserQueries';
+import { useLogin } from '../../api/user';
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -26,12 +25,8 @@ const formFields = (
 );
 
 function LoginForm() {
-  const { data, mutate, error, isLoading } = useLogin();
-  // const [errorMessage, setErrorMessage] = useState<string>('');
-  const onSubmit = (
-    values: LoginFormValues,
-    { setSubmitting }: FormikHelpers<LoginFormValues>
-  ) => {
+  const { mutate, error, isLoading } = useLogin();
+  const onSubmit = (values: LoginFormValues) => {
     mutate(values);
   };
 

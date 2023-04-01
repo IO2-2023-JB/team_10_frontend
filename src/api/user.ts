@@ -1,14 +1,14 @@
 import axios, { AxiosError } from 'axios';
 import { RegisterFormValues } from '../pages/Register/RegisterForm';
 import { LoginFormValues } from '../pages/Login/LoginForm';
-import { LoginRequestResponse } from '../data/UserData';
+import { PostLoginResponse } from '../data/UserData';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export function useLogin() {
   const navigate = useNavigate();
   // userDetailsFetch hook
-  return useMutation<LoginRequestResponse, AxiosError, LoginFormValues>({
+  return useMutation<PostLoginResponse, AxiosError, LoginFormValues>({
     mutationFn: (body) => axios.post('login', body).then((res) => res.data),
     onSuccess: (res) => {
       navigate('/');
@@ -21,7 +21,7 @@ export function useLogin() {
 export function useRegister() {
   const navigate = useNavigate();
   return useMutation<null, AxiosError, RegisterFormValues>({
-    mutationFn: (body) => axios.post('register', body).then((res) => res.data),
+    mutationFn: (body) => axios.post('register', body),
     onSuccess: (res) => {
       navigate('/login', { state: { successfulRegister: true } });
     },

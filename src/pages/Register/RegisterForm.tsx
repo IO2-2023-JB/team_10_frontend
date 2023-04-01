@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { HowToReg } from '@mui/icons-material';
-import { FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from '../Login/BaseForm';
-import { useRegister } from '../../api/UserQueries';
+import { useRegister } from '../../api/user';
 
 export interface RegisterFormValues {
   email: string;
