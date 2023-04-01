@@ -10,6 +10,7 @@ import Homepage from './pages/Homepage';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Register from './pages/Register';
+import User from './pages/User';
 import theme from './theme';
 import axios from 'axios';
 
@@ -33,6 +34,7 @@ function App() {
                     <Route path='/' element={<Homepage />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
+                    <Route path='/user/:userId' element={<User />} />
                   </Routes>
                 </AppLayout>
               </AuthGate>

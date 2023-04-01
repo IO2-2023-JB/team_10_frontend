@@ -1,12 +1,6 @@
 import { atom } from 'recoil';
 import axios from 'axios';
 
-export enum AccountType {
-  Simple,
-  Creator,
-  Administrator,
-}
-
 export const userDetailsState = atom<UserDetails | null>({
   key: 'UserDetails',
   default: null,
@@ -25,15 +19,37 @@ export const userDetailsState = atom<UserDetails | null>({
   ],
 });
 
-export type UserDetails = GetUserDetailsResponse & { token: string };
+export type UserDetails = Pick<GetUserDetailsResponse, 'id'> & { token: string };
 
 export interface GetUserDetailsResponse {
   id: string;
-  accountBalance: number;
-  subscriptionCount: number;
   email: string;
-  nickname: string;
   name: string;
   surname: string;
+  nickname: string;
+  avatarImage: string | null;
   userType: AccountType;
+  accountBalance: number | null;
+  subscriptionsCount: number | null;
+}
+
+export enum AccountType {
+  Simple = 'Simple',
+  Creator = 'Creator',
+  Administrator = 'Administrator',
+}
+
+export function getInitials(userDetails: GetUserDetailsResponse): string {
+  return (userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '');
+}
+
+export function getUserTypeString(userDetails: GetUserDetailsResponse): string {
+  switch (userDetails.userType) {
+    case AccountType.Simple:
+      return 'Widz';
+    case AccountType.Creator:
+      return 'Twórca';
+    case AccountType.Administrator:
+      return 'Administrator';
+  }
 }
