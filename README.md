@@ -51,7 +51,7 @@ This repository contains the frontend of the MojeWideło application - a video s
   ```
   Production build will be generated in the `build` directory. It is a static HTML/CSS/JS page which can be hosted with any web server.
 
-## Key dependancies
+## Key dependencies
 
 - Vite
 
