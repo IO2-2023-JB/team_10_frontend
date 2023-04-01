@@ -1,13 +1,14 @@
 import { Typography } from '@mui/material';
-import { useUserDetails } from '../../api/user';
+import { useRecoilValue } from 'recoil';
 import PageLayout from '../../components/layout/PageLayout';
+import { userDetailsState } from '../../data/UserData';
 
 function Homepage() {
-  const { data } = useUserDetails('6425e41e090e1eb5988d692a');
+  const userDetails = useRecoilValue(userDetailsState);
 
   return (
     <PageLayout>
-      <Typography fontSize={30}>Witaj {data?.nickname}!</Typography>
+      <Typography fontSize={30}>Witaj {userDetails?.nickname}!</Typography>
     </PageLayout>
   );
 }

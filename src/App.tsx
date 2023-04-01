@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import AppLoader from './components/AppLoader';
 import AuthGate from './components/AuthGate';
 import AppLayout from './components/layout/AppLayout';
 import Homepage from './pages/Homepage';
@@ -24,16 +25,18 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AuthGate>
-              <AppLayout>
-                <Routes>
-                  <Route path='*' element={<PageNotFound />} />
-                  <Route path='/' element={<Homepage />} />
-                  <Route path='/login' element={<Login />} />
-                  <Route path='/register' element={<Register />} />
-                </Routes>
-              </AppLayout>
-            </AuthGate>
+            <AppLoader>
+              <AuthGate>
+                <AppLayout>
+                  <Routes>
+                    <Route path='*' element={<PageNotFound />} />
+                    <Route path='/' element={<Homepage />} />
+                    <Route path='/login' element={<Login />} />
+                    <Route path='/register' element={<Register />} />
+                  </Routes>
+                </AppLayout>
+              </AuthGate>
+            </AppLoader>
           </ThemeProvider>
           <ReactQueryDevtools />
         </QueryClientProvider>
