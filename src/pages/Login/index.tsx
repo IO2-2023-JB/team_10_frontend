@@ -3,12 +3,12 @@ import LoginForm from './LoginForm';
 
 function Login() {
   return (
-    <LoginLayout
-      form={<LoginForm />}
-      hintText='Pierwszy raz?'
-      buttonText='Zarejestruj się'
-      buttonHref='/register'
-    />
+      <LoginLayout
+        form={<LoginForm />}
+        hintText='Pierwszy raz?'
+        buttonText='Zarejestruj się'
+        buttonHref='/register'
+      />
   );
 }
 

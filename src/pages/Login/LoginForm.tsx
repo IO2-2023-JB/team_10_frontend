@@ -31,7 +31,6 @@ function LoginForm() {
   };
 
   const errorMessage = error?.message ?? '';
-
   return (
     <BaseForm<LoginFormValues>
       title='Logowanie'
