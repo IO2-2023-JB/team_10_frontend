@@ -40,8 +40,7 @@ function BaseForm<T extends FormikValues>({
       <Alert
         variant='filled'
         sx={{
-          visibility:
-            errorMessage === '' && successfulRegister === false ? 'hidden' : 'visible',
+          visibility: errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
           marginY: 5,
           width: '100%',
         }}
@@ -68,6 +67,7 @@ function BaseForm<T extends FormikValues>({
           <SpinningButton
             type='submit'
             fullWidth
+            formNoValidate
             variant='contained'
             sx={{ mt: 3, mb: 2 }}
             isLoading={isLoading}

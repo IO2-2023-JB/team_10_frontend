@@ -1,4 +1,4 @@
-import { CircularProgressProps, CircularProgress, Button, ButtonProps } from '@mui/material';
+import { CircularProgress, Button, ButtonProps } from '@mui/material';
 import { ReactNode } from 'react';
 
 type SpinningButtonProps = {
@@ -7,15 +7,13 @@ type SpinningButtonProps = {
 } & ButtonProps;
 
 function SpinningButton({ isLoading, children, ...others }: SpinningButtonProps) {
-  const circularProgressConfig: CircularProgressProps = {
-    size: '1.53rem',
-    sx: {
-      color: 'inherit',
-    },
-  };
   return (
     <Button {...others}>
-      {isLoading ? <CircularProgress {...circularProgressConfig} /> : children}
+      {isLoading ? (
+        <CircularProgress size='1.53rem' sx={{ color: 'inherit' }} />
+      ) : (
+        children
+      )}
     </Button>
   );
 }

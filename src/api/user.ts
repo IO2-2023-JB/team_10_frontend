@@ -12,25 +12,21 @@ const userKey = 'user';
 export function useLogin() {
   const navigate = useNavigate();
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
-  let postResponse: string;
-
   useEffect(() => {
     if (userDetails !== null) navigate('/');
   }, [userDetails, navigate]);
 
   return useMutation<UserDetails, AxiosError, LoginFormValues>({
-    mutationFn: (body) =>
-      axios.post('login', body).then(async (res) => {
-        postResponse = res.data.token;
-        return {
-          ...(
-            await axios.get('user', {
-              headers: { Authorization: `Bearer ${postResponse}` },
-            })
-          ).data,
-          token: postResponse,
-        };
-      }),
+    mutationFn: async (body) => {
+      const { data: loginData } = await axios.post('login', body);
+      const { data: userData } = await axios.get('user', {
+        headers: { Authorization: `Bearer ${loginData.token}` },
+      });
+      return {
+        ...userData,
+        token: loginData.token,
+      };
+    },
     onSuccess: (res) => {
       setUserDetails({ ...res });
     },

@@ -14,13 +14,14 @@ const formikInitialValues = {
 };
 
 const validationSchema = Yup.object({
-  username: Yup.string().matches(/([A-Za-z0-9])$/, 'Dozwolone tylko litery i cyfry'),
+  email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
+  password: Yup.string().required('Pole wymagane'),
 });
 
 const formFields = (
   <>
-    <FormikTextField name='email' label='E-mail' required type='email' />
-    <FormikTextField name='password' label='Hasło' required type='password' />
+    <FormikTextField name='email' label='E-mail' type='email' />
+    <FormikTextField name='password' label='Hasło' type='password' />
   </>
 );
 
