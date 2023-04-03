@@ -8,7 +8,7 @@ export enum AccountType {
 }
 
 export const userDetailsState = atom<UserDetails | null>({
-  key: 'UserData',
+  key: 'UserDetails',
   default: null,
   effects: [
     ({ onSet }) => {

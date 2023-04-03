@@ -46,17 +46,12 @@ const validationSchema = Yup.object({
 
 const formFields = (
   <>
-    <FormikTextField name='email' label='E-mail' required type='email' />
-    <FormikTextField name='nickname' label='Nazwa użytkownika' required />
-    <FormikTextField name='name' label='Imię' required />
-    <FormikTextField name='surname' label='Nazwisko' required />
-    <FormikTextField name='password' label='Hasło' required type='password' />
-    <FormikTextField
-      name='repeatPassword'
-      label='Powtórz hasło'
-      required
-      type='password'
-    />
+    <FormikTextField name='email' label='E-mail' type='email' />
+    <FormikTextField name='nickname' label='Nazwa użytkownika' />
+    <FormikTextField name='name' label='Imię' />
+    <FormikTextField name='surname' label='Nazwisko' />
+    <FormikTextField name='password' label='Hasło' type='password' />
+    <FormikTextField name='repeatPassword' label='Powtórz hasło' type='password' />
   </>
 );
 

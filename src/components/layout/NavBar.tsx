@@ -9,7 +9,7 @@ function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const navigate = useNavigate();
 
-  const onLogout = () => {
+  const handleLogout = () => {
     setUserDetails(null);
     navigate('/login');
   };
@@ -31,7 +31,7 @@ function NavBar() {
       <Logo sx={{ marginInlineEnd: 'auto' }} />
       {userDetails !== null && (
         <>
-          <Button onClick={onLogout}>Wyloguj się</Button>
+          <Button onClick={handleLogout}>Wyloguj się</Button>
           <IconButton color='inherit' component={Link} to={'/login'}>
             <AccountCircle fontSize='large' />
           </IconButton>
