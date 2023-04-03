@@ -7,7 +7,11 @@ const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#F7971D',
+      main: '#FF9000',
+    },
+    background: {
+      light: '#0E0E0E',
+      default: '#000000',
     },
   },
   components: {
@@ -18,5 +22,11 @@ const theme = createTheme({
     },
   },
 });
+
+declare module '@mui/material/styles' {
+  interface TypeBackground {
+    light: string;
+  }
+}
 
 export default theme;

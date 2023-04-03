@@ -1,7 +1,9 @@
-import { ReactNode } from 'react';
-import { Alert, Stack, Typography, Button } from '@mui/material';
+import { ReactNode, useEffect } from 'react';
+import { Alert, Stack, Typography } from '@mui/material';
 import { Formik, Form, FormikConfig, FormikValues } from 'formik';
 import { Box } from '@mui/system';
+import { useLocation } from 'react-router-dom';
+import SpinningButton from '../../components/SpinningButton';
 
 type BaseFormProps<T> = {
   title: string;
@@ -9,6 +11,7 @@ type BaseFormProps<T> = {
   icon: ReactNode;
   formFields: ReactNode;
   errorMessage: string;
+  isLoading: boolean;
 } & FormikConfig<T>;
 
 function BaseForm<T extends FormikValues>({
@@ -17,8 +20,14 @@ function BaseForm<T extends FormikValues>({
   icon,
   formFields,
   errorMessage,
+  isLoading,
   ...formikConfig
 }: BaseFormProps<T>) {
+  const { state } = useLocation();
+  const successfulRegister = state?.successfulRegister ?? false;
+  useEffect(() => {
+    window.history.replaceState({}, document.title);
+  }, []);
   return (
     <Stack
       sx={{
@@ -31,13 +40,13 @@ function BaseForm<T extends FormikValues>({
       <Alert
         variant='filled'
         sx={{
-          visibility: errorMessage == '' ? 'hidden' : 'visible',
+          visibility: errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
           marginY: 5,
           width: '100%',
         }}
-        severity='error'
+        severity={successfulRegister ? 'success' : 'error'}
       >
-        {errorMessage}
+        {successfulRegister ? 'Registered successfully!' : errorMessage}
       </Alert>
       <Box
         sx={{
@@ -55,9 +64,16 @@ function BaseForm<T extends FormikValues>({
       <Formik {...formikConfig}>
         <Box component={Form} sx={{ marginTop: 3, width: '100%' }}>
           <Stack spacing={2}>{formFields}</Stack>
-          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+          <SpinningButton
+            type='submit'
+            fullWidth
+            formNoValidate
+            variant='contained'
+            sx={{ mt: 3, mb: 2 }}
+            isLoading={isLoading}
+          >
             {buttonText}
-          </Button>
+          </SpinningButton>
         </Box>
       </Formik>
     </Stack>

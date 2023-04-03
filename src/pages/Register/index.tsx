@@ -1,5 +1,5 @@
-import LoginLayout from '../../components/LoginLayout';
-import RegisterForm from '../../components/RegisterForm';
+import LoginLayout from '../Login/LoginLayout';
+import RegisterForm from './RegisterForm';
 
 function Register() {
   return (

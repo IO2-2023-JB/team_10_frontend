@@ -30,9 +30,9 @@ function Logo({ sx }: LogoProps) {
       <Box
         sx={{
           backgroundColor: 'primary.main',
-          color: 'background.default',
+          color: 'background.light',
           padding: '0.1rem 0.4rem',
-          borderRadius: '1rem',
+          borderRadius: '0.3rem',
         }}
       >
         Wideło
