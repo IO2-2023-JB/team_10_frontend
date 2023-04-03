@@ -43,10 +43,11 @@ export function useRegister() {
   });
 }
 
-export function useUserDetails(id: string) {
+export function useUserDetails(id?: string) {
   return useQuery<GetUserDetailsResponse, AxiosError>({
     queryKey: [userKey, id],
     queryFn: async () => (await axios.get(`user/${id}`)).data,
+    enabled: id !== undefined,
   });
 }
 
@@ -90,7 +91,7 @@ export function useLoggedInUserDetails(): {
 
   const logOut = () => {
     setError(null);
-    localStorage.removeItem('bearerToken');
+    setUserDetails(null);
   };
 
   return { isLoading, error, reload, logOut };

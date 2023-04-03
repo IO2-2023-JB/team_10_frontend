@@ -13,11 +13,10 @@ import Register from './pages/Register';
 import User from './pages/User';
 import theme from './theme';
 import axios from 'axios';
-
-const backendURL = 'https://localhost:7004/api/';
+import { BACKEND_URL } from './const';
 
 const queryClient = new QueryClient();
-axios.defaults.baseURL = backendURL;
+axios.defaults.baseURL = BACKEND_URL;
 
 function App() {
   return (

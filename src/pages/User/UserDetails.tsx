@@ -1,16 +1,12 @@
-import { Avatar, Stack, Typography } from '@mui/material';
-import {
-  getInitials,
-  GetUserDetailsResponse,
-  getUserTypeString,
-} from '../../data/UserData';
+import { Stack, Typography } from '@mui/material';
+import Avatar from '../../components/Avatar';
+import { GetUserDetailsResponse, getUserTypeString } from '../../data/UserData';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
-  const initials = getInitials(userDetails);
   const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
 
   let textBottom = getUserTypeString(userDetails);
@@ -29,21 +25,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           marginY: 5,
         }}
       >
-        <Avatar
-          src={userDetails.avatarImage}
-          sx={{
-            width: 150,
-            height: 150,
-            fontSize: '5rem',
-            fontWeight: 700,
-            backgroundColor: 'primary.main',
-          }}
-        >
-          {initials}
-        </Avatar>
+        <Avatar userDetails={userDetails} size={120} />
         <Stack>
-          <Typography variant='h3'>{textTop}</Typography>
-          <Typography variant='h5'>{textBottom}</Typography>
+          <Typography variant='h4'>{textTop}</Typography>
+          <Typography variant='h6'>{textBottom}</Typography>
         </Stack>
       </Stack>
     </>
