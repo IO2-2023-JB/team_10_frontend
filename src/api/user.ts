@@ -46,7 +46,7 @@ export function useRegister() {
 export function useUserDetails(id?: string) {
   return useQuery<GetUserDetailsResponse, AxiosError>({
     queryKey: [userKey, id],
-    queryFn: async () => (await axios.get(`user/${id}`)).data,
+    queryFn: async () => (await axios.get('user', { params: { id } })).data,
     enabled: id !== undefined,
   });
 }
