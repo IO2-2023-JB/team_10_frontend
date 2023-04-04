@@ -11,7 +11,7 @@ function User() {
   return (
     <PageLayout>
       <ContentSection error={error} isLoading={isLoading}>
-        {userDetails && <UserDetails userDetails={userDetails} reload={refetch} />}
+        {userDetails && <UserDetails userDetails={userDetails} />}
       </ContentSection>
     </PageLayout>
   );

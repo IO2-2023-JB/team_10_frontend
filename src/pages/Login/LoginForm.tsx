@@ -14,7 +14,7 @@ const formikInitialValues = {
   password: '',
 };
 
-const validationSchema = Yup.object({
+export const loginValidationSchema = Yup.object({
   email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
   password: Yup.string().required('Pole wymagane'),
 });
@@ -41,10 +41,11 @@ function LoginForm() {
         icon={<LoginOutlined />}
         formFields={formFields}
         initialValues={formikInitialValues}
-        validationSchema={validationSchema}
+        validationSchema={loginValidationSchema}
         onSubmit={onSubmit}
         errorMessage={errorMessage}
         isLoading={isLoading}
+        alertCollapse={false}
       />
     </Box>
   );

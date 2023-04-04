@@ -1,12 +1,14 @@
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from '../Login/BaseForm';
-import { FormatListBulleted } from '@mui/icons-material';
+import { Mode } from '@mui/icons-material';
 import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import { AccountType } from '../../data/UserData';
 import { GetUserDetailsResponse } from '../../data/UserData';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { registerValidationSchema } from '../Register/RegisterForm';
+import { shallowComparison } from './../../utils';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
@@ -14,13 +16,10 @@ export interface UserDetailsEditFormValues {
   surname: string;
   userType: AccountType;
 }
-
-const validationSchema = Yup.object({
-  nickname: Yup.string()
-    .required('Pole wymagane')
-    .matches(/([A-Za-z0-9])$/, 'Only letters and numbers allowed'),
-  name: Yup.string().required('Pole wymagane').max(32, 'Imię zbyt długie'),
-  surname: Yup.string().required('Pole wymagane').max(32, 'Nazwisko zbyt długie'),
+const userDetailsEditValidationForm = new Yup.ObjectSchema({
+  name: registerValidationSchema.fields.name,
+  surname: registerValidationSchema.fields.surname,
+  nickname: registerValidationSchema.fields.nickname,
 });
 
 const formFields = (
@@ -30,8 +29,7 @@ const formFields = (
     <FormikTextField name='surname' label='Nazwisko' />
     <FormikSwitch
       name='userType'
-      leftLabel='Widz'
-      rightLabel='Twórca'
+      labels={['Widz', 'Twórca']}
       options={[AccountType.Simple, AccountType.Creator]}
     />
   </>
@@ -43,7 +41,7 @@ interface UserDetailsEditFormProps {
 }
 
 function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
-  const { mutate, error, isLoading, isError } = useUserDetailsEdit();
+  const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
   const [errorMessage, setErrorMessage] = useState('');
   const formikInitialValues = {
     nickname: userDetails.nickname,
@@ -52,11 +50,14 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
     userType: userDetails.userType,
   };
 
+  useEffect(() => {
+    if (isSuccess) closeDialog();
+  }, [isSuccess]);
+
   const onSubmit = (values: UserDetailsEditFormValues) => {
     setErrorMessage(error?.message ?? '');
-    if (values !== formikInitialValues) {
+    if (!shallowComparison(values, formikInitialValues)) {
       mutate(values);
-      if (!isError) closeDialog();
     } else setErrorMessage('Wprowadź nowe wartości');
   };
 
@@ -64,13 +65,14 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
     <BaseForm<UserDetailsEditFormValues>
       title='Edycja danych'
       buttonText='Zmień dane'
-      icon={<FormatListBulleted />}
+      icon={<Mode />}
       formFields={formFields}
       initialValues={formikInitialValues}
-      validationSchema={validationSchema}
+      validationSchema={userDetailsEditValidationForm}
       onSubmit={onSubmit}
       errorMessage={errorMessage}
       isLoading={isLoading}
+      alertCollapse={true}
     />
   );
 }

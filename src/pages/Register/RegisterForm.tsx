@@ -28,11 +28,11 @@ const formikInitialValues = {
   avatar: new Blob(),
 };
 
-const validationSchema = Yup.object({
+export const registerValidationSchema = Yup.object({
   email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
   nickname: Yup.string()
     .required('Pole wymagane')
-    .matches(/([A-Za-z0-9])$/, 'Only letters and numbers allowed'),
+    .matches(/([A-Za-z0-9])$/, 'Dozwolone jedynie litery i cyfry'),
   name: Yup.string().required('Pole wymagane').max(32, 'Imię zbyt długie'),
   surname: Yup.string().required('Pole wymagane').max(32, 'Nazwisko zbyt długie'),
   password: Yup.string()
@@ -56,8 +56,7 @@ const formFields = (
     <FormikTextField name='repeatPassword' label='Powtórz hasło' type='password' />
     <FormikSwitch
       name='userType'
-      leftLabel='Widz'
-      rightLabel='Twórca'
+      labels={['Widz', 'Twórca']}
       options={[AccountType.Simple, AccountType.Creator]}
     />
   </>
@@ -79,10 +78,11 @@ function RegisterForm() {
       icon={<HowToReg />}
       formFields={formFields}
       initialValues={formikInitialValues}
-      validationSchema={validationSchema}
+      validationSchema={registerValidationSchema}
       onSubmit={onSubmit}
       errorMessage={errorMessage}
       isLoading={isLoading}
+      alertCollapse={false}
     />
   );
 }

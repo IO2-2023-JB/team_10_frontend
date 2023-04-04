@@ -5,15 +5,13 @@ import { UserDetailsEditFormValues } from './../../pages/User/UserDetailsEditFor
 
 type FormikSwitchProps = {
   name: string;
-  leftLabel: string;
-  rightLabel: string;
-  options: (number | boolean | string)[];
+  labels: [string, string];
+  options: [any, any];
 } & SwitchProps;
 
 function FormikSwitch({
   name,
-  leftLabel,
-  rightLabel,
+  labels,
   options,
   ...others
 }: FormikSwitchProps) {
@@ -31,13 +29,13 @@ function FormikSwitch({
 
   return (
     <Stack sx={{ paddingX: 1, alignItems: 'center' }} direction='row' spacing={1}>
-      <Typography>{leftLabel}</Typography>
+      <Typography>{labels[0]}</Typography>
       <Switch
         {...config}
         onChange={handleChange}
         checked={values.userType === options[0] ? false : true}
       />
-      <Typography>{rightLabel}</Typography>
+      <Typography>{labels[1]}</Typography>
     </Stack>
   );
 }

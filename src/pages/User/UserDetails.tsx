@@ -1,31 +1,16 @@
-import { Button, Stack, Typography, Grid, Dialog, Paper } from '@mui/material';
-import {
-  getInitials,
-  GetUserDetailsResponse,
-  getUserTypeString,
-} from '../../data/UserData';
-import UserDetailsEditForm from './UserDetailsEditForm';
+import { Button, Dialog, Grid, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
-import {
-  QueryObserverResult,
-  RefetchOptions,
-  RefetchQueryFilters,
-} from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
-import { userDetailsState } from './../../data/UserData';
+import { GetUserDetailsResponse, getUserTypeString } from '../../data/UserData';
 import Avatar from './../../components/Avatar';
+import { userDetailsState } from './../../data/UserData';
+import UserDetailsEditForm from './UserDetailsEditForm';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
-  reload: (
-    options?: RefetchOptions & RefetchQueryFilters
-  ) => Promise<QueryObserverResult<GetUserDetailsResponse>>;
-  // reload: <TPageData>(
-  //   options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
-  // ) => QueryObserverRefetchErrorResult<GetUserDetailsResponse, AxiosError<unknown, any>>;
 }
 
-function UserDetails({ userDetails, reload }: UserDetailsProps) {
+function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -39,9 +24,7 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
 
   const handleDialogOpen = () => setDialogOpen(true);
 
-  const handleDialogClose = async () => {
-    // TBD: DZIWNE - RELOAD ZA PIERWSZYM RAZEM ZAWSZE ZWRACA DANE BEZ UPDATU, ZA DRUGIM JUŻ DZIAŁA XD
-    ( reload().then(() => reload()));
+  const handleDialogClose = () => {
     setDialogOpen(false);
   };
 
@@ -79,13 +62,18 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
           </Grid>
         </Grid>
       </Grid>
-      <Dialog open={dialogOpen} onClose={handleDialogClose}>
-        <Paper elevation={2} sx={{ padding: 3 }}>
-          <UserDetailsEditForm
-            closeDialog={handleDialogClose}
-            userDetails={userDetails}
-          />
-        </Paper>
+      <Dialog
+        PaperProps={{
+          sx: {
+            padding: 3,
+            borderRadius: 3,
+            backgroundColor: 'background.default',
+          },
+        }}
+        open={dialogOpen}
+        onClose={handleDialogClose}
+      >
+        <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />
       </Dialog>
     </>
   );
