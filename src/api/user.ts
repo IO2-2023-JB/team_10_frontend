@@ -1,11 +1,11 @@
-import axios, { AxiosError } from 'axios';
-import { RegisterFormValues } from '../pages/Register/RegisterForm';
-import { LoginFormValues } from '../pages/Login/LoginForm';
-import { userDetailsState, UserDetails, GetUserDetailsResponse } from '../data/UserData';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import axios, { AxiosError } from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { useEffect } from 'react';
+import { GetUserDetailsResponse, UserDetails, userDetailsState } from '../data/UserData';
+import { LoginFormValues } from '../pages/Login/LoginForm';
+import { RegisterFormValues } from '../pages/Register/RegisterForm';
 
 const userKey = 'user';
 
@@ -43,9 +43,56 @@ export function useRegister() {
   });
 }
 
-export function useUserDetails(id: string) {
+export function useUserDetails(id?: string) {
   return useQuery<GetUserDetailsResponse, AxiosError>({
     queryKey: [userKey, id],
     queryFn: async () => (await axios.get(`user/${id}`)).data,
+    enabled: id !== undefined,
   });
+}
+
+export function useLoggedInUserDetails(): {
+  isLoading: boolean;
+  error: string | null;
+  reload: () => void;
+  logOut: () => void;
+} {
+  const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(
+    localStorage.getItem('bearerToken') !== null && userDetails === null
+  );
+
+  const getLoggedInUserDetails = useCallback(async () => {
+    const token = localStorage.getItem('bearerToken');
+    try {
+      const { data } = await axios.get('user', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUserDetails({ ...data, token });
+    } catch (error) {
+      setError((error as AxiosError).message);
+      setIsLoading(false);
+    }
+  }, [setUserDetails]);
+
+  useEffect(() => {
+    if (userDetails !== null) setIsLoading(false);
+  }, [userDetails]);
+
+  useEffect(() => {
+    if (isLoading) getLoggedInUserDetails();
+  }, [isLoading, getLoggedInUserDetails]);
+
+  const reload = () => {
+    setError(null);
+    setIsLoading(true);
+  };
+
+  const logOut = () => {
+    setError(null);
+    setUserDetails(null);
+  };
+
+  return { isLoading, error, reload, logOut };
 }

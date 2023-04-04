@@ -1,12 +1,22 @@
-import { Typography, Stack } from '@mui/material';
+import { Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
+import ContentSection from '../../components/ContentSection';
+import PageLayout from '../../components/layout/PageLayout';
+import { userDetailsState } from '../../data/UserData';
 
 function Homepage() {
-  const { data } = useUserDetails('6425e41e090e1eb5988d692a');
+  const { id: userId } = useRecoilValue(userDetailsState)!;
+  const { data: userDetails, error, isLoading } = useUserDetails(userId);
+
   return (
-    <Stack sx={{ alignItems: 'center', marginY: 2 }}>
-      <Typography fontSize={30}>Witaj {data?.nickname}!</Typography>
-    </Stack>
+    <PageLayout>
+      <ContentSection error={error} isLoading={isLoading}>
+        {userDetails && (
+          <Typography fontSize={30}>Witaj {userDetails!.nickname}!</Typography>
+        )}
+      </ContentSection>
+    </PageLayout>
   );
 }
 

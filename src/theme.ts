@@ -3,6 +3,9 @@ import { createTheme } from '@mui/material';
 const theme = createTheme({
   typography: {
     fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
+    h1: {
+      fontWeight: 900,
+    },
   },
   palette: {
     mode: 'dark',

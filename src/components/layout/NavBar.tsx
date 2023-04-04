@@ -1,12 +1,14 @@
-import { AccountCircle } from '@mui/icons-material';
-import { IconButton, Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import Logo from './Logo';
 import { useRecoilState } from 'recoil';
+import { useUserDetails } from '../../api/user';
 import { userDetailsState } from '../../data/UserData';
+import Avatar from '../Avatar';
+import Logo from './Logo';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
+  const { data: userDetailsFull } = useUserDetails(userDetails?.id);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -32,8 +34,8 @@ function NavBar() {
       {userDetails !== null && (
         <>
           <Button onClick={handleLogout}>Wyloguj się</Button>
-          <IconButton color='inherit' component={Link} to={'/login'}>
-            <AccountCircle fontSize='large' />
+          <IconButton color='inherit' component={Link} to={`/user/${userDetails.id}`}>
+            <Avatar userDetails={userDetailsFull} size={40} />
           </IconButton>
         </>
       )}
