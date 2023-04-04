@@ -6,6 +6,10 @@ interface PlayerProps {
 }
 
 function Player({ videoId }: PlayerProps) {
+  const videoUrl = `${BACKEND_URL}/video/${videoId}?access_token=${localStorage.getItem(
+    'bearerToken'
+  )}`;
+
   return (
     <Box
       sx={{
@@ -15,7 +19,7 @@ function Player({ videoId }: PlayerProps) {
         },
       }}
     >
-      <video controls src={`${BACKEND_URL}/video/${videoId}`} />
+      <video controls src={videoUrl} />
     </Box>
   );
 }
