@@ -1,18 +1,19 @@
 import { Card, ListItem, Stack } from '@mui/material';
 
 interface VideoTagsProps {
-  tags: string[] | null;
+  tags: string[];
 }
 
 function VideoTags({ tags }: VideoTagsProps) {
   return (
-    <Stack marginTop={0} direction='row' overflow='hidden' flexWrap='wrap'>
+    <Stack direction='row' overflow='hidden' flexWrap='wrap'>
       {tags?.map((tag) => (
         <ListItem
+          key={tag}
           sx={{
             paddingY: 0.5,
             paddingX: 1,
-            width: 'fit-content',
+            width: 'auto',
             paddingLeft: 0,
             color: 'primary.main',
           }}

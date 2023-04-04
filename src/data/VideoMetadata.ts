@@ -1,8 +1,8 @@
 export interface UploadVideo {
   title: string;
-  description: string | null;
+  description: string;
   thumbnail: string | null;
-  tags: string[] | null;
+  tags: string[];
   visibility: VideoVisibility;
 }
 
@@ -12,8 +12,8 @@ export interface GetVideoMetadataResponse extends UploadVideo {
   authorNickname: string;
   viewCount: number;
   processingProgress: ProcessingProgress;
-  uploadDate: Date;
-  editDate: Date;
+  uploadDate: string;
+  editDate: string;
   duration: string;
 }
 

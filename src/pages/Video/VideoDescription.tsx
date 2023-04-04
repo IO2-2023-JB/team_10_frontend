@@ -3,18 +3,15 @@ import { useState } from 'react';
 
 interface VideoDescriptionProps {
   viewCount: number;
-  uploadDate: Date;
-  videoDescription: string | null;
+  uploadDate: string;
+  videoDescription: string;
 }
 
-const collapsedDescriptionSize = 50;
+const collapsedDescriptionWordCount = 50;
 
-function prepareDescription(
-  description: string | null,
-  splice: boolean = true
-): string | null {
+function prepareDescription(description: string, splice: boolean = true): string {
   if (!splice) return description;
-  return description?.split(' ').splice(0, collapsedDescriptionSize).join(' ') + '...';
+  return description.split(' ').splice(0, collapsedDescriptionWordCount).join(' ') + '…';
 }
 
 function VideoDescription({
@@ -22,21 +19,19 @@ function VideoDescription({
   uploadDate,
   videoDescription,
 }: VideoDescriptionProps) {
+  const [expanded, setExpanded] = useState(false);
   const viewCountText = `${viewCount} wyświetleń`;
-  if (videoDescription === null)
-    videoDescription = 'Twórca nie dodał opisu do tego filmu.';
   const isDescriptionExpandable: boolean =
     videoDescription !== null &&
-    videoDescription.split(' ').length > collapsedDescriptionSize;
+    videoDescription.split(' ').length > collapsedDescriptionWordCount;
 
-  const [expanded, setExpanded] = useState(false);
-  const [description, setDescription] = useState<string | null>(
-    prepareDescription(videoDescription, isDescriptionExpandable)
+  const description = prepareDescription(
+    videoDescription,
+    isDescriptionExpandable && !expanded
   );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
-    setDescription(prepareDescription(videoDescription, expanded));
   };
 
   return (
@@ -46,6 +41,7 @@ function VideoDescription({
         backgroundColor: 'rgba(80,80,80,0.3)',
         borderRadius: 3,
         '&:hover': {
+          transition: 'background-color ease-in-out 200ms',
           backgroundColor: 'rgba(80,80,80,0.5)',
         },
       }}

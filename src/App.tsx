@@ -16,7 +16,13 @@ import theme from './theme';
 import axios from 'axios';
 import { BACKEND_URL } from './const';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 axios.defaults.baseURL = BACKEND_URL;
 
 function App() {

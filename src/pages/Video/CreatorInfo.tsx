@@ -1,35 +1,25 @@
-import { Avatar, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
+import Avatar from '../../components/Avatar';
+import { GetUserDetailsResponse } from '../../data/UserData';
 
 const avatarSize = 60;
 
 interface CreatorInfoProps {
-  authorAvatar: string | null;
-  authorNickname: string;
-  subscriptionsCount: number;
+  userDetails: GetUserDetailsResponse;
 }
 
-function CreatorInfo({
-  authorAvatar,
-  authorNickname,
-  subscriptionsCount,
-}: CreatorInfoProps) {
-  const subscriptionsText = `${subscriptionsCount} subskrypcji`;
+function CreatorInfo({ userDetails }: CreatorInfoProps) {
+  const subscriptionsText = `${userDetails.subscriptionsCount} subskrypcji`;
 
   return (
     <Stack direction='row' alignItems='center'>
-      <Avatar
-        src={authorAvatar!}
-        sx={{
-          width: avatarSize,
-          height: avatarSize,
-        }}
-      ></Avatar>
+      <Avatar userDetails={userDetails} size={avatarSize} />
       <Stack
         sx={{
           marginX: 2,
         }}
       >
-        <Typography variant='h6'>{authorNickname}</Typography>
+        <Typography variant='h6'>{userDetails.nickname}</Typography>
         <Typography variant='subtitle2'>{subscriptionsText}</Typography>
       </Stack>
     </Stack>
