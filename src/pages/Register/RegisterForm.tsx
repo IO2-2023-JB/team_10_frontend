@@ -3,6 +3,8 @@ import * as Yup from 'yup';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from '../Login/BaseForm';
 import { useRegister } from '../../api/user';
+import { AccountType } from '../../data/UserData';
+import FormikSwitch from '../../components/formikFields/FormikSwitch';
 
 export interface RegisterFormValues {
   email: string;
@@ -11,7 +13,7 @@ export interface RegisterFormValues {
   surname: string;
   password: string;
   repeatPassword: string;
-  userType: number;
+  userType: string;
   avatar: Blob;
 }
 
@@ -22,7 +24,7 @@ const formikInitialValues = {
   surname: '',
   password: '',
   repeatPassword: '',
-  userType: 0,
+  userType: AccountType.Simple,
   avatar: new Blob(),
 };
 
@@ -52,6 +54,12 @@ const formFields = (
     <FormikTextField name='surname' label='Nazwisko' />
     <FormikTextField name='password' label='Hasło' type='password' />
     <FormikTextField name='repeatPassword' label='Powtórz hasło' type='password' />
+    <FormikSwitch
+      name='userType'
+      leftLabel='Widz'
+      rightLabel='Twórca'
+      options={[AccountType.Simple, AccountType.Creator]}
+    />
   </>
 );
 

@@ -31,17 +31,18 @@ const formFields = (
       name='userType'
       leftLabel='Widz'
       rightLabel='Twórca'
-      options={['Simple', 'Creator']}
+      options={[AccountType.Simple, AccountType.Creator]}
     />
   </>
 );
 
 interface UserDetailsEditFormProps {
   userDetails: GetUserDetailsResponse;
+  closeDialog: () => void;
 }
 
-function UserDetailsEditForm({ userDetails }: UserDetailsEditFormProps) {
-  const { mutate, error, isLoading } = useUserDetailsEdit();
+function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
+  const { mutate, error, isLoading, isError } = useUserDetailsEdit();
 
   const formikInitialValues = {
     nickname: userDetails.nickname,
@@ -51,8 +52,9 @@ function UserDetailsEditForm({ userDetails }: UserDetailsEditFormProps) {
   };
 
   const onSubmit = (values: UserDetailsEditFormValues) => {
-    console.log('asdf');
     mutate(values);
+    if(!isError)
+      closeDialog();
   };
 
   const errorMessage = error?.message ?? '';

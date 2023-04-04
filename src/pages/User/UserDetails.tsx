@@ -66,7 +66,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
       </Grid>
       <Dialog open={dialogOpen} onClose={handleDialogClose}>
         <Paper elevation={2} sx={{ padding: 3 }}>
-          <UserDetailsEditForm userDetails={userDetails} />
+          <UserDetailsEditForm
+            closeDialog={handleDialogClose}
+            userDetails={userDetails}
+          />
         </Paper>
       </Dialog>
     </>
