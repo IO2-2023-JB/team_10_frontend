@@ -27,7 +27,6 @@ interface UserDetailsProps {
 
 function UserDetails({ userDetails, reload }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
-  const initials = getInitials(userDetails);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
@@ -42,7 +41,7 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
 
   const handleDialogClose = async () => {
     // TBD: DZIWNE - RELOAD ZA PIERWSZYM RAZEM ZAWSZE ZWRACA DANE BEZ UPDATU, ZA DRUGIM JUŻ DZIAŁA XD
-    userDetails = (await reload().then(() => reload())).data ?? userDetails;
+    ( reload().then(() => reload()));
     setDialogOpen(false);
   };
 

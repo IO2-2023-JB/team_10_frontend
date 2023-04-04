@@ -100,13 +100,9 @@ export function useLoggedInUserDetails(): {
 
 export function useUserDetailsEdit() {
   const userDetails = useRecoilValue(userDetailsState);
-  const { reload } = useLoggedInUserDetails();
   return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
     mutationFn: async (body) => {
       return await axios.put(`user?id=${userDetails?.id}`, body);
     },
-    onSuccess: () => {
-      reload();
-    }
   });
 }
