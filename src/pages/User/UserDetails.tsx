@@ -1,4 +1,4 @@
-import { Avatar, Button, Stack, Typography, Grid, Dialog, Paper } from '@mui/material';
+import { Button, Stack, Typography, Grid, Dialog, Paper } from '@mui/material';
 import {
   getInitials,
   GetUserDetailsResponse,
@@ -13,6 +13,7 @@ import {
 } from '@tanstack/react-query';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from './../../data/UserData';
+import Avatar from './../../components/Avatar';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -29,6 +30,8 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
   const initials = getInitials(userDetails);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
+
   let textBottom = getUserTypeString(userDetails);
   if (userDetails.subscriptionsCount !== null)
     textBottom += ` · ${userDetails.subscriptionsCount} subskrypcji`;
@@ -43,8 +46,6 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
     setDialogOpen(false);
   };
 
-  const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
-
   return (
     <>
       <Grid container spacing={2} sx={{ alignItems: 'center' }}>
@@ -57,18 +58,7 @@ function UserDetails({ userDetails, reload }: UserDetailsProps) {
               marginY: 5,
             }}
           >
-            <Avatar
-              src={userDetails.avatarImage}
-              sx={{
-                width: 150,
-                height: 150,
-                fontSize: '5rem',
-                fontWeight: 700,
-                backgroundColor: 'primary.main',
-              }}
-            >
-              {initials}
-            </Avatar>
+            <Avatar userDetails={userDetails} size={120} />
             <Stack>
               <Typography variant='h3'>{textTop}</Typography>
               <Typography variant='h5'>{textBottom}</Typography>

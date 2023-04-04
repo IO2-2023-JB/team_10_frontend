@@ -40,7 +40,7 @@ export enum AccountType {
 }
 
 export function getInitials(userDetails: GetUserDetailsResponse): string {
-  return (userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '');
+  return ((userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '')).toUpperCase();
 }
 
 export function getUserTypeString(userDetails: GetUserDetailsResponse): string {

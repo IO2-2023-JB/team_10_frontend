@@ -15,7 +15,8 @@ function PageLayout({ children, maxWidth }: PageLayoutProps) {
         width: '100%',
         maxWidth: maxWidth ?? 'lg',
         marginX: 'auto',
-        paddingX: 2,
+        paddingX: 4,
+        paddingY: 2,
       }}
     >
       {children}
