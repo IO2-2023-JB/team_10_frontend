@@ -6,12 +6,12 @@ import UserDetails from './UserDetails';
 
 function User() {
   const { userId } = useParams();
-  const { data: userDetails, error, isLoading } = useUserDetails(userId!);
+  const { data: userDetails, error, isLoading, refetch } = useUserDetails(userId!);
 
   return (
     <PageLayout>
       <ContentSection error={error} isLoading={isLoading}>
-        {userDetails && <UserDetails userDetails={userDetails} />}
+        {userDetails && <UserDetails userDetails={userDetails} reload={refetch} />}
       </ContentSection>
     </PageLayout>
   );

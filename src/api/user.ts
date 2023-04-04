@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { GetUserDetailsResponse, UserDetails, userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../pages/Login/LoginForm';
 import { RegisterFormValues } from '../pages/Register/RegisterForm';
@@ -98,14 +98,14 @@ export function useLoggedInUserDetails(): {
 }
 
 export function useUserDetailsEdit() {
-  const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
-
+  const userDetails = useRecoilValue(userDetailsState);
+  const { reload } = useLoggedInUserDetails();
   return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
     mutationFn: async (body) => {
       return await axios.put(`user/${userDetails?.id}`, body);
     },
-    onSuccess: (res) => {
-      setUserDetails(res);
-    },
+    onSuccess: () => {
+      reload();
+    }
   });
 }

@@ -6,15 +6,28 @@ import {
 } from '../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
 import { useState } from 'react';
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from '@tanstack/react-query';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from './../../data/UserData';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
+  reload: (
+    options?: RefetchOptions & RefetchQueryFilters
+  ) => Promise<QueryObserverResult<GetUserDetailsResponse>>;
+  // reload: <TPageData>(
+  //   options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  // ) => QueryObserverRefetchErrorResult<GetUserDetailsResponse, AxiosError<unknown, any>>;
 }
 
-function UserDetails({ userDetails }: UserDetailsProps) {
+function UserDetails({ userDetails, reload }: UserDetailsProps) {
+  const loggedUserDetails = useRecoilValue(userDetailsState);
   const initials = getInitials(userDetails);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
 
   let textBottom = getUserTypeString(userDetails);
   if (userDetails.subscriptionsCount !== null)
@@ -24,7 +37,13 @@ function UserDetails({ userDetails }: UserDetailsProps) {
 
   const handleDialogOpen = () => setDialogOpen(true);
 
-  const handleDialogClose = () => setDialogOpen(false);
+  const handleDialogClose = async () => {
+    // TBD: DZIWNE - RELOAD ZA PIERWSZYM RAZEM ZAWSZE ZWRACA DANE BEZ UPDATU, ZA DRUGIM JUŻ DZIAŁA XD
+    userDetails = (await reload().then(() => reload())).data ?? userDetails;
+    setDialogOpen(false);
+  };
+
+  const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
 
   return (
     <>
@@ -58,9 +77,16 @@ function UserDetails({ userDetails }: UserDetailsProps) {
         </Grid>
         <Grid item xs={2} sx={{ alignSelf: 'center' }}>
           <Grid item container sx={{ justifyContent: 'right' }}>
-            <Button onClick={handleDialogOpen} variant='contained'>
-              Edytuj profil
-            </Button>
+            {userDetails.id === loggedUserDetails?.id ? (
+              <Button onClick={handleDialogOpen} variant='contained'>
+                Edytuj profil
+              </Button>
+            ) : (
+              // SUBSCRIPTION BUTTON PLACEHOLDER
+              <Button onClick={() => {}} variant='contained'>
+                Subskrybuj
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Grid>

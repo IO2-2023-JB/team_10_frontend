@@ -6,6 +6,7 @@ import { useUserDetailsEdit } from '../../api/user';
 import { AccountType } from '../../data/UserData';
 import { GetUserDetailsResponse } from '../../data/UserData';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
+import { useState } from 'react';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
@@ -43,7 +44,7 @@ interface UserDetailsEditFormProps {
 
 function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
   const { mutate, error, isLoading, isError } = useUserDetailsEdit();
-
+  const [errorMessage, setErrorMessage] = useState('');
   const formikInitialValues = {
     nickname: userDetails.nickname,
     name: userDetails.name,
@@ -52,12 +53,13 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   };
 
   const onSubmit = (values: UserDetailsEditFormValues) => {
-    mutate(values);
-    if(!isError)
-      closeDialog();
+    setErrorMessage(error?.message ?? '');
+    if (values !== formikInitialValues) {
+      mutate(values);
+      if (!isError) closeDialog();
+    } else setErrorMessage('Wprowadź nowe wartości');
   };
 
-  const errorMessage = error?.message ?? '';
   return (
     <BaseForm<UserDetailsEditFormValues>
       title='Edycja danych'
