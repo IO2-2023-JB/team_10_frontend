@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { backendUrl } from '../../App';
+import { BACKEND_URL } from '../../const';
 
 interface PlayerProps {
   videoId: string;
@@ -15,7 +15,7 @@ function Player({ videoId }: PlayerProps) {
         },
       }}
     >
-      <video controls src={`${backendUrl}/video/${videoId}`} />
+      <video controls src={`${BACKEND_URL}/video/${videoId}`} />
     </Box>
   );
 }
