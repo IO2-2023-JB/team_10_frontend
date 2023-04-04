@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { GetUserDetailsResponse, UserDetails, userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../pages/Login/LoginForm';
 import { RegisterFormValues } from '../pages/Register/RegisterForm';
+import { UserDetailsEditFormValues } from '../pages/User/UserDetailsEditForm';
 
 const userKey = 'user';
 
@@ -94,4 +95,17 @@ export function useLoggedInUserDetails(): {
   };
 
   return { isLoading, error, reload, logOut };
+}
+
+export function useUserDetailsEdit() {
+  const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
+
+  return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
+    mutationFn: async (body) => {
+      return await axios.put(`user${userDetails?.id}`, body);
+    },
+    onSuccess: (res) => {
+      setUserDetails(res);
+    },
+  });
 }

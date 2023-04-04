@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from './BaseForm';
 import { useLogin } from '../../api/user';
+import { Box } from '@mui/material';
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -33,17 +34,19 @@ function LoginForm() {
 
   const errorMessage = error?.message ?? '';
   return (
-    <BaseForm<LoginFormValues>
-      title='Logowanie'
-      buttonText='Zaloguj się'
-      icon={<LoginOutlined />}
-      formFields={formFields}
-      initialValues={formikInitialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      errorMessage={errorMessage}
-      isLoading={isLoading}
-    />
+    <Box sx={{ marginTop: 10 }}>
+      <BaseForm<LoginFormValues>
+        title='Logowanie'
+        buttonText='Zaloguj się'
+        icon={<LoginOutlined />}
+        formFields={formFields}
+        initialValues={formikInitialValues}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}
+        errorMessage={errorMessage}
+        isLoading={isLoading}
+      />
+    </Box>
   );
 }
 

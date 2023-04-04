@@ -7,7 +7,6 @@ type FormikTextFieldProps = {
 
 function FormikTextField({ name, ...others }: FormikTextFieldProps) {
   const [field, meta] = useField(name);
-
   const config: TextFieldProps = {
     ...field,
     fullWidth: true,

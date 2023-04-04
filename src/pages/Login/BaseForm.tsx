@@ -41,7 +41,7 @@ function BaseForm<T extends FormikValues>({
         variant='filled'
         sx={{
           visibility: errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
-          marginY: 5,
+          marginY: 2,
           width: '100%',
         }}
         severity={successfulRegister ? 'success' : 'error'}
