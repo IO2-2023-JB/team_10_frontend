@@ -10,6 +10,6 @@
 
 - [item 1]
 
-## Screenshort
+## Screenshots
 
 [paste screenshots]
