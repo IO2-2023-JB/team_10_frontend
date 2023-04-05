@@ -1,10 +1,11 @@
 import { HowToReg } from '@mui/icons-material';
 import * as Yup from 'yup';
-import FormikTextField from '../../components/formikFields/FormikTextField';
-import BaseForm from '../Login/BaseForm';
 import { useRegister } from '../../api/user';
-import { AccountType } from '../../data/UserData';
+import AvatarSection from '../../components/formikFields/FormikAvatarField';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
+import FormikTextField from '../../components/formikFields/FormikTextField';
+import { AccountType } from '../../data/UserData';
+import BaseForm from '../Login/BaseForm';
 
 export interface RegisterFormValues {
   email: string;
@@ -14,7 +15,7 @@ export interface RegisterFormValues {
   password: string;
   repeatPassword: string;
   userType: string;
-  avatar: Blob;
+  avatarImage: string | null;
 }
 
 const formikInitialValues = {
@@ -25,7 +26,7 @@ const formikInitialValues = {
   password: '',
   repeatPassword: '',
   userType: AccountType.Simple,
-  avatar: new Blob(),
+  avatarImage: null,
 };
 
 export const registerValidationSchema = Yup.object({
@@ -59,13 +60,14 @@ const formFields = (
       labels={['Widz', 'Twórca']}
       options={[AccountType.Simple, AccountType.Creator]}
     />
+    <AvatarSection name='avatarImage' />
   </>
 );
 
 function RegisterForm() {
   const { isLoading, error, mutate } = useRegister();
 
-  const onSubmit = (values: RegisterFormValues) => {
+  const handleSubmit = (values: RegisterFormValues) => {
     mutate(values);
   };
 
@@ -79,7 +81,7 @@ function RegisterForm() {
       formFields={formFields}
       initialValues={formikInitialValues}
       validationSchema={registerValidationSchema}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       errorMessage={errorMessage}
       isLoading={isLoading}
       alertCollapse={false}
