@@ -22,6 +22,10 @@ function AvatarSection({ name }: AvatarSectionProps) {
     reader.readAsDataURL(file);
   };
 
+  const handleDelete = () => {
+    helpers.setValue(null);
+  };
+
   return (
     <Stack direction='row' alignItems='center' spacing={2}>
       <Avatar
@@ -43,6 +47,7 @@ function AvatarSection({ name }: AvatarSectionProps) {
           onChange={handleFileChange}
         />
       </Button>
+      {meta.value !== null && <Button onClick={handleDelete}>Usuń zdjęcie</Button>}
     </Stack>
   );
 }
