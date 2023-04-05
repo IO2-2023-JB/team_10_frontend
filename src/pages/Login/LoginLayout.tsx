@@ -17,7 +17,7 @@ function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProp
         spacing={3}
         sx={{
           alignItems: 'center',
-          paddingBottom: 10,
+          paddingY: 10,
         }}
       >
         <Box>{form}</Box>

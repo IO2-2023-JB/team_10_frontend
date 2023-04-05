@@ -1,11 +1,15 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery, useQueryClient
+} from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { GetUserDetailsResponse, UserDetails, userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../pages/Login/LoginForm';
 import { RegisterFormValues } from '../pages/Register/RegisterForm';
+import { UserDetailsEditFormValues } from '../pages/User/UserDetailsEditForm';
 
 const userKey = 'user';
 
@@ -95,4 +99,19 @@ export function useLoggedInUserDetails(): {
   };
 
   return { isLoading, error, reload, logOut };
+}
+
+export function useUserDetailsEdit() {
+  const userDetails = useRecoilValue(userDetailsState);
+  const queryClient = useQueryClient();
+  return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
+    mutationFn: async (body) => {
+      return await (
+        await axios.put(`user?id=${userDetails?.id}`, body)
+      ).data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user', userDetails?.id] });
+    },
+  });
 }

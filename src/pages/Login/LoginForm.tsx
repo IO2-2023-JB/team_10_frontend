@@ -13,7 +13,7 @@ const formikInitialValues = {
   password: '',
 };
 
-const validationSchema = Yup.object({
+export const loginValidationSchema = Yup.object({
   email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
   password: Yup.string().required('Pole wymagane'),
 });
@@ -33,17 +33,18 @@ function LoginForm() {
 
   const errorMessage = error?.message ?? '';
   return (
-    <BaseForm<LoginFormValues>
-      title='Logowanie'
-      buttonText='Zaloguj się'
-      icon={<LoginOutlined />}
-      formFields={formFields}
-      initialValues={formikInitialValues}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}
-      errorMessage={errorMessage}
-      isLoading={isLoading}
-    />
+      <BaseForm<LoginFormValues>
+        title='Logowanie'
+        buttonText='Zaloguj się'
+        icon={<LoginOutlined />}
+        formFields={formFields}
+        initialValues={formikInitialValues}
+        validationSchema={loginValidationSchema}
+        onSubmit={onSubmit}
+        errorMessage={errorMessage}
+        isLoading={isLoading}
+        alertCollapse={false}
+      />
   );
 }
 
