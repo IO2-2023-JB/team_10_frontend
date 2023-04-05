@@ -4,6 +4,9 @@ import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
 import CreatorInfo from './CreatorInfo';
 import { useUserDetails } from '../../api/user';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from '../../data/UserData';
+import MetadataForm from './MetadataForm';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -11,6 +14,8 @@ interface VideoMetadataProps {
 
 function Metadata({ videoMetadata }: VideoMetadataProps) {
   const { data: userDetails } = useUserDetails(videoMetadata.authorId);
+  const loggedInUserDetails = useRecoilValue(userDetailsState);
+  const isAuthor = loggedInUserDetails?.id === videoMetadata.authorId;
 
   return (
     <Stack
@@ -23,7 +28,10 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
         {videoMetadata.title}
       </Typography>
       <VideoTags tags={videoMetadata.tags} />
-      {userDetails && <CreatorInfo userDetails={userDetails!} />}
+      <Stack direction='row' alignItems='center'>
+        {userDetails && <CreatorInfo userDetails={userDetails!} />}
+        {isAuthor && <MetadataForm videoMetadata={videoMetadata} />}
+      </Stack>
       <VideoDescription
         viewCount={videoMetadata.viewCount}
         uploadDate={videoMetadata.uploadDate}
