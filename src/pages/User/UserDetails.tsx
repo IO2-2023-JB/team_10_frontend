@@ -1,14 +1,7 @@
-import { Close } from '@mui/icons-material';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import FormDialog from '../../components/FormDialog';
 import { GetUserDetailsResponse, getUserTypeString } from '../../data/UserData';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
@@ -56,7 +49,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
         {userDetails.id === loggedUserDetails?.id ? (
           <Button
             onClick={handleDialogOpen}
-            sx={{ marginInlineStart: 'auto', height: '20%' }}
+            sx={{ marginInlineStart: 'auto' }}
             variant='contained'
           >
             Edytuj profil
@@ -67,30 +60,9 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           </Button>
         )}
       </Stack>
-      <Dialog
-        PaperProps={{
-          sx: {
-            borderRadius: 3,
-            backgroundColor: 'background.default',
-          },
-        }}
-        open={dialogOpen}
-        onClose={handleDialogClose}
-      >
-        <DialogActions sx={{ padding: 2 }}>
-          <Button size='small' sx={{ width: 60, height: 60 }} onClick={handleDialogClose}>
-            <Close sx={{ width: 30, height: 30 }} />
-          </Button>
-        </DialogActions>
-        <DialogContent>
-          <Stack spacing={1}>
-            <UserDetailsEditForm
-              closeDialog={handleDialogClose}
-              userDetails={userDetails}
-            />
-          </Stack>
-        </DialogContent>
-      </Dialog>
+      <FormDialog open={dialogOpen} onClose={handleDialogClose}>
+        <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />
+      </FormDialog>
     </>
   );
 }
