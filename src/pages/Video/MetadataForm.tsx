@@ -44,10 +44,10 @@ interface MetadataFormProps {
 }
 
 function MetadataForm({ videoMetadata }: MetadataFormProps) {
-  const { isLoading, error, mutate } = useEditVideoMetadata(videoMetadata.id);
+  const { mutate, error, isLoading } = useEditVideoMetadata(videoMetadata.id);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
-  const onSubmit = (values: MetadataFormValues) => {
+  const handleSubmit = (values: MetadataFormValues) => {
     const parsedValues: UploadVideo = {
       ...values,
       tags: values.tags
@@ -70,9 +70,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
 
   return (
     <>
-      <Button onClick={() => setIsDialogOpen(true)} sx={{ marginInlineStart: 'auto' }}>
-        Edytuj szczegóły
-      </Button>
+      <Button onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<MetadataFormValues>
           title='Edycja filmu'
@@ -81,7 +79,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
           formFields={formFields}
           initialValues={formikInitialValues}
           validationSchema={validationSchema}
-          onSubmit={onSubmit}
+          onSubmit={handleSubmit}
           errorMessage={errorMessage}
           isLoading={isLoading}
           alertCollapse={false}

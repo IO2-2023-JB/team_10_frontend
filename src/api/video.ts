@@ -20,3 +20,9 @@ export function useEditVideoMetadata(id: string) {
     },
   });
 }
+
+export function useDeleteVideo(id: string) {
+  return useMutation<null, AxiosError, null>({
+    mutationFn: () => axios.delete(`video?id=${id}`),
+  });
+}

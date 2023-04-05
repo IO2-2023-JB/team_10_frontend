@@ -1,5 +1,5 @@
 import { GetVideoMetadataResponse } from '../../data/VideoMetadata';
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
 import CreatorInfo from './CreatorInfo';
@@ -7,6 +7,7 @@ import { useUserDetails } from '../../api/user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../data/UserData';
 import MetadataForm from './MetadataForm';
+import VideoDelete from './VideoDelete';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -30,7 +31,14 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
       <VideoTags tags={videoMetadata.tags} />
       <Stack direction='row' alignItems='center'>
         {userDetails && <CreatorInfo userDetails={userDetails!} />}
-        {isAuthor && <MetadataForm videoMetadata={videoMetadata} />}
+        <Box sx={{ marginInlineStart: 'auto' }}>
+          {isAuthor && (
+            <>
+              <MetadataForm videoMetadata={videoMetadata} />
+              <VideoDelete videoId={videoMetadata.id} />
+            </>
+          )}
+        </Box>
       </Stack>
       <VideoDescription
         viewCount={videoMetadata.viewCount}
