@@ -1,7 +1,7 @@
-import { ReactNode, useEffect } from 'react';
 import { Alert, Stack, Typography } from '@mui/material';
-import { Formik, Form, FormikConfig, FormikValues } from 'formik';
 import { Box } from '@mui/system';
+import { Form, Formik, FormikConfig, FormikValues } from 'formik';
+import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import SpinningButton from '../../components/SpinningButton';
 
@@ -39,18 +39,19 @@ function BaseForm<T extends FormikValues>({
         alignItems: 'center',
       }}
     >
-      {alertCollapse && errorMessage !== '' && <Alert
-        variant='filled'
-        sx={{
-          visibility:
-            errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
-          marginY: 2,
-          width: '100%',
-        }}
-        severity={successfulRegister ? 'success' : 'error'}
-      >
-        {successfulRegister ? 'Registered successfully!' : errorMessage}
-      </Alert>}
+      {(!alertCollapse || (alertCollapse && errorMessage !== '')) && (
+        <Alert
+          variant='filled'
+          sx={{
+            visibility: errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
+            marginY: 2,
+            width: '100%',
+          }}
+          severity={successfulRegister ? 'success' : 'error'}
+        >
+          {successfulRegister ? 'Registered successfully!' : errorMessage}
+        </Alert>
+      )}
       <Box
         sx={{
           marginBottom: 2,

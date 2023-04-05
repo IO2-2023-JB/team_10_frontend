@@ -1,4 +1,7 @@
-import { useMutation, useQuery, QueryClient, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery, useQueryClient
+} from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -103,10 +106,12 @@ export function useUserDetailsEdit() {
   const queryClient = useQueryClient();
   return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
     mutationFn: async (body) => {
-      return await axios.put(`user?id=${userDetails?.id}`, body);
+      return await (
+        await axios.put(`user?id=${userDetails?.id}`, body)
+      ).data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['user']});
-    }
+      queryClient.invalidateQueries({ queryKey: ['user', userDetails?.id] });
+    },
   });
 }

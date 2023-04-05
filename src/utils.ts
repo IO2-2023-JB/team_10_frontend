@@ -1,4 +1,4 @@
-export const shallowComparison = (obj1: Object, obj2: Object) => {
+export const shallowComparison = (obj1: object, obj2: object) => {
   return (
     Object.keys(obj1).length === Object.keys(obj2).length &&
     (Object.keys(obj1) as (keyof typeof obj1)[]).every((key) => {
