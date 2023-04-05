@@ -1,4 +1,4 @@
-import { Box, SxProps } from '@mui/material';
+import { Box, SxProps, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 interface LogoProps {
@@ -6,9 +6,9 @@ interface LogoProps {
 }
 function Logo({ sx }: LogoProps) {
   return (
-    <Box
+    <Stack
+      direction='row'
       sx={{
-        display: 'flex',
         gap: '0.5rem',
         alignItems: 'baseline',
         fontSize: '2rem',
@@ -30,14 +30,14 @@ function Logo({ sx }: LogoProps) {
       <Box
         sx={{
           backgroundColor: 'primary.main',
-          color: 'background.default',
+          color: 'background.light',
           padding: '0.1rem 0.4rem',
-          borderRadius: '1rem',
+          borderRadius: '0.3rem',
         }}
       >
         Wideło
       </Box>
-    </Box>
+    </Stack>
   );
 }
 

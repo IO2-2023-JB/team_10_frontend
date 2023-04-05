@@ -1,14 +1,14 @@
-import { Box } from '@mui/material';
-import LoginLayout from '../../components/LoginLayout';
+import LoginLayout from './LoginLayout';
+import LoginForm from './LoginForm';
 
 function Login() {
   return (
-    <LoginLayout
-      form={<Box>Formularz logowania</Box>}
-      hintText='Pierwszy raz?'
-      buttonText='Zarejestruj się'
-      buttonHref='/register'
-    />
+      <LoginLayout
+        form={<LoginForm />}
+        hintText='Pierwszy raz?'
+        buttonText='Zarejestruj się'
+        buttonHref='/register'
+      />
   );
 }
 
