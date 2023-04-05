@@ -1,40 +1,30 @@
-import { Switch, Stack, Typography, SwitchProps } from '@mui/material';
-import { useField, useFormikContext } from 'formik';
-import { ChangeEvent } from 'react';
-import { UserDetailsEditFormValues } from './../../pages/User/UserDetailsEditForm';
+import { Stack, Switch, SwitchProps, Typography } from '@mui/material';
+import { useField } from 'formik';
 
 type FormikSwitchProps = {
   name: string;
   labels: [string, string];
-  options: [any, any];
+  options: [unknown, unknown];
 } & SwitchProps;
 
-function FormikSwitch({
-  name,
-  labels,
-  options,
-  ...others
-}: FormikSwitchProps) {
-  const [field] = useField(name);
-  const { setFieldValue, values } = useFormikContext<UserDetailsEditFormValues>();
+function FormikSwitch({ name, labels, options, ...others }: FormikSwitchProps) {
+  const [field, meta, helpers] = useField(name);
+
   const config: SwitchProps = {
     ...field,
     ...others,
   };
 
-  const handleChange = (e: ChangeEvent, checked: boolean) => {
-    if (checked) setFieldValue(name, options[1]);
-    else setFieldValue(name, options[0]);
+  const checked = meta.value === options[1];
+
+  const handleChange = () => {
+    helpers.setValue(options[checked ? 0 : 1]);
   };
 
   return (
     <Stack sx={{ paddingX: 1, alignItems: 'center' }} direction='row' spacing={1}>
       <Typography>{labels[0]}</Typography>
-      <Switch
-        {...config}
-        onChange={handleChange}
-        checked={values.userType === options[0] ? false : true}
-      />
+      <Switch {...config} onChange={handleChange} checked={checked} />
       <Typography>{labels[1]}</Typography>
     </Stack>
   );
