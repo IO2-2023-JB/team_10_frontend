@@ -17,6 +17,7 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
   const [file, setFile] = useState<File | null>(null);
 
   const handleDrop = async (files: File[]) => {
+    const formData = new FormData();
     setDragged(false);
     if (files.length > 0) {
       setFile(files[0]);
@@ -24,7 +25,6 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
       if (type === InputType.Image)
         helpers.setValue(await toBase64(files[0]).then((res) => res));
       else {
-        const formData = new FormData();
         formData.append('video', files[0], files[0].name);
         helpers.setValue(formData);
       }
@@ -63,7 +63,7 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
         direction='row'
         sx={{
           borderRadius: 2,
-          borderWidth: 2,
+          borderWidth: 1,
           borderStyle: file === null ? 'dashed' : 'solid',
           borderColor: 'primary.main',
           alignItems: 'center',
