@@ -3,11 +3,7 @@ import BaseForm from '../Login/BaseForm';
 import { Publish } from '@mui/icons-material';
 import * as Yup from 'yup';
 import { useVideoMetadataUpload } from '../../api/video';
-import {
-  InputType,
-  UploadVideo,
-  VideoVisibility,
-} from '../../data/VideoMetadata';
+import { InputType, UploadVideo, VideoVisibility } from '../../data/VideoMetadata';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import { Stack } from '@mui/material';
 import { MetadataFormValues } from './../Video/MetadataForm';

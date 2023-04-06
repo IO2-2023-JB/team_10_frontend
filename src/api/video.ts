@@ -56,17 +56,10 @@ export function useVideoMetadataUpload() {
   return useMutation<null, AxiosError, UploadVideo>({
     mutationFn: async (body) => {
       const { video, ...others } = body;
-      console.log(others);
       const metadata = (
         await axios.post<GetVideoMetadataResponse>('video-metadata', others)
       ).data;
       return (await axios.post(`video/${metadata.id}`, video)).data;
     },
-  });
-}
-
-export function useVideoUpload(id: string) {
-  return useMutation<null, AxiosError, FormData>({
-    mutationFn: async () => (await axios.post('video', { params: { id } })).data,
   });
 }
