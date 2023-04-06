@@ -1,4 +1,4 @@
-import { Stack, Switch, SwitchProps, Typography } from '@mui/material';
+import { Switch, Stack, Typography, SwitchProps } from '@mui/material';
 import { useField } from 'formik';
 
 type FormikSwitchProps = {
@@ -9,7 +9,6 @@ type FormikSwitchProps = {
 
 function FormikSwitch({ name, labels, options, ...others }: FormikSwitchProps) {
   const [field, meta, helpers] = useField(name);
-
   const config: SwitchProps = {
     ...field,
     ...others,
