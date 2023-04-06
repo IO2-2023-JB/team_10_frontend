@@ -3,18 +3,23 @@ import BaseForm from '../Login/BaseForm';
 import { Publish } from '@mui/icons-material';
 import * as Yup from 'yup';
 import { useVideoMetadataUpload } from '../../api/video';
-import { UploadVideo, VideoVisibility } from '../../data/VideoMetadata';
+import {
+  InputType,
+  UploadVideo,
+  VideoVisibility,
+} from '../../data/VideoMetadata';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import { Stack } from '@mui/material';
 import { MetadataFormValues } from './../Video/MetadataForm';
-import FileUploader from './FileUploader';
+import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
 
 export type VideoUploadFormValues = {
+  video: FormData;
   thumbnail: string;
 } & MetadataFormValues;
 
 const videoUploadValidationSchema = Yup.object({
-  title: Yup.string().max(100, 'Maksymalnie 100 znaków'),
+  title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
   description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
   tags: Yup.string(),
 });
@@ -25,20 +30,19 @@ const formikInitialValues = {
   thumbnail: '',
   tags: '',
   visibility: VideoVisibility.Private,
+  video: new FormData(),
 };
 
 function VideoUploadForm() {
   const { mutate, error, isLoading } = useVideoMetadataUpload();
-  const file1 = { name: 'Miniaturka' };
-  const file2 = { name: 'Wideo' };
 
   const formFields = (
     <>
       <FormikTextField name='title' label='Tytuł' />
       <FormikTextField name='description' label='Opis' />
       <FormikTextField name='tags' label='Tagi' />
-      <FileUploader file={file1 as any} onUpload={() => null} onDelete={() => null} />
-      <FileUploader file={file2 as any} onUpload={() => null} onDelete={() => null} />
+      <FormikFileUploader name='thumbnail' label='Miniaturka' type={InputType.Image} />
+      <FormikFileUploader name='video' label='Wideo' type={InputType.Video} />
       <FormikSwitch
         checked={true}
         name='visibility'
@@ -55,7 +59,6 @@ function VideoUploadForm() {
         .split(',')
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0),
-      thumbnail: null,
     };
     mutate(parsedValues);
   };

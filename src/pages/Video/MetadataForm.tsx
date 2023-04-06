@@ -8,7 +8,7 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import {
   GetVideoMetadataResponse,
-  UploadVideo,
+  UploadVideoMetadata,
   VideoVisibility,
 } from '../../data/VideoMetadata';
 import BaseForm from '../Login/BaseForm';
@@ -48,7 +48,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleSubmit = (values: MetadataFormValues) => {
-    const parsedValues: UploadVideo = {
+    const parsedValues: UploadVideoMetadata = {
       ...values,
       tags: values.tags
         .split(',')

@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Stack, ToggleButton } from '@mui/material';
+import { Box, Button, IconButton, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useUserDetails } from '../../api/user';

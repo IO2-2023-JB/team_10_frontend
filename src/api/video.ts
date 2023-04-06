@@ -1,16 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-<<<<<<< HEAD
 import {
   GetVideoMetadataResponse,
   ReactionCounts,
   UploadVideo,
 } from '../data/VideoMetadata';
 import { PostReaction } from './../data/VideoMetadata';
-=======
-import { GetVideoMetadataResponse } from '../data/VideoMetadata';
-import { UploadVideo } from './../data/VideoMetadata';
->>>>>>> 6ef99ed (Initial video upload draft)
+import { UploadVideoMetadata } from './../data/VideoMetadata';
 
 const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
@@ -24,7 +20,7 @@ export function useVideoMetadata(id: string) {
 
 export function useEditVideoMetadata(id: string) {
   const queryClient = useQueryClient();
-  return useMutation<null, AxiosError, UploadVideo>({
+  return useMutation<null, AxiosError, UploadVideoMetadata>({
     mutationFn: (body) => axios.put(`video-metadata?id=${id}`, body),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
@@ -57,8 +53,15 @@ export function useReaction(id: string) {
 }
 
 export function useVideoMetadataUpload() {
-  return useMutation<GetVideoMetadataResponse, AxiosError, UploadVideo, any>({
-    mutationFn: async () => (await axios.post('video-metadata')).data,
+  return useMutation<null, AxiosError, UploadVideo>({
+    mutationFn: async (body) => {
+      const { video, ...others } = body;
+      console.log(others);
+      const metadata = (
+        await axios.post<GetVideoMetadataResponse>('video-metadata', others)
+      ).data;
+      return (await axios.post(`video/${metadata.id}`, video)).data;
+    },
   });
 }
 

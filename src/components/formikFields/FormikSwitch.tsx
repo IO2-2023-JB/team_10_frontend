@@ -1,6 +1,5 @@
 import { Switch, Stack, Typography, SwitchProps } from '@mui/material';
-import { useField, useFormikContext } from 'formik';
-import { ChangeEvent } from 'react';
+import { useField } from 'formik';
 
 type FormikSwitchProps = {
   name: string;
@@ -10,7 +9,6 @@ type FormikSwitchProps = {
 
 function FormikSwitch({ name, labels, options, ...others }: FormikSwitchProps) {
   const [field, meta, helpers] = useField(name);
-
   const config: SwitchProps = {
     ...field,
     ...others,
