@@ -30,3 +30,15 @@ export enum ProcessingProgress {
   Processing = 'Processing',
   Ready = 'Ready',
 }
+
+export enum ReactionType {
+  Positive = 'Positive',
+  Negative = 'Negative',
+  None = 'None',
+}
+
+export interface ReactionCounts {
+  positiveCount: number;
+  negativeCount: number;
+  currentUserReaction: ReactionType;
+}

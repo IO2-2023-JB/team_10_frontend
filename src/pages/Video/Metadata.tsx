@@ -8,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../data/UserData';
 import MetadataForm from './MetadataForm';
 import VideoDelete from './VideoDelete';
+import Reaction from '../../components/Reaction';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -25,9 +26,21 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
         marginY: 2,
       }}
     >
-      <Typography variant='h5' fontWeight={600}>
-        {videoMetadata.title}
-      </Typography>
+      <Stack
+        direction='row'
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
+        <Typography sx={{ marginInlineEnd: 'auto' }} variant='h5' fontWeight={600}>
+          {videoMetadata.title}
+        </Typography>
+        <Stack sx={{ marginRight: 2 }}>
+          <Reaction videoId={videoMetadata.id} />
+        </Stack>
+      </Stack>
       <VideoTags tags={videoMetadata.tags} />
       <Stack direction='row' alignItems='center'>
         {userDetails && <CreatorInfo userDetails={userDetails!} />}
