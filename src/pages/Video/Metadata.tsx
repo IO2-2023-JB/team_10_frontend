@@ -30,7 +30,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
       </Typography>
       <VideoTags tags={videoMetadata.tags} />
       <Stack direction='row' alignItems='center'>
-        {userDetails && <CreatorInfo userDetails={userDetails!} />}
+        <CreatorInfo userDetails={userDetails} />
         <Box sx={{ marginInlineStart: 'auto' }}>
           {isAuthor && (
             <>

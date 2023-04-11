@@ -1,4 +1,4 @@
-import { Card, ListItem, Stack } from '@mui/material';
+import { Chip, ListItem, Stack } from '@mui/material';
 
 interface VideoTagsProps {
   tags: string[];
@@ -18,17 +18,12 @@ function VideoTags({ tags }: VideoTagsProps) {
             color: 'primary.main',
           }}
         >
-          <Card
+          <Chip
+            label={`#${tag}`}
             sx={{
-              backgroundColor: 'rgba(80,80,80,0.4)',
               color: 'primary.main',
-              paddingX: 1,
-              paddingY: 0.2,
-              borderRadius: 3,
             }}
-          >
-            #{tag}
-          </Card>
+          />
         </ListItem>
       ))}
     </Stack>

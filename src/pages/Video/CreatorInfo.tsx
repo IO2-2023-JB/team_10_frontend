@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import Avatar from '../../components/Avatar';
 import { GetUserDetailsResponse } from '../../data/UserData';
 import { Link } from 'react-router-dom';
@@ -6,12 +6,10 @@ import { Link } from 'react-router-dom';
 const avatarSize = 60;
 
 interface CreatorInfoProps {
-  userDetails: GetUserDetailsResponse;
+  userDetails?: GetUserDetailsResponse;
 }
 
 function CreatorInfo({ userDetails }: CreatorInfoProps) {
-  const subscriptionsText = `${userDetails.subscriptionsCount} subskrypcji`;
-
   return (
     <Stack
       direction='row'
@@ -21,16 +19,24 @@ function CreatorInfo({ userDetails }: CreatorInfoProps) {
         textDecoration: 'inherit',
       }}
       component={Link}
-      to={`/user/${userDetails.id}`}
+      to={userDetails ? `/user/${userDetails?.id}` : '.'}
     >
-      <Avatar userDetails={userDetails} size={avatarSize} />
+      {userDetails ? (
+        <Avatar userDetails={userDetails} size={avatarSize} />
+      ) : (
+        <Skeleton variant='circular' width={avatarSize} height={avatarSize} />
+      )}
       <Stack
         sx={{
           marginX: 2,
         }}
       >
-        <Typography variant='h6'>{userDetails.nickname}</Typography>
-        <Typography variant='subtitle2'>{subscriptionsText}</Typography>
+        <Typography variant='h6'>
+          {userDetails ? userDetails.nickname : <Skeleton width={150} />}
+        </Typography>
+        <Typography variant='subtitle2'>
+          {userDetails ? `${userDetails.subscriptionsCount} subskrypcji` : <Skeleton />}{' '}
+        </Typography>
       </Stack>
     </Stack>
   );
