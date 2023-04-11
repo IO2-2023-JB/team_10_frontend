@@ -1,8 +1,8 @@
 import { Grid, Button, Typography } from '@mui/material';
 import { usePostReaction, useReaction } from './../api/video';
 import {
-  FavoriteBorder,
-  Favorite,
+  ThumbUpAlt,
+  ThumbUpOffAlt,
   ThumbDownAlt,
   ThumbDownOffAlt,
 } from '@mui/icons-material';
@@ -37,9 +37,9 @@ function Reaction({ videoId }: ReactionProps) {
       <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}>
         <Button onClick={handlePositiveReaction}>
           {data?.currentUserReaction === ReactionType.Positive ? (
-            <Favorite fontSize='large' />
+            <ThumbUpAlt fontSize='large' />
           ) : (
-            <FavoriteBorder fontSize='large' />
+            <ThumbUpOffAlt fontSize='large' />
           )}
         </Button>
       </Grid>
