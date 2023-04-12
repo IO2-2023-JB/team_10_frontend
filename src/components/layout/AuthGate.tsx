@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { PATHS_ALLOWED_FOR_UNAUTHORIZED, PATHS_ONLY_FOR_UNAUTHORIZED } from '../const';
-import { userDetailsState } from '../data/UserData';
+import { PATHS_ALLOWED_FOR_UNAUTHORIZED, PATHS_ONLY_FOR_UNAUTHORIZED } from '../../const';
+import { userDetailsState } from '../../data/UserData';
 
 interface AuthGateProps {
   children: ReactNode;

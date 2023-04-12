@@ -1,18 +1,17 @@
-import { Grid, Button, Typography } from '@mui/material';
-import { usePostReaction, useReaction } from './../api/video';
 import {
-  ThumbUpAlt,
-  ThumbUpOffAlt,
   ThumbDownAlt,
-  ThumbDownOffAlt,
+  ThumbDownOffAlt, ThumbUpAlt,
+  ThumbUpOffAlt
 } from '@mui/icons-material';
-import { ReactionType } from '../data/VideoMetadata';
+import { Button, Grid, Typography } from '@mui/material';
+import { usePostReaction, useReaction } from '../../api/video';
+import { ReactionType } from '../../data/VideoMetadata';
 
 interface ReactionProps {
   videoId: string;
 }
 
-interface Reaction {
+export interface PostReaction {
   reactionType: ReactionType;
 }
 
@@ -21,15 +20,15 @@ function Reaction({ videoId }: ReactionProps) {
   const { data } = useReaction(videoId);
 
   const handlePositiveReaction = () => {
-    if (data?.currentUserReaction === ReactionType.Positive)
-      mutate({ reactionType: ReactionType.None });
-    else mutate({ reactionType: ReactionType.Positive });
+    data?.currentUserReaction === ReactionType.Positive
+      ? mutate({ reactionType: ReactionType.None })
+      : mutate({ reactionType: ReactionType.Positive });
   };
 
   const handleNegativeReaction = () => {
-    if (data?.currentUserReaction === ReactionType.Negative)
-      mutate({ reactionType: ReactionType.None });
-    else mutate({ reactionType: ReactionType.Negative });
+    data?.currentUserReaction === ReactionType.Negative
+      ? mutate({ reactionType: ReactionType.None })
+      : mutate({ reactionType: ReactionType.Negative });
   };
 
   return (

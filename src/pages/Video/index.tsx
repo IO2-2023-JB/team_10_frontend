@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
 import Metadata from './Metadata';
 import Player from './Player';
-import ContentSection from '../../components/ContentSection';
+import ContentSection from '../../components/layout/ContentSection';
 import { useVideoMetadata } from '../../api/video';
 
 function Video() {

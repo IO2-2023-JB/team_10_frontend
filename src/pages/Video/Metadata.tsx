@@ -8,7 +8,7 @@ import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../data/UserData';
 import MetadataForm from './MetadataForm';
 import VideoDelete from './VideoDelete';
-import Reaction from '../../components/Reaction';
+import Reaction from './Reaction';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -23,7 +23,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
     <Stack
       spacing={2}
       sx={{
-        marginY: 2,
+        paddingY: 3,
       }}
     >
       <Stack

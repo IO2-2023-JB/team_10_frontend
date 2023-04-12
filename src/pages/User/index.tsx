@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useUserDetails } from '../../api/user';
-import ContentSection from '../../components/ContentSection';
+import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import UserDetails from './UserDetails';
 
