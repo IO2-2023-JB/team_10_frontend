@@ -11,6 +11,7 @@ interface FormDialogProps {
 function FormDialog({ children, open, onClose }: FormDialogProps) {
   return (
     <Dialog
+    scroll='body'
       PaperProps={{
         sx: {
           borderRadius: 3,

@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
-import ContentSection from '../../components/ContentSection';
+import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import { userDetailsState } from '../../data/UserData';
 

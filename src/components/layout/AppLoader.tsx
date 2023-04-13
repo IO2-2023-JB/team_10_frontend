@@ -1,6 +1,6 @@
 import { Alert, AlertTitle, Box, Button, CircularProgress, Stack } from '@mui/material';
 import { ReactNode } from 'react';
-import { useLoggedInUserDetails } from '../api/user';
+import { useLoggedInUserDetails } from '../../api/user';
 
 interface AppLoaderProps {
   children: ReactNode;

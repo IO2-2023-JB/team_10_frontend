@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDeleteVideo } from '../../api/video';
-import FormDialog from '../../components/FormDialog';
+import FormDialog from '../../components/layout/FormDialog';
 import SpinningButton from '../../components/SpinningButton';
 
 interface VideoDeleteProps {
