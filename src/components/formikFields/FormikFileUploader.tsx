@@ -1,9 +1,11 @@
-import { Stack, Typography, Button, Box } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { useField } from 'formik';
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { InputType } from '../../data/VideoMetadata';
+import { ALLOWED_IMAGE_FORMATS } from '../../const';
+import { InputType } from '../../data/VideoData';
 import { toBase64 } from '../../utils';
+import { ALLOWED_VIDEO_FORMATS } from './../../const';
 
 interface ImageUploaderProps {
   name: string;
@@ -21,11 +23,10 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
     setDragged(false);
     if (files.length > 0) {
       setFile(files[0]);
-      console.log(files);
       if (type === InputType.Image)
         helpers.setValue(await toBase64(files[0]).then((res) => res));
       else {
-        formData.append('video', files[0], files[0].name);
+        formData.append('videoFile', files[0], files[0].name);
         helpers.setValue(formData);
       }
     }
@@ -39,15 +40,15 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
     accept:
       type === InputType.Image
         ? {
-            'image/png': ['.png'],
-            'image/jpg': ['.jpg'],
-            'image/gif': ['.gif'],
+            'image/jpg': [ALLOWED_IMAGE_FORMATS[0]],
+            'image/png': [ALLOWED_IMAGE_FORMATS[1]],
+            'image/gif': [ALLOWED_IMAGE_FORMATS[2]],
           }
         : {
-            'video/mp4': ['.mp4'],
-            'video/webm': ['.webm'],
-            'video/mkv': ['.mkv'],
-            'video/avi': ['.avi'],
+            'video/mp4': [ALLOWED_VIDEO_FORMATS[0]],
+            'video/avi': [ALLOWED_VIDEO_FORMATS[1]],
+            'video/mkv': [ALLOWED_VIDEO_FORMATS[2]],
+            'video/webm': [ALLOWED_VIDEO_FORMATS[3]],
           },
   });
 
@@ -101,7 +102,9 @@ function FormikFileUploader({ name, label, type }: ImageUploaderProps) {
           >
             <Typography sx={{ display: 'flex', alignItems: 'center' }} fontWeight='light'>
               {`Upuść plik tutaj (${
-                type === InputType.Image ? '.jpg, .png, .gif' : '.mp4, .mkv, .webm, .avi'
+                type === InputType.Image
+                  ? ALLOWED_IMAGE_FORMATS.join(' ').toString()
+                  : ALLOWED_VIDEO_FORMATS.join(' ').toString()
               })`}
             </Typography>
           </Box>

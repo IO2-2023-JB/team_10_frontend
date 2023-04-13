@@ -10,7 +10,7 @@ import {
   GetVideoMetadataResponse,
   UploadVideoMetadata,
   VideoVisibility,
-} from '../../data/VideoMetadata';
+} from '../../data/VideoData';
 import BaseForm from '../Login/BaseForm';
 
 export interface MetadataFormValues {

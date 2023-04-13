@@ -1,19 +1,25 @@
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, IconButton, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
-import { userDetailsState } from '../../data/UserData';
+import { AccountType } from '../../data/UserData';
+import { pageNotification } from '../../data/VideoData';
 import Avatar from '../Avatar';
 import Logo from './Logo';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
+  const notif = useRecoilValue(pageNotification);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     setUserDetails(null);
     navigate('/login');
+  };
+
+  const handleClickUpload = () => {
+    navigate('/upload');
   };
 
   return (
@@ -30,7 +36,20 @@ function NavBar() {
         backgroundColor: 'background.light',
       }}
     >
-      <Logo sx={{ marginInlineEnd: 'auto' }} />
+      <Stack
+        spacing={5}
+        direction='row'
+        sx={{ marginInlineEnd: 'auto', alignItems: 'center' }}
+      >
+        <Logo />
+        <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3} height='70%'>
+          {userDetailsFull?.userType === AccountType.Creator && (
+            <Button disabled={notif !== null} onClick={handleClickUpload}>
+              Publikuj wideło
+            </Button>
+          )}
+        </Stack>
+      </Stack>
       {userDetails !== null && (
         <>
           <Button onClick={handleLogout}>Wyloguj się</Button>
