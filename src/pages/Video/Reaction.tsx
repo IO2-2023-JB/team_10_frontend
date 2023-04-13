@@ -1,9 +1,10 @@
 import {
   ThumbDownAlt,
-  ThumbDownOffAlt, ThumbUpAlt,
-  ThumbUpOffAlt
+  ThumbDownOffAlt,
+  ThumbUpAlt,
+  ThumbUpOffAlt,
 } from '@mui/icons-material';
-import { Button, Grid, Typography } from '@mui/material';
+import { Grid, IconButton, Typography } from '@mui/material';
 import { usePostReaction, useReaction } from '../../api/video';
 import { ReactionType } from '../../data/VideoMetadata';
 
@@ -11,45 +12,43 @@ interface ReactionProps {
   videoId: string;
 }
 
-export interface PostReaction {
-  reactionType: ReactionType;
-}
-
 function Reaction({ videoId }: ReactionProps) {
   const { mutate } = usePostReaction(videoId);
   const { data } = useReaction(videoId);
 
-  const handlePositiveReaction = () => {
-    data?.currentUserReaction === ReactionType.Positive
+  const handleReaction = (reaction: ReactionType) => {
+    data?.currentUserReaction === reaction
       ? mutate({ reactionType: ReactionType.None })
-      : mutate({ reactionType: ReactionType.Positive });
-  };
-
-  const handleNegativeReaction = () => {
-    data?.currentUserReaction === ReactionType.Negative
-      ? mutate({ reactionType: ReactionType.None })
-      : mutate({ reactionType: ReactionType.Negative });
+      : mutate({ reactionType: reaction });
   };
 
   return (
     <Grid container sx={{ alignItems: 'center' }}>
       <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button onClick={handlePositiveReaction}>
+        <IconButton
+          sx={{ color: 'primary.main' }}
+          onClick={() => handleReaction(ReactionType.Positive)}
+        >
           {data?.currentUserReaction === ReactionType.Positive ? (
             <ThumbUpAlt fontSize='large' />
           ) : (
             <ThumbUpOffAlt fontSize='large' />
           )}
-        </Button>
+        </IconButton>
       </Grid>
       <Grid sx={{ display: 'flex', justifyContent: 'center' }} item xs={6}>
-        <Button onClick={handleNegativeReaction}>
+        <IconButton
+          sx={{ color: 'primary.main' }}
+          onClick={() => {
+            handleReaction(ReactionType.Negative);
+          }}
+        >
           {data?.currentUserReaction === ReactionType.Negative ? (
             <ThumbDownAlt fontSize='large' />
           ) : (
             <ThumbDownOffAlt fontSize='large' />
           )}
-        </Button>
+        </IconButton>
       </Grid>
       <Grid item xs={6}>
         <Typography textAlign='center'>{data?.positiveCount}</Typography>

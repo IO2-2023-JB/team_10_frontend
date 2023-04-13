@@ -42,3 +42,7 @@ export interface ReactionCounts {
   negativeCount: number;
   currentUserReaction: ReactionType;
 }
+
+export interface PostReaction {
+  reactionType: ReactionType;
+}

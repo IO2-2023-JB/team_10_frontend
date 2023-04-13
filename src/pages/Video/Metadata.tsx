@@ -29,7 +29,6 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
       <Stack
         direction='row'
         sx={{
-          display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
         }}
@@ -37,9 +36,9 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
         <Typography sx={{ marginInlineEnd: 'auto' }} variant='h5' fontWeight={600}>
           {videoMetadata.title}
         </Typography>
-        <Stack sx={{ marginRight: 2 }}>
+        <Box sx={{ marginRight: 2 }}>
           <Reaction videoId={videoMetadata.id} />
-        </Stack>
+        </Box>
       </Stack>
       <VideoTags tags={videoMetadata.tags} />
       <Stack direction='row' alignItems='center'>
