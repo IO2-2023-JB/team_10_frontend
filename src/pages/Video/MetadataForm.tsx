@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { useEditVideoMetadata } from '../../api/video';
-import FormDialog from '../../components/FormDialog';
+import FormDialog from '../../components/layout/FormDialog';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import {

@@ -1,8 +1,8 @@
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, IconButton, Stack, ToggleButton } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { useUserDetails } from '../../api/user';
-import { userDetailsState } from '../../data/UserData';
+import { AccountType, userDetailsState } from '../../data/UserData';
 import Avatar from '../Avatar';
 import Logo from './Logo';
 
@@ -14,6 +14,10 @@ function NavBar() {
   const handleLogout = () => {
     setUserDetails(null);
     navigate('/login');
+  };
+
+  const handleClickUpload = () => {
+    navigate('/upload');
   };
 
   return (
@@ -30,10 +34,23 @@ function NavBar() {
         backgroundColor: 'background.light',
       }}
     >
-      <Logo sx={{ marginInlineEnd: 'auto' }} />
+      <Stack
+        spacing={5}
+        direction='row'
+        sx={{ marginInlineEnd: 'auto', alignItems: 'center' }}
+      >
+        <Logo />
+        <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3} height='70%'>
+          {userDetailsFull?.userType === AccountType.Creator && (
+            <Button onClick={handleClickUpload}>Publikuj wideło</Button>
+          )}
+        </Stack>
+      </Stack>
       {userDetails !== null && (
         <>
-          <Button onClick={handleLogout}>Wyloguj się</Button>
+          <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
+            Wyloguj się
+          </Button>
           <IconButton color='inherit' component={Link} to={`/user/${userDetails.id}`}>
             <Avatar userDetails={userDetailsFull} size={40} />
           </IconButton>
