@@ -7,7 +7,7 @@ export interface UploadVideoMetadata {
 }
 
 export type UploadVideo = UploadVideoMetadata & {
-  video: FormData;
+  videoFile: FormData;
 };
 
 export interface GetVideoMetadataResponse extends UploadVideoMetadata {

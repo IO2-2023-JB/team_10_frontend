@@ -1,4 +1,4 @@
-import { GetVideoMetadataResponse } from '../../data/VideoMetadata';
+import { GetVideoMetadataResponse } from '../../data/VideoData';
 import { Box, Stack, Typography } from '@mui/material';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';

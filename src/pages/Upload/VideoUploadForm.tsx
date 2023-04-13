@@ -3,15 +3,15 @@ import BaseForm from '../Login/BaseForm';
 import { Publish } from '@mui/icons-material';
 import * as Yup from 'yup';
 import { useVideoMetadataUpload } from '../../api/video';
-import { InputType, UploadVideo, VideoVisibility } from '../../data/VideoMetadata';
+import { InputType, UploadVideo, VideoVisibility } from '../../data/VideoData';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import { Stack } from '@mui/material';
 import { MetadataFormValues } from './../Video/MetadataForm';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
 
 export type VideoUploadFormValues = {
-  video: FormData;
-  thumbnail: string;
+  videoFile: FormData;
+  thumbnail: string | null;
 } & MetadataFormValues;
 
 const videoUploadValidationSchema = Yup.object({
@@ -23,10 +23,10 @@ const videoUploadValidationSchema = Yup.object({
 const formikInitialValues = {
   title: '',
   description: '',
-  thumbnail: '',
+  thumbnail: null,
   tags: '',
   visibility: VideoVisibility.Private,
-  video: new FormData(),
+  videoFile: new FormData(),
 };
 
 function VideoUploadForm() {
@@ -38,7 +38,7 @@ function VideoUploadForm() {
       <FormikTextField name='description' label='Opis' />
       <FormikTextField name='tags' label='Tagi' />
       <FormikFileUploader name='thumbnail' label='Miniaturka' type={InputType.Image} />
-      <FormikFileUploader name='video' label='Wideo' type={InputType.Video} />
+      <FormikFileUploader name='videoFile' label='Wideo' type={InputType.Video} />
       <FormikSwitch
         checked={true}
         name='visibility'
