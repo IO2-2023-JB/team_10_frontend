@@ -22,9 +22,9 @@ function FormikSwitch({ name, labels, options, ...others }: FormikSwitchProps) {
 
   return (
     <Stack sx={{ paddingX: 1, alignItems: 'center' }} direction='row' spacing={1}>
-      <Typography>{labels[0]}</Typography>
+      <Typography sx={{ color: 'text.secondary' }}>{labels[0]}</Typography>
       <Switch {...config} onChange={handleChange} checked={checked} />
-      <Typography>{labels[1]}</Typography>
+      <Typography sx={{ color: 'text.secondary' }}>{labels[1]}</Typography>
     </Stack>
   );
 }

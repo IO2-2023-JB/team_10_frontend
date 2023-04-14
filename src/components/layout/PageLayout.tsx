@@ -1,7 +1,8 @@
 import { Alert, Box, Snackbar } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
-import { pageNotification, ProcessingProgress } from '../../data/VideoData';
+import { pageNotificationState } from '../../data/VideoData';
+import { ProcessingProgress } from '../../data/VideoTypes';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -9,7 +10,7 @@ interface PageLayoutProps {
 }
 
 function PageLayout({ children, maxWidth }: PageLayoutProps) {
-  const notif = useRecoilValue(pageNotification);
+  const notif = useRecoilValue(pageNotificationState);
 
   return (
     <Box

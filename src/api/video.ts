@@ -1,14 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { pageNotification, ProcessingProgress } from '../data/VideoData';
+import { pageNotificationState } from '../data/VideoData';
 import {
   GetVideoMetadataResponse,
+  ProcessingProgress,
   ReactionCounts,
   UploadVideo,
-} from '../data/VideoMetadata';
-import { PostReaction, UploadVideoMetadata } from './../data/VideoMetadata';
+} from '../data/VideoTypes';
+import { PostReaction, UploadVideoMetadata } from '../data/VideoTypes';
 
 const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
@@ -23,7 +24,7 @@ export function useVideoMetadata(id: string) {
 export function useEditVideoMetadata(id: string) {
   const queryClient = useQueryClient();
   return useMutation<null, AxiosError, UploadVideoMetadata>({
-    mutationFn: (body) => axios.put(`video-metadata`, body, { params: { id } }),
+    mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
     },
@@ -32,7 +33,7 @@ export function useEditVideoMetadata(id: string) {
 
 export function useDeleteVideo(id: string) {
   return useMutation<null, AxiosError, null>({
-    mutationFn: () => axios.delete(`video?id=${id}`),
+    mutationFn: () => axios.delete('video', { params: { id } }),
   });
 }
 
@@ -54,22 +55,22 @@ export function useReaction(id: string) {
   });
 }
 
-export function useVideoMetadataUpload() {
+export function useVideoUpload() {
   const navigate = useNavigate();
-  const setNotif = useSetRecoilState(pageNotification);
+  const setNotif = useSetRecoilState(pageNotificationState);
 
-  return useMutation<null, AxiosError, UploadVideo>({
+  return useMutation<void, AxiosError, UploadVideo>({
     mutationFn: async (body) => {
       const { videoFile, ...others } = body;
       const metadata = (
         await axios.post<GetVideoMetadataResponse>('video-metadata', others)
       ).data;
       setNotif({
-        message: 'Video data has been sent!',
+        message: 'Dane wideo zostały wysłane!',
         status: ProcessingProgress.MetadataRecordCreated,
         videoId: metadata.id,
       });
-      return (await axios.post(`video/${metadata.id}`, videoFile)).data;
+      await axios.post(`video/${metadata.id}`, videoFile);
     },
     onSuccess: () => {
       navigate('/');
@@ -80,6 +81,6 @@ export function useVideoMetadataUpload() {
 export function useAllVideos() {
   return useQuery<GetVideoMetadataResponse[], AxiosError>({
     queryKey: [videoMetadataKey],
-    queryFn: async () => (await axios.get(`getAllVideos`)).data,
+    queryFn: async () => (await axios.get('getAllVideos')).data,
   });
 }

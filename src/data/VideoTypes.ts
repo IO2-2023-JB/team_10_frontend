@@ -7,7 +7,7 @@ export interface UploadVideoMetadata {
 }
 
 export type UploadVideo = UploadVideoMetadata & {
-  videoFile: FormData;
+  videoFile: FormData | null;
 };
 
 export interface GetVideoMetadataResponse extends UploadVideoMetadata {
@@ -54,4 +54,9 @@ export interface PostReaction {
 export enum InputType {
   Video = 'Video',
   Image = 'Image',
+}
+
+export enum TransferType {
+  Base64 = 'Base64',
+  FormData = 'FormData',
 }

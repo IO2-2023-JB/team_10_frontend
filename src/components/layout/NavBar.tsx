@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { AccountType, userDetailsState } from '../../data/UserData';
-import { pageNotification } from '../../data/VideoData';
+import { pageNotificationState } from '../../data/VideoData';
 import Avatar from '../Avatar';
 import Logo from './Logo';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
-  const notif = useRecoilValue(pageNotification);
+  const notif = useRecoilValue(pageNotificationState);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -42,7 +42,7 @@ function NavBar() {
         sx={{ marginInlineEnd: 'auto', alignItems: 'center' }}
       >
         <Logo />
-        <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3} height='70%'>
+        <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3}>
           {userDetailsFull?.userType === AccountType.Creator && (
             <Button disabled={notif !== null} onClick={handleClickUpload}>
               Publikuj wideło
