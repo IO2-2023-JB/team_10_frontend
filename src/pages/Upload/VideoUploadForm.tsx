@@ -1,16 +1,19 @@
-import FormikTextField from '../../components/formikFields/FormikTextField';
-import BaseForm from '../Login/BaseForm';
 import { Publish } from '@mui/icons-material';
-import * as Yup from 'yup';
-import { useVideoMetadataUpload } from '../../api/video';
-import { InputType, UploadVideo, VideoVisibility } from '../../data/VideoData';
-import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import { Stack } from '@mui/material';
-import { MetadataFormValues } from './../Video/MetadataForm';
+import * as Yup from 'yup';
+import { useVideoUpload } from '../../api/video';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
+import FormikSwitch from '../../components/formikFields/FormikSwitch';
+import FormikTextField from '../../components/formikFields/FormikTextField';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { UploadVideo } from '../../data/VideoData';
+import { TransferType, VideoVisibility } from '../../data/VideoTypes';
+import BaseForm from '../Login/BaseForm';
+import { ALLOWED_VIDEO_FORMATS, ALLOWED_VIDEO_OBJECT } from './../../const';
+import { MetadataFormValues } from './../Video/MetadataForm';
 
 export type VideoUploadFormValues = {
-  videoFile: FormData;
+  videoFile: FormData | null;
   thumbnail: string | null;
 } & MetadataFormValues;
 
@@ -18,6 +21,7 @@ const videoUploadValidationSchema = Yup.object({
   title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
   description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
   tags: Yup.string(),
+  videoFile: Yup.string().required('Pole wymagane!'),
 });
 
 const formikInitialValues = {
@@ -26,19 +30,31 @@ const formikInitialValues = {
   thumbnail: null,
   tags: '',
   visibility: VideoVisibility.Private,
-  videoFile: new FormData(),
+  videoFile: null,
 };
 
 function VideoUploadForm() {
-  const { mutate, error, isLoading } = useVideoMetadataUpload();
+  const { mutate, error, isLoading } = useVideoUpload();
 
   const formFields = (
     <>
       <FormikTextField name='title' label='Tytuł' />
       <FormikTextField name='description' label='Opis' />
       <FormikTextField name='tags' label='Tagi' />
-      <FormikFileUploader name='thumbnail' label='Miniaturka' type={InputType.Image} />
-      <FormikFileUploader name='videoFile' label='Wideo' type={InputType.Video} />
+      <FormikFileUploader
+        name='thumbnail'
+        label='Miniaturka'
+        acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
+        acceptObject={ALLOWED_IMAGE_OBJECT}
+        transferType={TransferType.Base64}
+      />
+      <FormikFileUploader
+        name='videoFile'
+        label='Wideo'
+        acceptedFileTypes={ALLOWED_VIDEO_FORMATS}
+        acceptObject={ALLOWED_VIDEO_OBJECT}
+        transferType={TransferType.FormData}
+      />
       <FormikSwitch
         checked={true}
         name='visibility'

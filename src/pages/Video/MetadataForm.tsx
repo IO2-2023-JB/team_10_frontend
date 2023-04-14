@@ -6,12 +6,10 @@ import { useEditVideoMetadata } from '../../api/video';
 import FormDialog from '../../components/layout/FormDialog';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import {
-  GetVideoMetadataResponse,
-  UploadVideoMetadata,
-  VideoVisibility,
-} from '../../data/VideoData';
+import { UploadVideoMetadata } from '../../data/VideoData';
 import BaseForm from '../Login/BaseForm';
+import { VideoVisibility } from '../../data/VideoTypes';
+import { GetVideoMetadataResponse } from './../../data/VideoTypes';
 
 export interface MetadataFormValues {
   title: string;

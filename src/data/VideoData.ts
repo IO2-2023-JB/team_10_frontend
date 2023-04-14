@@ -2,6 +2,11 @@ import axios from 'axios';
 import { atom } from 'recoil';
 import { NOTIFICATION_TIMEOUT } from '../const';
 import { NOTIFICATION_INTERVAL } from './../const';
+import {
+  ProcessingProgress,
+  GetVideoMetadataResponse,
+  VideoVisibility,
+} from './VideoTypes';
 
 export interface NotificationData {
   videoId: string;
@@ -26,19 +31,20 @@ const clearNotif = (
   }, NOTIFICATION_TIMEOUT);
 };
 
-export const pageNotification = atom<NotificationData | null>({
+export const pageNotificationState = atom<NotificationData | null>({
   key: 'NavbarNotification',
   default: null,
   effects: [
     ({ onSet, setSelf }) => {
       onSet((newValue) => {
         const intervalId = setInterval(async () => {
-          const metadata = (
-            await axios.get<GetVideoMetadataResponse>('video-metadata', {
+          const { data: metadata } = await axios.get<GetVideoMetadataResponse>(
+            'video-metadata',
+            {
               params: { id: newValue?.videoId },
-            })
-          ).data;
-          let message: string;
+            }
+          );
+          let message = '';
           switch (metadata.processingProgress) {
             case ProcessingProgress.FailedToUpload:
               clearNotif(
@@ -79,35 +85,5 @@ export interface UploadVideoMetadata {
 }
 
 export type UploadVideo = UploadVideoMetadata & {
-  videoFile: FormData;
+  videoFile: FormData | null;
 };
-
-export interface GetVideoMetadataResponse extends UploadVideoMetadata {
-  id: string;
-  authorId: string;
-  authorNickname: string;
-  viewCount: number;
-  processingProgress: ProcessingProgress;
-  uploadDate: string;
-  editDate: string;
-  duration: string;
-}
-
-export enum VideoVisibility {
-  Private = 'Private',
-  Public = 'Public',
-}
-
-export enum ProcessingProgress {
-  MetadataRecordCreated = 'MetadataRecordCreated',
-  Uploading = 'Uploading',
-  Uploaded = 'Uploaded',
-  FailedToUpload = 'FailedToUpload',
-  Processing = 'Processing',
-  Ready = 'Ready',
-}
-
-export enum InputType {
-  Video = 'Video',
-  Image = 'Image',
-}
