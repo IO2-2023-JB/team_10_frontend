@@ -6,12 +6,19 @@ import { getUserTypeString, GetUserDetailsResponse } from '../../types/UserTypes
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import {
+  useDeleteSubscription,
+  useIsSubscribed,
+  usePostSubscription,
+} from '../../api/subscription';
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
+  const { mutate: mutateSubscribe } = usePostSubscription(userDetails?.id);
+  const { mutate: mutateUnsubscribe } = useDeleteSubscription(userDetails?.id);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
@@ -22,10 +29,16 @@ function UserDetails({ userDetails }: UserDetailsProps) {
   if (userDetails.accountBalance !== null)
     textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;
 
+  const isSubscribed = useIsSubscribed(userDetails.id, loggedUserDetails?.id);
+
   const handleDialogOpen = () => setDialogOpen(true);
 
   const handleDialogClose = () => {
     setDialogOpen(false);
+  };
+
+  const handleSubscribe = () => {
+    isSubscribed ? mutateUnsubscribe() : mutateSubscribe();
   };
 
   return (
@@ -55,8 +68,15 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             Edytuj profil
           </Button>
         ) : (
-          <Button onClick={() => {}} variant='contained'>
-            Subskrybuj
+          <Button
+            variant={isSubscribed ? 'contained' : 'outlined'}
+            size='large'
+            sx={{ marginInlineStart: 'auto' }}
+            onClick={() => {
+              handleSubscribe();
+            }}
+          >
+            {isSubscribed ? 'Subskrybujesz' : 'Subskrybuj'}
           </Button>
         )}
       </Stack>
