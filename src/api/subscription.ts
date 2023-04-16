@@ -3,6 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { Subscription, SubscriptionsList } from '../data/Subscription';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
+import { userKey } from './user';
 
 const subscriptionsKey = 'subscriptions';
 
@@ -36,6 +37,7 @@ function usePostSubscription(creatorId?: string) {
       axios.post(subscriptionsKey, undefined, { params: { id: creatorId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [subscriptionsKey, creatorId] });
+      queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
     },
   });
 }
@@ -46,6 +48,7 @@ function useDeleteSubscription(creatorId?: string) {
     mutationFn: () => axios.delete(subscriptionsKey, { params: { id: creatorId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [subscriptionsKey, creatorId] });
+      queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
     },
   });
 }
