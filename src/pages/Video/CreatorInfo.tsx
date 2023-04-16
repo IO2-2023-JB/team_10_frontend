@@ -1,12 +1,8 @@
-import { Button, Skeleton, Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 import Avatar from '../../components/Avatar';
 import { Link } from 'react-router-dom';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import {
-  useDeleteSubscription,
-  useIsSubscribed,
-  usePostSubscription,
-} from '../../api/subscription';
+import SubscribeButton from '../User/SubscribeButton';
 
 const avatarSize = 60;
 
@@ -16,14 +12,6 @@ interface CreatorInfoProps {
 }
 
 function CreatorInfo({ userDetails, isAuthor }: CreatorInfoProps) {
-  const isSubscribed = useIsSubscribed(userDetails?.id);
-  const { mutate: mutateSubscribe } = usePostSubscription(userDetails?.id);
-  const { mutate: mutateUnsubscribe } = useDeleteSubscription(userDetails?.id);
-
-  const handleSubscribe = () => {
-    isSubscribed ? mutateUnsubscribe() : mutateSubscribe();
-  };
-
   return (
     <Stack direction='row' alignItems='center'>
       <Stack
@@ -49,21 +37,11 @@ function CreatorInfo({ userDetails, isAuthor }: CreatorInfoProps) {
             {userDetails ? userDetails.nickname : <Skeleton width={150} />}
           </Typography>
           <Typography variant='subtitle2'>
-            {userDetails ? `${userDetails.subscriptionsCount} subskrypcji` : <Skeleton />}{' '}
+            {userDetails ? `${userDetails.subscriptionsCount} subskrypcji` : <Skeleton />}
           </Typography>
         </Stack>
       </Stack>
-      {!isAuthor && (
-        <Button
-          variant={isSubscribed ? 'contained' : 'outlined'}
-          size='large'
-          onClick={() => {
-            handleSubscribe();
-          }}
-        >
-          {userDetails ? isSubscribed ? 'Subskrybujesz' : 'Subskrybuj' : <Skeleton />}
-        </Button>
-      )}
+      {!isAuthor && userDetails && <SubscribeButton creatorId={userDetails.id} />}
     </Stack>
   );
 }
