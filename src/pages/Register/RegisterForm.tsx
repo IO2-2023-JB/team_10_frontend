@@ -4,7 +4,7 @@ import { useRegister } from '../../api/user';
 import AvatarSection from '../../components/formikFields/FormikAvatarField';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import { AccountType } from '../../data/UserData';
+import { AccountType } from '../../types/UserTypes';
 import BaseForm from '../Login/BaseForm';
 
 export interface RegisterFormValues {

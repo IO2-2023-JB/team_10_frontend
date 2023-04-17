@@ -55,8 +55,3 @@ export enum InputType {
   Video = 'Video',
   Image = 'Image',
 }
-
-export enum TransferType {
-  Base64 = 'Base64',
-  FormData = 'FormData',
-}

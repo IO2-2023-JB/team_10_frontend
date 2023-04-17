@@ -16,7 +16,7 @@ function VideoDelete({ videoId }: VideoDeleteProps) {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
   const handleDelete = () => {
-    mutate(null);
+    mutate();
   };
 
   useEffect(() => {

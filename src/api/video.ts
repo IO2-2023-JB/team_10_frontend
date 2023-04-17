@@ -8,8 +8,8 @@ import {
   ProcessingProgress,
   ReactionCounts,
   UploadVideo,
-} from '../data/VideoTypes';
-import { PostReaction, UploadVideoMetadata } from '../data/VideoTypes';
+} from '../types/VideoTypes';
+import { PostReaction, UploadVideoMetadata } from '../types/VideoTypes';
 
 const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
@@ -23,7 +23,7 @@ export function useVideoMetadata(id: string) {
 
 export function useEditVideoMetadata(id: string) {
   const queryClient = useQueryClient();
-  return useMutation<null, AxiosError, UploadVideoMetadata>({
+  return useMutation<void, AxiosError, UploadVideoMetadata>({
     mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
@@ -32,14 +32,14 @@ export function useEditVideoMetadata(id: string) {
 }
 
 export function useDeleteVideo(id: string) {
-  return useMutation<null, AxiosError, null>({
+  return useMutation<void, AxiosError, void>({
     mutationFn: () => axios.delete('video', { params: { id } }),
   });
 }
 
 export function usePostReaction(id: string) {
   const queryClient = useQueryClient();
-  return useMutation<null, AxiosError, PostReaction>({
+  return useMutation<void, AxiosError, PostReaction>({
     mutationFn: (body: PostReaction) =>
       axios.post('video-reaction', body, { params: { id } }),
     onSuccess: () => {
@@ -66,7 +66,8 @@ export function useVideoUpload() {
         await axios.post<GetVideoMetadataResponse>('video-metadata', others)
       ).data;
       setNotif({
-        message: 'Dane wideo zostały wysłane!',
+        open: true,
+        message: 'Dane filmu wysłane.',
         status: ProcessingProgress.MetadataRecordCreated,
         videoId: metadata.id,
       });

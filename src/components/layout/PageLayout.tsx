@@ -1,8 +1,5 @@
-import { Alert, Box, Snackbar } from '@mui/material';
+import { Box } from '@mui/material';
 import { ReactNode } from 'react';
-import { useRecoilValue } from 'recoil';
-import { pageNotificationState } from '../../data/VideoData';
-import { ProcessingProgress } from '../../data/VideoTypes';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -10,8 +7,6 @@ interface PageLayoutProps {
 }
 
 function PageLayout({ children, maxWidth }: PageLayoutProps) {
-  const notif = useRecoilValue(pageNotificationState);
-
   return (
     <Box
       component='main'
@@ -24,22 +19,6 @@ function PageLayout({ children, maxWidth }: PageLayoutProps) {
         paddingY: 2,
       }}
     >
-      <Snackbar
-        open={notif !== null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
-        <Alert
-          severity={
-            notif?.status === ProcessingProgress.FailedToUpload
-              ? 'error'
-              : notif?.status === ProcessingProgress.Ready
-              ? 'success'
-              : 'info'
-          }
-        >
-          {notif?.message}
-        </Alert>
-      </Snackbar>
       {children}
     </Box>
   );
