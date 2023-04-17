@@ -8,7 +8,7 @@ import Reaction from './Reaction';
 import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import { GetVideoMetadataResponse } from './../../data/VideoTypes';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;

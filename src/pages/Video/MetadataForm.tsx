@@ -8,8 +8,8 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { UploadVideoMetadata } from '../../data/VideoData';
 import BaseForm from '../Login/BaseForm';
-import { VideoVisibility } from '../../data/VideoTypes';
-import { GetVideoMetadataResponse } from './../../data/VideoTypes';
+import { VideoVisibility } from '../../types/VideoTypes';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 export interface MetadataFormValues {
   title: string;

@@ -6,10 +6,11 @@ import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import AvatarSection from '../../components/formikFields/FormikAvatarField';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import { AccountType, GetUserDetailsResponse } from '../../data/UserData';
+import { AccountType } from '../../types/UserTypes';
 import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
+import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { shallowComparison } from './../../utils';
 
 export interface UserDetailsEditFormValues {

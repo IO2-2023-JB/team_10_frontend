@@ -6,9 +6,10 @@ import {
   ProcessingProgress,
   GetVideoMetadataResponse,
   VideoVisibility,
-} from './VideoTypes';
+} from '../types/VideoTypes';
 
 export interface NotificationData {
+  open: boolean;
   videoId: string;
   message: string;
   status: ProcessingProgress;
@@ -18,58 +19,92 @@ const clearNotif = (
   message: string,
   status: ProcessingProgress,
   intervalId: NodeJS.Timer,
-  setSelf: (param: NotificationData | null) => void
+  setSelf: (param: NotificationData) => void
 ) => {
   clearInterval(intervalId);
   setSelf({
+    open: true,
     message: message,
     status: status,
     videoId: '',
   });
   setTimeout(() => {
-    setSelf(null);
+    setSelf({ open: false, status: status, videoId: '', message: message });
   }, NOTIFICATION_TIMEOUT);
 };
 
-export const pageNotificationState = atom<NotificationData | null>({
+export const pageNotificationState = atom<NotificationData>({
   key: 'NavbarNotification',
-  default: null,
+  default: {
+    open: false,
+    status: ProcessingProgress.MetadataRecordCreated,
+    message: '',
+    videoId: '',
+  },
   effects: [
     ({ onSet, setSelf }) => {
       onSet((newValue) => {
+        if (newValue === null) return;
         const intervalId = setInterval(async () => {
-          const { data: metadata } = await axios.get<GetVideoMetadataResponse>(
-            'video-metadata',
-            {
+          await axios
+            .get<GetVideoMetadataResponse>('video-metadata', {
               params: { id: newValue?.videoId },
-            }
-          );
-          let message = '';
-          switch (metadata.processingProgress) {
-            case ProcessingProgress.FailedToUpload:
+            })
+            .then((res) => {
+              const metadata = res.data;
+              let message = '';
+              switch (metadata.processingProgress) {
+                case ProcessingProgress.FailedToUpload:
+                  clearNotif(
+                    'Publikacja nie powiodła się.',
+                    ProcessingProgress.FailedToUpload,
+                    intervalId,
+                    setSelf
+                  );
+                  break;
+                case ProcessingProgress.Ready:
+                  clearNotif(
+                    'Publikacja zakończona sukcesem!',
+                    ProcessingProgress.Ready,
+                    intervalId,
+                    setSelf
+                  );
+                  break;
+                default:
+                  message = 'Stan publikacji: ';
+                  switch (metadata.processingProgress) {
+                    case ProcessingProgress.MetadataRecordCreated:
+                      message += 'Dane filmu wysłane.';
+                      break;
+                    case ProcessingProgress.Processing:
+                      message += 'Trwa przetwarzanie.';
+                      break;
+                    case ProcessingProgress.Uploading:
+                      message += 'Wysyłanie filmu.';
+                      break;
+                    case ProcessingProgress.Uploaded:
+                      message += 'Wysłano film';
+                      break;
+                    default:
+                      message += 'Trwa publikacja';
+                      break;
+                  }
+                  setSelf({
+                    open: true,
+                    message: message,
+                    status: metadata.processingProgress,
+                    videoId: metadata.id,
+                  });
+              }
+            })
+            .catch((res) => {
               clearNotif(
-                'Upload failed.',
+                `Błąd połączenia z serwerem: ${res.message}`,
                 ProcessingProgress.FailedToUpload,
                 intervalId,
                 setSelf
               );
-              break;
-            case ProcessingProgress.Ready:
-              clearNotif(
-                'Video successfully published!',
-                ProcessingProgress.Ready,
-                intervalId,
-                setSelf
-              );
-              break;
-            default:
-              message = `Processing state: ${metadata.processingProgress.toString()}.`;
-              setSelf({
-                message: message,
-                status: metadata.processingProgress,
-                videoId: metadata.id,
-              });
-          }
+            });
         }, NOTIFICATION_INTERVAL);
       });
     },

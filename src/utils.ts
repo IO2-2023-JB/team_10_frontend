@@ -1,3 +1,5 @@
+import { GetUserDetailsResponse } from './types/UserTypes';
+
 export const shallowComparison = (obj1: object, obj2: object) => {
   return (
     Object.keys(obj1).length === Object.keys(obj2).length &&
@@ -8,9 +10,13 @@ export const shallowComparison = (obj1: object, obj2: object) => {
 };
 
 export const toBase64 = (file: File) =>
-  new Promise<string | ArrayBuffer | null>((resolve, reject) => {
+  new Promise<string | null>((resolve, reject) => {
     const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
+    reader.onload = () => resolve(reader.result as string);
     reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
   });
+
+export function getInitials(userDetails: GetUserDetailsResponse): string {
+  return ((userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '')).toUpperCase();
+}

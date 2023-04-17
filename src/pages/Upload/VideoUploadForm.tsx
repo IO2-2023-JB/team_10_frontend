@@ -7,21 +7,22 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { UploadVideo } from '../../data/VideoData';
-import { TransferType, VideoVisibility } from '../../data/VideoTypes';
+import { VideoVisibility } from '../../types/VideoTypes';
+import { toBase64 } from '../../utils';
 import BaseForm from '../Login/BaseForm';
 import { ALLOWED_VIDEO_FORMATS, ALLOWED_VIDEO_OBJECT } from './../../const';
 import { MetadataFormValues } from './../Video/MetadataForm';
 
 export type VideoUploadFormValues = {
-  videoFile: FormData | null;
-  thumbnail: string | null;
+  videoFile: File | null;
+  thumbnail: File | null;
 } & MetadataFormValues;
 
 const videoUploadValidationSchema = Yup.object({
   title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
   description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
   tags: Yup.string(),
-  videoFile: Yup.string().required('Pole wymagane!'),
+  videoFile: Yup.string().required('Pole wymagane'),
 });
 
 const formikInitialValues = {
@@ -46,14 +47,12 @@ function VideoUploadForm() {
         label='Miniaturka'
         acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
         acceptObject={ALLOWED_IMAGE_OBJECT}
-        transferType={TransferType.Base64}
       />
       <FormikFileUploader
         name='videoFile'
         label='Wideo'
         acceptedFileTypes={ALLOWED_VIDEO_FORMATS}
         acceptObject={ALLOWED_VIDEO_OBJECT}
-        transferType={TransferType.FormData}
       />
       <FormikSwitch
         checked={true}
@@ -64,9 +63,13 @@ function VideoUploadForm() {
     </>
   );
 
-  const handleSubmit = (values: VideoUploadFormValues) => {
+  const handleSubmit = async (values: VideoUploadFormValues) => {
+    const formData = new FormData();
+    formData.append('videoFile', values.videoFile as File, values.videoFile?.name);
     const parsedValues: UploadVideo = {
       ...values,
+      videoFile: formData,
+      thumbnail: values.thumbnail !== null ? await toBase64(values.thumbnail) : null,
       tags: values.tags
         .split(',')
         .map((tag) => tag.trim())

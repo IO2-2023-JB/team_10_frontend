@@ -2,15 +2,12 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { useField } from 'formik';
 import { useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
-import { TransferType } from '../../data/VideoTypes';
-import { toBase64 } from '../../utils';
 
 interface ImageUploaderProps {
   name: string;
   label: string;
   acceptedFileTypes: string[];
   acceptObject: Accept;
-  transferType: TransferType;
 }
 
 function FormikFileUploader({
@@ -18,24 +15,17 @@ function FormikFileUploader({
   label,
   acceptedFileTypes,
   acceptObject,
-  transferType,
 }: ImageUploaderProps) {
   const [_, meta, helpers] = useField(name);
   const [dragged, setDragged] = useState<boolean>(false);
   const [fileName, setFileName] = useState<string>('');
 
   const handleDrop = async (files: File[]) => {
-    const formData = new FormData();
     helpers.setTouched(true);
     setDragged(false);
     if (files.length > 0) {
       setFileName(files[0].name);
-      if (transferType === TransferType.Base64)
-        helpers.setValue(await toBase64(files[0]));
-      else {
-        formData.append(name, files[0], files[0].name);
-        helpers.setValue(formData);
-      }
+      helpers.setValue(files[0]);
     }
   };
 

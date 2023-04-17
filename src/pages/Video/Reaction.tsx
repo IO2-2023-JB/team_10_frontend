@@ -6,7 +6,7 @@ import {
 } from '@mui/icons-material';
 import { Grid, IconButton, Typography } from '@mui/material';
 import { usePostReaction, useReaction } from '../../api/video';
-import { ReactionType } from '../../data/VideoTypes';
+import { ReactionType } from '../../types/VideoTypes';
 
 interface ReactionProps {
   videoId: string;
