@@ -5,15 +5,8 @@ import { NOTIFICATION_INTERVAL } from './../const';
 import {
   ProcessingProgress,
   GetVideoMetadataResponse,
-  VideoVisibility,
+  NotificationData,
 } from '../types/VideoTypes';
-
-export interface NotificationData {
-  open: boolean;
-  videoId: string;
-  message: string;
-  status: ProcessingProgress;
-}
 
 const clearNotif = (
   message: string,
@@ -110,15 +103,3 @@ export const pageNotificationState = atom<NotificationData>({
     },
   ],
 });
-
-export interface UploadVideoMetadata {
-  title: string;
-  description: string;
-  thumbnail: string | null;
-  tags: string[];
-  visibility: VideoVisibility;
-}
-
-export type UploadVideo = UploadVideoMetadata & {
-  videoFile: FormData | null;
-};
