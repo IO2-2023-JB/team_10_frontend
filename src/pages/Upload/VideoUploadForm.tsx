@@ -6,8 +6,7 @@ import FormikFileUploader from '../../components/formikFields/FormikFileUploader
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { UploadVideo } from '../../data/VideoData';
-import { VideoVisibility } from '../../types/VideoTypes';
+import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { toBase64 } from '../../utils';
 import BaseForm from '../Login/BaseForm';
 import { ALLOWED_VIDEO_FORMATS, ALLOWED_VIDEO_OBJECT } from './../../const';
