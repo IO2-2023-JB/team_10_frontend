@@ -2,7 +2,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import FormDialog from '../../components/layout/FormDialog';
-import { GetUserDetailsResponse, getUserTypeString } from '../../data/UserData';
+import { getUserTypeString, GetUserDetailsResponse } from '../../types/UserTypes';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';

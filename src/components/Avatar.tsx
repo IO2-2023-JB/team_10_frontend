@@ -1,5 +1,6 @@
 import { Avatar as MuiAvatar } from '@mui/material';
-import { getInitials, GetUserDetailsResponse } from '../data/UserData';
+import { getInitials } from './../utils';
+import { GetUserDetailsResponse } from './../types/UserTypes';
 
 interface AvatarProps {
   userDetails?: GetUserDetailsResponse;

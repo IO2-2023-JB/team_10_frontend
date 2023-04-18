@@ -1,7 +1,7 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 import Avatar from '../../components/Avatar';
-import { GetUserDetailsResponse } from '../../data/UserData';
 import { Link } from 'react-router-dom';
+import { GetUserDetailsResponse } from './../../types/UserTypes';
 
 const avatarSize = 60;
 

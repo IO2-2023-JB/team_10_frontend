@@ -6,12 +6,10 @@ import { useEditVideoMetadata } from '../../api/video';
 import FormDialog from '../../components/layout/FormDialog';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import {
-  GetVideoMetadataResponse,
-  UploadVideo,
-  VideoVisibility,
-} from '../../data/VideoMetadata';
+import { UploadVideoMetadata } from '../../data/VideoData';
 import BaseForm from '../Login/BaseForm';
+import { VideoVisibility } from '../../types/VideoTypes';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 export interface MetadataFormValues {
   title: string;
@@ -48,7 +46,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleSubmit = (values: MetadataFormValues) => {
-    const parsedValues: UploadVideo = {
+    const parsedValues: UploadVideoMetadata = {
       ...values,
       tags: values.tags
         .split(',')

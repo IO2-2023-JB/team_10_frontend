@@ -1,14 +1,14 @@
-import { GetVideoMetadataResponse } from '../../data/VideoMetadata';
 import { Box, Stack, Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { useUserDetails } from '../../api/user';
+import { userDetailsState } from '../../data/UserData';
+import CreatorInfo from './CreatorInfo';
+import MetadataForm from './MetadataForm';
+import Reaction from './Reaction';
+import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import CreatorInfo from './CreatorInfo';
-import { useUserDetails } from '../../api/user';
-import { useRecoilValue } from 'recoil';
-import { userDetailsState } from '../../data/UserData';
-import MetadataForm from './MetadataForm';
-import VideoDelete from './VideoDelete';
-import Reaction from './Reaction';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;

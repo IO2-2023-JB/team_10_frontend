@@ -15,6 +15,7 @@ import Video from './pages/Video';
 import theme from './theme';
 import axios from 'axios';
 import { BACKEND_URL } from './const';
+import Upload from './pages/Upload/index';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ function App() {
                     <Route path='/' element={<Homepage />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
+                    <Route path='/upload' element={<Upload />} />
                     <Route path='/user/:userId' element={<User />} />
                     <Route path='/video/:videoId' element={<Video />} />
                   </Routes>
