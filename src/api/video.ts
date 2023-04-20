@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { pageNotificationState } from '../data/VideoData';
 import {
+  GetUserVideosResponse,
   GetVideoMetadataResponse,
   ProcessingProgress,
   ReactionCounts,
@@ -13,6 +14,7 @@ import { PostReaction, UploadVideoMetadata } from '../types/VideoTypes';
 
 const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
+const userVideosKey = 'user/videos';
 
 export function useVideoMetadata(id: string) {
   return useQuery<GetVideoMetadataResponse, AxiosError>({
@@ -83,5 +85,12 @@ export function useAllVideos() {
   return useQuery<GetVideoMetadataResponse[], AxiosError>({
     queryKey: [videoMetadataKey],
     queryFn: async () => (await axios.get('getAllVideos')).data,
+  });
+}
+
+export function useUserVideos(id: string) {
+  return useQuery<GetUserVideosResponse, AxiosError>({
+    queryKey: [userVideosKey, id],
+    queryFn: async () => (await axios.get(userVideosKey, { params: { id } })).data,
   });
 }

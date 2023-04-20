@@ -18,7 +18,7 @@ export interface GetVideoMetadataResponse extends UploadVideoMetadata {
   processingProgress: ProcessingProgress;
   uploadDate: string;
   editDate: string;
-  duration: string;
+  duration: string | null;
 }
 
 export enum VideoVisibility {
@@ -61,4 +61,9 @@ export interface NotificationData {
   videoId: string;
   message: string;
   status: ProcessingProgress;
+}
+
+
+export interface GetUserVideosResponse {
+  videos: GetVideoMetadataResponse[];
 }
