@@ -6,12 +6,14 @@ import { getUserTypeString, GetUserDetailsResponse } from '../../types/UserTypes
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import SubscribeButton from './SubscribeButton';
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
+
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
@@ -55,9 +57,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             Edytuj profil
           </Button>
         ) : (
-          <Button onClick={() => {}} variant='contained'>
-            Subskrybuj
-          </Button>
+          <SubscribeButton creatorId={userDetails.id} />
         )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
