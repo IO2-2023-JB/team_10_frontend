@@ -20,3 +20,14 @@ export const toBase64 = (file: File) =>
 export function getInitials(userDetails: GetUserDetailsResponse): string {
   return ((userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '')).toUpperCase();
 }
+
+export function getTextSummary(
+  text: string,
+  maxWords: number,
+  maxCharacters: number
+): string {
+  let summary = text.split(' ').slice(0, maxWords).join(' ');
+  summary = summary.slice(0, maxCharacters);
+  if (summary.length < text.length) summary += '…';
+  return summary;
+}

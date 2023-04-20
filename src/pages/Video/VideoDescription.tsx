@@ -1,18 +1,12 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { getNumberWithLabel } from '../../utils/words';
+import { getTextSummary } from '../../utils/utils';
 
 interface VideoDescriptionProps {
   viewCount: number;
   uploadDate: string;
   videoDescription: string;
-}
-
-const collapsedDescriptionWordCount = 50;
-
-function prepareDescription(description: string, splice: boolean = true): string {
-  if (!splice) return description;
-  return description.split(' ').splice(0, collapsedDescriptionWordCount).join(' ') + '…';
 }
 
 function VideoDescription({
@@ -22,14 +16,11 @@ function VideoDescription({
 }: VideoDescriptionProps) {
   const [expanded, setExpanded] = useState(false);
   const viewCountText = getNumberWithLabel(viewCount, 'wyświetlenie');
-  const isDescriptionExpandable: boolean =
-    videoDescription !== null &&
-    videoDescription.split(' ').length > collapsedDescriptionWordCount;
+  const descriptionSummary = getTextSummary(videoDescription, 50, 350);
 
-  const description = prepareDescription(
-    videoDescription,
-    isDescriptionExpandable && !expanded
-  );
+  const isDescriptionExpandable: boolean =
+    videoDescription.length > descriptionSummary.length;
+  const description = expanded ? videoDescription : descriptionSummary;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
