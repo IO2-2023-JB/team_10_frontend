@@ -5,6 +5,8 @@ interface VideoTagsProps {
 }
 
 function VideoTags({ tags }: VideoTagsProps) {
+  if (tags.length === 0) return null;
+
   return (
     <Stack direction='row' overflow='hidden' flexWrap='wrap'>
       {tags?.map((tag) => (

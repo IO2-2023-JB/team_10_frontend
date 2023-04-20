@@ -40,7 +40,13 @@ function VideoDescription({
     >
       <Stack direction='row' spacing={2}>
         <Typography>{viewCountText}</Typography>
-        <Typography>{new Date(uploadDate).toLocaleDateString()}</Typography>
+        <Typography>
+          {new Date(uploadDate).toLocaleDateString('pl', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </Typography>
       </Stack>
       <Stack marginTop={1} spacing={1}>
         <Typography>{description}</Typography>
