@@ -33,18 +33,18 @@ function LoginForm() {
 
   const errorMessage = error?.message ?? '';
   return (
-      <BaseForm<LoginFormValues>
-        title='Logowanie'
-        buttonText='Zaloguj się'
-        icon={<LoginOutlined />}
-        formFields={formFields}
-        initialValues={formikInitialValues}
-        validationSchema={loginValidationSchema}
-        onSubmit={onSubmit}
-        errorMessage={errorMessage}
-        isLoading={isLoading}
-        alertCollapse={false}
-      />
+    <BaseForm<LoginFormValues>
+      title='Logowanie'
+      buttonText='Zaloguj się'
+      icon={<LoginOutlined />}
+      formFields={formFields}
+      initialValues={formikInitialValues}
+      validationSchema={loginValidationSchema}
+      onSubmit={onSubmit}
+      errorMessage={errorMessage}
+      isLoading={isLoading}
+      alertCollapse={false}
+    />
   );
 }
 
