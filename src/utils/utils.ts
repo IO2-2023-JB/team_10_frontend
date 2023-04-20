@@ -1,4 +1,4 @@
-import { GetUserDetailsResponse } from './types/UserTypes';
+import { GetUserDetailsResponse } from '../types/UserTypes';
 
 export const shallowComparison = (obj1: object, obj2: object) => {
   return (

@@ -1,5 +1,6 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
+import { getNumberWithLabel } from '../../utils/words';
 
 interface VideoDescriptionProps {
   viewCount: number;
@@ -20,7 +21,7 @@ function VideoDescription({
   videoDescription,
 }: VideoDescriptionProps) {
   const [expanded, setExpanded] = useState(false);
-  const viewCountText = `${viewCount} wyświetleń`;
+  const viewCountText = getNumberWithLabel(viewCount, 'wyświetlenie');
   const isDescriptionExpandable: boolean =
     videoDescription !== null &&
     videoDescription.split(' ').length > collapsedDescriptionWordCount;

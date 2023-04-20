@@ -2,11 +2,13 @@ import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import FormDialog from '../../components/layout/FormDialog';
-import { getUserTypeString, GetUserDetailsResponse } from '../../types/UserTypes';
+import { GetUserDetailsResponse, getUserTypeString } from '../../types/UserTypes';
+import { getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import UserDetailsEditForm from './UserDetailsEditForm';
 import SubscribeButton from './SubscribeButton';
+import UserDetailsEditForm from './UserDetailsEditForm';
+
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
 }
@@ -20,7 +22,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
 
   let textBottom = getUserTypeString(userDetails);
   if (userDetails.subscriptionsCount !== null)
-    textBottom += ` · ${userDetails.subscriptionsCount} subskrypcji`;
+    textBottom += ` · ${getNumberWithLabel(
+      userDetails.subscriptionsCount,
+      'subskrypcja'
+    )}`;
   if (userDetails.accountBalance !== null)
     textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;
 
