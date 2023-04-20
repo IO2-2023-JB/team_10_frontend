@@ -10,6 +10,7 @@ import BaseForm from '../Login/BaseForm';
 import { VideoVisibility } from '../../types/VideoTypes';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { UploadVideoMetadata } from './../../types/VideoTypes';
+import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 
 export interface MetadataFormValues {
   title: string;
@@ -18,11 +19,7 @@ export interface MetadataFormValues {
   visibility: VideoVisibility;
 }
 
-const validationSchema = Yup.object({
-  title: Yup.string().required(),
-  description: Yup.string().required(),
-  tags: Yup.string().required(),
-});
+const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
 
 const formFields = (
   <>
@@ -80,7 +77,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
           onSubmit={handleSubmit}
           errorMessage={errorMessage}
           isLoading={isLoading}
-          alertCollapse={false}
+          alertCollapse={true}
         />
       </FormDialog>
     </>

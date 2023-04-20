@@ -17,7 +17,7 @@ export type VideoUploadFormValues = {
   thumbnail: File | null;
 } & MetadataFormValues;
 
-const videoUploadValidationSchema = Yup.object({
+export const videoUploadValidationSchema = Yup.object({
   title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
   description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
   tags: Yup.string(),
