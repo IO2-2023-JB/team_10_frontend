@@ -4,6 +4,7 @@ import Metadata from './Metadata';
 import Player from './Player';
 import ContentSection from '../../components/layout/ContentSection';
 import { useVideoMetadata } from '../../api/video';
+import CommentSection from './../Comment/CommentSection';
 
 function Video() {
   const { videoId } = useParams();
@@ -15,6 +16,7 @@ function Video() {
         <>
           <Player videoId={videoId!} />
           {videoMetadata && <Metadata videoMetadata={videoMetadata} />}
+          {videoId && <CommentSection videoId={videoId} />}
         </>
       </ContentSection>
     </PageLayout>
