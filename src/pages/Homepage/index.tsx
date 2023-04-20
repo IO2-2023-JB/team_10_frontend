@@ -40,7 +40,7 @@ function Homepage() {
                         borderColor: 'black',
                         objectFit: 'cover',
                       }}
-                      src={x.thumbnail ?? './src/public/placeholder_image.webp'}
+                      src={x.thumbnail ?? './public/placeholder_image.webp'}
                     />
                     <Typography fontSize={20}>{x.title}</Typography>
                   </Stack>
