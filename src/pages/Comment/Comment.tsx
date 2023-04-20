@@ -32,7 +32,7 @@ function Comment({ comment, videoId }: CommentProps) {
   return (
     <Paper
       sx={{
-        width: 'auto',
+        width: 'fit-content',
         float: 'left',
         padding: 1,
         backgroundColor: 'background.default',
@@ -48,10 +48,7 @@ function Comment({ comment, videoId }: CommentProps) {
           <Typography textOverflow='hidden' fontSize={16} sx={{ wordWrap: 'normal' }}>
             {'@' + authorDetails?.nickname}
           </Typography>
-          <Typography
-            fontSize={14}
-            sx={{ hyphens: 'manual', marginLeft: 5, wordWrap: 'anywhere' }}
-          >
+          <Typography fontSize={14} sx={{ marginLeft: 5, wordWrap: 'anywhere' }}>
             {content}
           </Typography>
           {hasResponse && (

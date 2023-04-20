@@ -22,7 +22,7 @@ function CommentSection({ videoId }: CommentSectionProps) {
   };
 
   return (
-    <Stack sx={{ marginX: 3, width: 'auto' }} spacing={2}>
+    <Stack sx={{ marginX: 3, justifyContent: 'left' }} spacing={2}>
       {data?.map((x, id) => (
         <Comment key={id} comment={x} videoId={videoId} />
       ))}
