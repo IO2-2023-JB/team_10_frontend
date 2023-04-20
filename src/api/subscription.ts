@@ -1,62 +1,66 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { Subscription, SubscriptionsList } from '../data/Subscription';
+import { userKey } from './user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
-import { userKey } from './user';
 
 const subscriptionsKey = 'subscriptions';
 
-export function isUserSubscribed(userId: string, subscriptions: Subscription[]): boolean {
-  return subscriptions.some((sub) => sub.id === userId);
+export function isUserSubscribed(
+  creatorId: string,
+  subscriptions: Subscription[]
+): boolean {
+  return subscriptions.some((sub) => sub.id === creatorId);
 }
 
-export function useSubscriptions(creatorId?: string) {
+export function useSubscriptions(userId?: string) {
   return useQuery<SubscriptionsList, AxiosError>({
-    queryKey: [subscriptionsKey, creatorId],
+    queryKey: [subscriptionsKey, userId],
     queryFn: async () =>
-      (await axios.get(subscriptionsKey, { params: { id: creatorId } })).data,
-    enabled: creatorId !== undefined,
+      (await axios.get(subscriptionsKey, { params: { id: userId } })).data,
+    enabled: userId !== undefined,
   });
 }
 
-function useIsSubscribed(creatorId?: string): boolean | undefined {
-  const userDetails = useRecoilValue(userDetailsState);
-  const { data } = useSubscriptions(creatorId);
+function useIsSubscribed(
+  creatorId: string,
+  loggedInUserId?: string
+): boolean | undefined {
+  const { data } = useSubscriptions(loggedInUserId);
 
-  const loggedInUserId = userDetails?.id;
-
-  if (loggedInUserId === undefined || data === undefined) return false;
-  return isUserSubscribed(loggedInUserId, data.subscriptions);
+  if (data === undefined) return false;
+  return isUserSubscribed(creatorId, data.subscriptions);
 }
 
-function usePostSubscription(creatorId?: string) {
+function usePostSubscription(creatorId?: string, loggedInUserId?: string) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError>({
     mutationFn: () =>
       axios.post(subscriptionsKey, undefined, { params: { id: creatorId } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [subscriptionsKey, creatorId] });
+      queryClient.invalidateQueries({ queryKey: [subscriptionsKey, loggedInUserId] });
       queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
     },
   });
 }
 
-function useDeleteSubscription(creatorId?: string) {
+function useDeleteSubscription(creatorId?: string, loggedInUserId?: string) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError>({
     mutationFn: () => axios.delete(subscriptionsKey, { params: { id: creatorId } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [subscriptionsKey, creatorId] });
+      queryClient.invalidateQueries({ queryKey: [subscriptionsKey, loggedInUserId] });
       queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
     },
   });
 }
 
 export function useSubscribe(creatorId: string) {
-  const { mutate: mutateSubscribe } = usePostSubscription(creatorId);
-  const { mutate: mutateUnsubscribe } = useDeleteSubscription(creatorId);
-  const isSubscribed = useIsSubscribed(creatorId);
+  const userDetails = useRecoilValue(userDetailsState);
+  const { mutate: mutateSubscribe } = usePostSubscription(creatorId, userDetails?.id);
+  const { mutate: mutateUnsubscribe } = useDeleteSubscription(creatorId, userDetails?.id);
+  const isSubscribed = useIsSubscribed(creatorId, userDetails?.id);
 
   const handleSubscribe = () => {
     isSubscribed ? mutateUnsubscribe() : mutateSubscribe();
