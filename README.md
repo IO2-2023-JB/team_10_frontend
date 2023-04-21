@@ -97,6 +97,16 @@ yarn lint
 
 This runs a TypeScript check and an ESLint check
 
+## Testing
+
+Run Cypress
+
+- `yarn cypress open`
+- `E2E Testing`
+- `Start E2E Testing in ____`
+
+Do not close the Cypress window!
+
 ## Bundle size analysis
 
 This project uses `rollup-plugin-visualizer` which lets you easily analyze the production build bundle (sizes of all dependencies). Run `yarn build` to generate a report into the `stats.html` file. Open the file in a browser to see the report.

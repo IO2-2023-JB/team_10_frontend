@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.27.0",
+    "@testing-library/cypress": "^9.0.0",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.57.0",

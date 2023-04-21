@@ -56,7 +56,12 @@ function NavBar() {
           <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
             Wyloguj się
           </Button>
-          <IconButton color='inherit' component={Link} to={`/user/${userDetails.id}`}>
+          <IconButton
+            color='inherit'
+            component={Link}
+            to={`/user/${userDetails.id}`}
+            aria-label='twój profil'
+          >
             <Avatar userDetails={userDetailsFull} size={40} />
           </IconButton>
         </>
