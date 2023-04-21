@@ -76,8 +76,8 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
       error={commentError || userError}
       isLoading={isCommentLoading || isUserLoading}
     >
-      <Stack sx={{ marginX: 3, justifyContent: 'left' }} spacing={2}>
-        {commentData && commentData.length === 0 && (
+      <Stack sx={{ marginY: 3, marginX: 3 }} spacing={2}>
+        {commentData && commentData.length === 0 && !isResponse && (
           <Typography variant='h5'>
             Jeszcze nikt nie dodał komentarza, bądź pierwszy!
           </Typography>

@@ -7,7 +7,6 @@ import Avatar from './../../components/Avatar';
 import { useDeleteComment } from './../../api/comment';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CommentSection from './CommentSection';
-import { useState } from 'react';
 
 interface CommentProps {
   comment: CommentValues;
@@ -27,7 +26,7 @@ function Comment({
   const { authorId, content, hasResponses } = comment;
   const { data: authorDetails } = useUserDetails(authorId);
   const { mutate } = useDeleteComment(originId);
-  const [open, setOpen] = useState(false);
+  const open = openCommentId === comment.id;
 
   const handleDelete = () => {
     mutate(comment.id);
@@ -35,10 +34,8 @@ function Comment({
 
   const handleClick = () => {
     if (open) {
-      setOpen(false);
       setOpenCommentId('');
     } else {
-      setOpen(true);
       setOpenCommentId(comment.id);
     }
   };
@@ -53,7 +50,17 @@ function Comment({
     : undefined;
 
   return (
-    <Stack>
+    <Stack
+      sx={
+        open
+          ? {
+              borderLeft: '3px solid',
+              borderColor: 'primary.main',
+              borderRadius: '16px',
+            }
+          : {}
+      }
+    >
       <Paper
         onClick={handleClick}
         sx={{
@@ -82,7 +89,9 @@ function Comment({
               {!isResponse &&
                 `Kliknij aby ${
                   open
-                    ? 'schować odpowiedzi'
+                    ? hasResponses
+                      ? 'schować odpowiedzi'
+                      : 'schować edytor'
                     : hasResponses
                     ? 'pokazać odpowiedzi'
                     : 'dodać odpowiedź'
