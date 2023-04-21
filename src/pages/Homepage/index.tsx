@@ -1,32 +1,57 @@
-import { Stack, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import { useUserDetails } from '../../api/user';
-import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import { userDetailsState } from '../../data/UserData';
-import { useAllVideos } from './../../api/video';
-import VideoList from '../../components/video/VideoList';
+import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import HomepageVideos from './HomepageVideos';
+import { Tab, Tabs } from '@mui/material';
+import SubscribedVideos from './SubscribedVideos';
+
+enum HomepageTabs {
+  AllVideos = '',
+  Subscriptions = 'subscriptions',
+}
 
 function Homepage() {
+  const location = useLocation();
   const { id: userId } = useRecoilValue(userDetailsState)!;
-  const { data: userDetails, error, isLoading } = useUserDetails(userId);
-  const { data: allVideos } = useAllVideos();
+
+  const defaultTab = HomepageTabs.AllVideos;
+
+  const currentTab = location.pathname.split('/').at(-1) ?? '';
+  const subRoutes = Object.values(HomepageTabs) as string[];
+  const isIndexRoute = !subRoutes.includes(currentTab);
+
+  if (isIndexRoute) {
+    return <Navigate to={defaultTab} replace />;
+  }
 
   return (
-    <PageLayout>
-      <ContentSection error={error} isLoading={isLoading}>
-        {userDetails && (
-          <>
-            <Typography sx={{ marginBottom: 1 }} fontSize={30}>
-              Dostępne filmy:
-            </Typography>
-            <Stack direction='column' spacing={3}>
-              {allVideos !== undefined && <VideoList videos={allVideos} />}
-            </Stack>
-          </>
-        )}
-      </ContentSection>
-    </PageLayout>
+    <>
+      <PageLayout>
+        <Tabs value={currentTab} centered={true} sx={{ marginBottom: 4 }}>
+          <Tab
+            value={HomepageTabs.AllVideos}
+            label='Wszystkie Wideło'
+            component={Link}
+            to={HomepageTabs.AllVideos}
+          />
+          <Tab
+            value={HomepageTabs.Subscriptions}
+            label='Subskrypcje'
+            component={Link}
+            to={`${HomepageTabs.Subscriptions}`}
+          />
+        </Tabs>
+
+        <Routes>
+          <Route
+            path={HomepageTabs.AllVideos}
+            element={<HomepageVideos userId={userId} />}
+          />
+          <Route path={HomepageTabs.Subscriptions} element={<SubscribedVideos />} />
+        </Routes>
+      </PageLayout>
+    </>
   );
 }
 

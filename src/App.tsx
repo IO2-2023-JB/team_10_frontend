@@ -37,8 +37,9 @@ function App() {
               <AuthGate>
                 <AppLayout>
                   <Routes>
-                    <Route path='*' element={<PageNotFound />} />
-                    <Route path='/' element={<Homepage />} />
+                    // do poprawy
+                    {/* <Route path='*' element={<PageNotFound />} /> */}
+                    <Route path='/*' element={<Homepage />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/upload' element={<Upload />} />
