@@ -4,5 +4,5 @@ export interface CommentValues {
   content: string;
   avatarImage: string;
   nickname: string;
-  hasResponse: false;
+  hasResponses: false;
 }

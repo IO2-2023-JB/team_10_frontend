@@ -16,7 +16,7 @@ function Video() {
         <>
           <Player videoId={videoId!} />
           {videoMetadata && <Metadata videoMetadata={videoMetadata} />}
-          {videoId && <CommentSection videoId={videoId} />}
+          {videoId && <CommentSection isResponse={false} originId={videoId} />}
         </>
       </ContentSection>
     </PageLayout>
