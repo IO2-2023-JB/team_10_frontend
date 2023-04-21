@@ -1,5 +1,10 @@
 import { Stack, TextField, Button, Typography } from '@mui/material';
-import { useComment, useCommentResponse, usePostComment } from './../../api/comment';
+import {
+  useComment,
+  useCommentResponse,
+  usePostComment,
+  usePostCommentResponse,
+} from './../../api/comment';
 import Comment from './Comment';
 import { useState, KeyboardEvent } from 'react';
 import ContentSection from '../../components/layout/ContentSection';
@@ -20,8 +25,12 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
   // POSSIBLE MOVE TO RECOIL STATE, CURRENTLY IT'S A BIT MORE COMPLICATED, PROBABLY WORKS BETTER THOUGH
   const [openCommentId, setOpenCommentId] = useState<string>('');
   const user = useRecoilValue(userDetailsState);
-  const commentQuery = useComment(isResponse ? '' : originId);
-  const responseQuery = useCommentResponse(isResponse ? originId : '');
+
+  const videoId = isResponse ? '' : originId;
+  const commentId = isResponse ? originId : '';
+  const commentQuery = useComment(videoId);
+  const responseQuery = useCommentResponse(commentId);
+
   let commentData: CommentValues[] | undefined,
     commentError: AxiosError | null,
     isCommentLoading: boolean | undefined;
@@ -43,15 +52,18 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
     error: userError,
     isLoading: isUserLoading,
   } = useUserDetails(user?.id);
-  const { mutate } = usePostComment(originId);
-  
+
+  const { mutate: mutateComment } = usePostComment(videoId);
+  const { mutate: mutateResponse } = usePostCommentResponse(commentId);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = e.target.value ? e.target.value : '';
     setCommentContent(value);
   };
 
   const handleSubmit = () => {
-    if (commentContent !== '') mutate(commentContent);
+    if (commentContent !== '')
+      isResponse ? mutateResponse(commentContent) : mutateComment(commentContent);
     setCommentContent('');
   };
 
@@ -75,9 +87,10 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
             <Comment
               key={x.id}
               comment={x}
-              videoId={originId}
+              originId={originId}
               openCommentId={openCommentId}
               setOpenCommentId={setOpenCommentId}
+              isResponse={isResponse}
             />
           ))}
 

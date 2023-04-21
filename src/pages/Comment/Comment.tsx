@@ -11,29 +11,27 @@ import { useState } from 'react';
 
 interface CommentProps {
   comment: CommentValues;
-  videoId: string;
+  originId: string;
   openCommentId: string;
   setOpenCommentId: (id: string) => void;
+  isResponse: boolean;
 }
 
-function Comment({ comment, videoId, openCommentId, setOpenCommentId }: CommentProps) {
+function Comment({
+  comment,
+  originId,
+  openCommentId,
+  setOpenCommentId,
+  isResponse,
+}: CommentProps) {
   const { authorId, content, hasResponses } = comment;
   const { data: authorDetails } = useUserDetails(authorId);
-  const { mutate } = useDeleteComment(videoId);
+  const { mutate } = useDeleteComment(originId);
   const [open, setOpen] = useState(false);
 
   const handleDelete = () => {
     mutate(comment.id);
   };
-
-  const hover = hasResponses
-    ? {
-        '&:hover': {
-          transition: 'background-color ease-in-out 200ms',
-          backgroundColor: 'background.light',
-        },
-      }
-    : {};
 
   const handleClick = () => {
     if (open) {
@@ -45,10 +43,19 @@ function Comment({ comment, videoId, openCommentId, setOpenCommentId }: CommentP
     }
   };
 
+  const hover = !isResponse
+    ? {
+        '&:hover': {
+          transition: 'background-color ease-in-out 200ms',
+          backgroundColor: 'background.light',
+        },
+      }
+    : undefined;
+
   return (
     <Stack>
       <Paper
-        onClick={hasResponses ? handleClick : undefined}
+        onClick={handleClick}
         sx={{
           alignSelf: 'flex-start',
           padding: 1,
@@ -71,11 +78,16 @@ function Comment({ comment, videoId, openCommentId, setOpenCommentId }: CommentP
               {authorDetails?.nickname}
             </Typography>
             <Typography sx={{ wordWrap: 'anywhere' }}>{content}</Typography>
-            {hasResponses && !open && (
-              <Typography fontSize={13} color='primary.main'>
-                Click to view responses
-              </Typography>
-            )}
+            <Typography fontSize={13} color='primary.main'>
+              {!isResponse &&
+                `Kliknij aby ${
+                  open
+                    ? 'schować odpowiedzi'
+                    : hasResponses
+                    ? 'pokazać odpowiedzi'
+                    : 'dodać odpowiedź'
+                }`}
+            </Typography>
           </Stack>
           {authorDetails?.id === authorId && (
             <IconButton onClick={handleDelete} sx={{ color: 'grey.800' }}>

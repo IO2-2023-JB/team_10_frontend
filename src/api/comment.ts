@@ -38,6 +38,7 @@ export function useDeleteComment(id: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [commentKey, id] });
+      queryClient.invalidateQueries({ queryKey: [commentResponseKey, id] });
     },
   });
 }
