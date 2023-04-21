@@ -26,7 +26,7 @@ function UserContent({ userDetails }: UserDetailsProps) {
   const isIndexRoute = !subRoutes.includes(currentTab);
 
   if (isIndexRoute) {
-    return <Navigate to={defaultTab} />;
+    return <Navigate to={defaultTab} replace />;
   }
 
   return (
