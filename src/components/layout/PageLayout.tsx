@@ -11,7 +11,6 @@ function PageLayout({ children, maxWidth }: PageLayoutProps) {
     <Box
       component='main'
       sx={{
-        height: '100%',
         width: '100%',
         maxWidth: maxWidth ?? 'lg',
         marginX: 'auto',
