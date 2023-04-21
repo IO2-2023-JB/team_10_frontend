@@ -13,7 +13,7 @@ function AppLayout({ children }: AppLayoutProps) {
   const notif = useRecoilValue(pageNotificationState);
 
   return (
-    <Stack height='100%'>
+    <Stack>
       <NavBar />
       <Snackbar
         open={notif.open}
