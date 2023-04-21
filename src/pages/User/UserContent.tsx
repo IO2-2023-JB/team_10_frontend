@@ -32,7 +32,7 @@ function UserContent({ userDetails }: UserDetailsProps) {
         {
           path: UserProfileTabs.Subscriptions,
           label: 'Subskrypcje',
-          element: <UserSubscriptions />,
+          element: <UserSubscriptions userId={userDetails.id} />,
         },
       ]}
     />
