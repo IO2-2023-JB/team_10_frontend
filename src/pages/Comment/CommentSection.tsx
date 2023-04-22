@@ -105,7 +105,6 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
             placeholder={`Dodaj ${isResponse ? 'odpowiedź' : 'komentarz'} ${
               userData?.nickname
             }`}
-            variant='outlined'
           />
           <Button
             disabled={commentContent === ''}
