@@ -27,12 +27,13 @@ function FormikFileUploader({
     }
   };
 
-  const { getRootProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleDrop,
     onDragEnter: () => setDragged(true),
     onDragLeave: () => setDragged(false),
     maxFiles: 1,
     accept: acceptObject,
+    onFileDialogCancel: () => console.log('opened'),
   });
 
   const handleDelete = () => {
@@ -50,6 +51,7 @@ function FormikFileUploader({
       >
         {label}
       </Typography>
+      <input {...getInputProps()} />
       <Stack
         direction='row'
         sx={{
