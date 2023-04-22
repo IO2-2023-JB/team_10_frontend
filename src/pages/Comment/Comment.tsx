@@ -7,6 +7,8 @@ import Avatar from './../../components/Avatar';
 import { useDeleteComment } from './../../api/comment';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CommentSection from './CommentSection';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from './../../data/UserData';
 
 interface CommentProps {
   comment: CommentValues;
@@ -24,6 +26,7 @@ function Comment({
   isResponse,
 }: CommentProps) {
   const { authorId, content, hasResponses } = comment;
+  const loggedUser = useRecoilValue(userDetailsState);
   const { data: authorDetails } = useUserDetails(authorId);
   const { mutate } = useDeleteComment(originId);
   const open = openCommentId === comment.id;
@@ -33,11 +36,12 @@ function Comment({
   };
 
   const handleClick = () => {
-    if (open) {
-      setOpenCommentId('');
-    } else {
-      setOpenCommentId(comment.id);
-    }
+    if (!isResponse)
+      if (open) {
+        setOpenCommentId('');
+      } else {
+        setOpenCommentId(comment.id);
+      }
   };
 
   const hover = !isResponse
@@ -98,8 +102,11 @@ function Comment({
                 }`}
             </Typography>
           </Stack>
-          {authorDetails?.id === authorId && (
-            <IconButton onClick={handleDelete} sx={{ color: 'grey.800' }}>
+          {loggedUser?.id === authorId && (
+            <IconButton
+              onClick={handleDelete}
+              sx={{ alignSelf: 'center', color: 'grey.800' }}
+            >
               <DeleteOutlineIcon />
             </IconButton>
           )}
