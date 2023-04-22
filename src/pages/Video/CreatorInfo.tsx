@@ -10,11 +10,11 @@ const avatarSize = 60;
 
 interface CreatorInfoProps {
   userDetails?: GetUserDetailsResponse;
-  isAuthor: boolean;
+  isSelf: boolean;
   width: string;
 }
 
-function CreatorInfo({ userDetails, isAuthor, width }: CreatorInfoProps) {
+function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps) {
   return (
     <Stack direction='row' alignItems='center' width={width}>
       <Stack
