@@ -1,52 +1,28 @@
 import { Stack, TextField, Button, Typography } from '@mui/material';
-import {
-  useComment,
-  useCommentResponse,
-  usePostComment,
-  usePostCommentResponse,
-} from './../../api/comment';
+import { useComment, usePostComment, usePostCommentResponse } from './../../api/comment';
 import Comment from './Comment';
-import { useState, KeyboardEvent } from 'react';
+import { useState, KeyboardEvent, ChangeEvent } from 'react';
 import ContentSection from '../../components/layout/ContentSection';
 import Avatar from './../../components/Avatar';
 import { useUserDetails } from './../../api/user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from './../../data/UserData';
 import { CommentValues } from './../../types/CommentTypes';
-import { AxiosError } from 'axios';
 
 interface CommentSectionProps {
-  originId: string;
-  isResponse: boolean;
+  videoId?: string;
+  commentId?: string;
+  isResponse?: boolean;
 }
 
-function CommentSection({ originId, isResponse }: CommentSectionProps) {
+function CommentSection({ videoId, commentId, isResponse = false }: CommentSectionProps) {
   const [commentContent, setCommentContent] = useState<string>('');
-  // POSSIBLE MOVE TO RECOIL STATE, CURRENTLY IT'S A BIT MORE COMPLICATED, PROBABLY WORKS BETTER THOUGH
-  const [openCommentId, setOpenCommentId] = useState<string>('');
+  const [openCommentId, setOpenCommentId] = useState<string | null>(null);
   const user = useRecoilValue(userDetailsState);
 
-  const videoId = isResponse ? '' : originId;
-  const commentId = isResponse ? originId : '';
-  const commentQuery = useComment(videoId);
-  const responseQuery = useCommentResponse(commentId);
+  const query = useComment(videoId ?? commentId, isResponse);
+  const { data: commentData, error: commentError, isLoading: isCommentLoading } = query;
 
-  let commentData: CommentValues[] | undefined,
-    commentError: AxiosError | null,
-    isCommentLoading: boolean | undefined;
-  commentError = null;
-  if (!commentQuery.isLoading || !responseQuery.isLoading)
-    isResponse
-      ? ({
-          data: commentData,
-          error: commentError,
-          isLoading: isCommentLoading,
-        } = responseQuery)
-      : ({
-          data: commentData,
-          error: commentError,
-          isLoading: isCommentLoading,
-        } = commentQuery);
   const {
     data: userData,
     error: userError,
@@ -56,8 +32,8 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
   const { mutate: mutateComment } = usePostComment(videoId);
   const { mutate: mutateResponse } = usePostCommentResponse(commentId);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = e.target.value ? e.target.value : '';
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
     setCommentContent(value);
   };
 
@@ -76,21 +52,21 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
       error={commentError || userError}
       isLoading={isCommentLoading || isUserLoading}
     >
-      <Stack sx={{ marginY: 3, marginX: 3 }} spacing={2}>
+      <Stack sx={{ margin: 3 }} spacing={2}>
         {commentData && commentData.length === 0 && !isResponse && (
           <Typography variant='h5'>
-            Jeszcze nikt nie dodał komentarza, bądź pierwszy!
+            Jeszcze nikt nie dodał komentarza, dodaj pierwszy!
           </Typography>
         )}
         {commentData &&
-          commentData.map((x: CommentValues) => (
+          commentData.map((comment: CommentValues) => (
             <Comment
-              key={x.id}
-              comment={x}
-              originId={originId}
-              openCommentId={openCommentId}
-              setOpenCommentId={setOpenCommentId}
+              key={comment.id}
+              comment={comment}
+              originId={videoId ?? commentId}
               isResponse={isResponse}
+              isOpen={comment.id === openCommentId}
+              open={setOpenCommentId}
             />
           ))}
 
@@ -110,7 +86,7 @@ function CommentSection({ originId, isResponse }: CommentSectionProps) {
             disabled={commentContent === ''}
             type='submit'
             onClick={handleSubmit}
-            sx={{ alignSelf: 'stretch', marginLeft: 2, width: '20%' }}
+            sx={{ alignSelf: 'stretch', marginLeft: 2 }}
             variant='contained'
           >
             Opublikuj

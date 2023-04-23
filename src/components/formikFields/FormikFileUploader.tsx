@@ -33,7 +33,6 @@ function FormikFileUploader({
     onDragLeave: () => setDragged(false),
     maxFiles: 1,
     accept: acceptObject,
-    onFileDialogCancel: () => console.log('opened'),
   });
 
   const handleDelete = () => {

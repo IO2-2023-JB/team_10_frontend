@@ -5,15 +5,18 @@ import { CommentValues } from './../types/CommentTypes';
 const commentKey = 'comment';
 const commentResponseKey = 'commentResponse';
 
-export function useComment(id: string) {
+export function useComment(id: string | undefined, isResponse: boolean) {
+  const key = isResponse ? commentResponseKey : commentKey;
+  const address = isResponse ? 'comment/response' : 'comment';
   return useQuery<CommentValues[], AxiosError>({
-    queryKey: [commentKey, id],
-    enabled: id !== '',
-    queryFn: async () => (await axios.get('comment', { params: { id } })).data,
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: [key, id],
+    enabled: id !== undefined,
+    queryFn: async () => (await axios.get(address, { params: { id } })).data,
   });
 }
 
-export function usePostComment(id: string) {
+export function usePostComment(id: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError, string>({
     mutationFn: async (commentContent) =>
@@ -29,29 +32,21 @@ export function usePostComment(id: string) {
   });
 }
 
-export function useDeleteComment(id: string) {
+export function useDeleteComment(originId: string | undefined, commentId: string) {
   const queryClient = useQueryClient();
-  return useMutation<void, AxiosError, string>({
-    mutationFn: async (id: string) =>
+  return useMutation<void, AxiosError>({
+    mutationFn: async () =>
       await axios.delete('comment', {
-        params: { id },
+        params: { id: commentId },
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [commentKey, id] });
-      queryClient.invalidateQueries({ queryKey: [commentResponseKey, id] });
+      queryClient.invalidateQueries({ queryKey: [commentKey, originId] });
+      queryClient.invalidateQueries({ queryKey: [commentResponseKey, originId] });
     },
   });
 }
 
-export function useCommentResponse(id: string) {
-  return useQuery<CommentValues[], AxiosError>({
-    queryKey: [commentResponseKey, id],
-    enabled: id !== '',
-    queryFn: async () => (await axios.get('comment/response', { params: { id } })).data,
-  });
-}
-
-export function usePostCommentResponse(id: string) {
+export function usePostCommentResponse(id: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError, string>({
     mutationFn: async (commentContent) => {

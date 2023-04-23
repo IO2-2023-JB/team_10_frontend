@@ -1,4 +1,4 @@
-import { Paper, Typography, IconButton } from '@mui/material';
+import { Paper, Typography, IconButton, Collapse, Skeleton } from '@mui/material';
 import { Stack } from '@mui/system';
 import { CommentValues } from '../../types/CommentTypes';
 import { Link } from 'react-router-dom';
@@ -12,35 +12,28 @@ import { userDetailsState } from './../../data/UserData';
 
 interface CommentProps {
   comment: CommentValues;
-  originId: string;
-  openCommentId: string;
-  setOpenCommentId: (id: string) => void;
+  originId: string | undefined;
+  open: (id: string | null) => void;
   isResponse: boolean;
+  isOpen: boolean;
 }
 
-function Comment({
-  comment,
-  originId,
-  openCommentId,
-  setOpenCommentId,
-  isResponse,
-}: CommentProps) {
-  const { authorId, content, hasResponses } = comment;
-  const loggedUser = useRecoilValue(userDetailsState);
+function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) {
+  const { authorId, content, hasResponses, id: commentId } = comment;
+  const user = useRecoilValue(userDetailsState);
   const { data: authorDetails } = useUserDetails(authorId);
-  const { mutate } = useDeleteComment(originId);
-  const open = openCommentId === comment.id;
+  const { mutate } = useDeleteComment(originId, commentId);
 
   const handleDelete = () => {
-    mutate(comment.id);
+    mutate();
   };
 
   const handleClick = () => {
     if (!isResponse)
-      if (open) {
-        setOpenCommentId('');
+      if (isOpen) {
+        open(null);
       } else {
-        setOpenCommentId(comment.id);
+        open(comment.id);
       }
   };
 
@@ -53,16 +46,27 @@ function Comment({
       }
     : undefined;
 
+  let message = null;
+  if (!isResponse) {
+    if (isOpen) {
+      if (hasResponses) message = 'Schowaj odpowiedzi';
+      else message = 'Schowaj edytor';
+    } else {
+      if (hasResponses) message = 'Pokaż odpowiedzi';
+      else message = 'Dodaj odpowiedź';
+    }
+  }
+
   return (
     <Stack
       sx={
-        open
+        isOpen
           ? {
               borderLeft: '3px solid',
               borderColor: 'primary.main',
               borderRadius: '16px',
             }
-          : {}
+          : null
       }
     >
       <Paper
@@ -76,33 +80,37 @@ function Comment({
         }}
       >
         <Stack spacing={2} direction='row'>
-          <IconButton color='inherit' component={Link} to={`/user/${authorId}`}>
-            <Avatar userDetails={authorDetails} size={45} />
+          <IconButton
+            sx={{ alignSelf: 'center' }}
+            color='inherit'
+            component={Link}
+            to={`/user/${authorId}`}
+          >
+            {user ? (
+              <Avatar userDetails={authorDetails} size={45} />
+            ) : (
+              <Skeleton variant='circular' width={45} height={45} />
+            )}
           </IconButton>
-          <Stack width='100%' spacing={0.5}>
-            <Typography
-              color='primary.main'
-              textOverflow='hidden'
-              variant='h6'
-              sx={{ wordWrap: 'normal' }}
-            >
-              {authorDetails?.nickname}
-            </Typography>
+          <Stack spacing={0.5}>
+            {user ? (
+              <Typography
+                color='primary.main'
+                textOverflow='hidden'
+                variant='h6'
+                sx={{ wordWrap: 'normal' }}
+              >
+                {authorDetails?.nickname}
+              </Typography>
+            ) : (
+              <Skeleton width={120} variant='rectangular' />
+            )}
             <Typography sx={{ wordWrap: 'anywhere' }}>{content}</Typography>
-            <Typography fontSize={13} color='primary.main'>
-              {!isResponse &&
-                `Kliknij aby ${
-                  open
-                    ? hasResponses
-                      ? 'schować odpowiedzi'
-                      : 'schować edytor'
-                    : hasResponses
-                    ? 'pokazać odpowiedzi'
-                    : 'dodać odpowiedź'
-                }`}
+            <Typography fontSize={12} color='text.secondary'>
+              {message}
             </Typography>
           </Stack>
-          {loggedUser?.id === authorId && (
+          {user?.id === authorId && (
             <IconButton
               onClick={handleDelete}
               sx={{ alignSelf: 'center', color: 'grey.800' }}
@@ -112,9 +120,9 @@ function Comment({
           )}
         </Stack>
       </Paper>
-      {openCommentId === comment.id && (
-        <CommentSection originId={comment.id} isResponse={true} />
-      )}
+      <Collapse in={isOpen} timeout='auto'>
+        {isOpen && <CommentSection commentId={comment.id} isResponse={true} />}
+      </Collapse>
     </Stack>
   );
 }
