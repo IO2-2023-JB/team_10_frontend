@@ -1,8 +1,6 @@
-import { useRecoilValue } from 'recoil';
 import TabRouter from '../../components/TabRouter';
 import PageLayout from '../../components/layout/PageLayout';
 import { ROUTES } from '../../const';
-import { userDetailsState } from '../../data/UserData';
 import HomepageVideos from './HomepageVideos';
 import SubscribedVideos from './SubscribedVideos';
 
@@ -12,8 +10,6 @@ enum HomepageTabs {
 }
 
 function Homepage() {
-  const { id: userId } = useRecoilValue(userDetailsState)!;
-
   return (
     <>
       <PageLayout>
@@ -24,7 +20,7 @@ function Homepage() {
             {
               index: true,
               label: 'Wszystkie wideło',
-              element: <HomepageVideos userId={userId} />,
+              element: <HomepageVideos />,
             },
             {
               path: HomepageTabs.Subscriptions,

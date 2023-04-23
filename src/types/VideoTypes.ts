@@ -68,4 +68,4 @@ export interface GetUserVideosResponse {
   videos: GetVideoMetadataResponse[];
 }
 
-export interface GetSubscribedVideosResponse extends GetUserVideosResponse {}
+export type GetSubscribedVideosResponse = GetUserVideosResponse;
