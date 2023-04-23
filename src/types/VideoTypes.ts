@@ -55,3 +55,10 @@ export enum InputType {
   Video = 'Video',
   Image = 'Image',
 }
+
+export interface NotificationData {
+  open: boolean;
+  videoId: string;
+  message: string;
+  status: ProcessingProgress;
+}

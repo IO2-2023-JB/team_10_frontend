@@ -18,18 +18,16 @@ function FormikFileUploader({
 }: ImageUploaderProps) {
   const [_, meta, helpers] = useField(name);
   const [dragged, setDragged] = useState<boolean>(false);
-  const [fileName, setFileName] = useState<string>('');
 
   const handleDrop = async (files: File[]) => {
     helpers.setTouched(true);
     setDragged(false);
     if (files.length > 0) {
-      setFileName(files[0].name);
       helpers.setValue(files[0]);
     }
   };
 
-  const { getRootProps } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleDrop,
     onDragEnter: () => setDragged(true),
     onDragLeave: () => setDragged(false),
@@ -52,6 +50,7 @@ function FormikFileUploader({
       >
         {label}
       </Typography>
+      <input {...getInputProps()} />
       <Stack
         direction='row'
         sx={{
@@ -85,7 +84,7 @@ function FormikFileUploader({
                 marginInlineEnd: 'auto',
               }}
             >
-              {fileName}
+              {meta.value.name}
             </Typography>
             <Button onClick={handleDelete}>Usuń</Button>
           </Stack>
