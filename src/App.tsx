@@ -14,7 +14,7 @@ import User from './pages/User';
 import Video from './pages/Video';
 import theme from './theme';
 import axios from 'axios';
-import { BACKEND_URL } from './const';
+import { BACKEND_URL, ROUTES } from './const';
 import Upload from './pages/Upload/index';
 
 const queryClient = new QueryClient({
@@ -37,14 +37,13 @@ function App() {
               <AuthGate>
                 <AppLayout>
                   <Routes>
-                    // do poprawy
-                    {/* <Route path='*' element={<PageNotFound />} /> */}
-                    <Route path='/*' element={<Homepage />} />
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/register' element={<Register />} />
-                    <Route path='/upload' element={<Upload />} />
-                    <Route path='/user/:userId/*' element={<User />} />
-                    <Route path='/video/:videoId' element={<Video />} />
+                    <Route path={ROUTES.NOT_FOUND} element={<PageNotFound />} />
+                    <Route path={`${ROUTES.HOMEPAGE}/*`} element={<Homepage />} />
+                    <Route path={ROUTES.LOGIN} element={<Login />} />
+                    <Route path={ROUTES.REGISTER} element={<Register />} />
+                    <Route path={ROUTES.UPLOAD} element={<Upload />} />
+                    <Route path={`${ROUTES.USER}/:userId/*`} element={<User />} />
+                    <Route path={`${ROUTES.VIDEO}/:videoId`} element={<Video />} />
                   </Routes>
                 </AppLayout>
               </AuthGate>
