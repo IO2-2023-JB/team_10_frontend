@@ -1,9 +1,9 @@
 import { useRecoilValue } from 'recoil';
+import TabRouter from '../../components/TabRouter';
 import PageLayout from '../../components/layout/PageLayout';
+import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
-import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import HomepageVideos from './HomepageVideos';
-import { Tab, Tabs } from '@mui/material';
 import SubscribedVideos from './SubscribedVideos';
 
 enum HomepageTabs {
@@ -12,44 +12,27 @@ enum HomepageTabs {
 }
 
 function Homepage() {
-  const location = useLocation();
   const { id: userId } = useRecoilValue(userDetailsState)!;
-
-  const defaultTab = HomepageTabs.AllVideos;
-
-  const currentTab = location.pathname.split('/').at(-1) ?? '';
-  const subRoutes = Object.values(HomepageTabs) as string[];
-  const isIndexRoute = !subRoutes.includes(currentTab);
-
-  if (isIndexRoute) {
-    return <Navigate to={defaultTab} replace />;
-  }
 
   return (
     <>
       <PageLayout>
-        <Tabs value={currentTab} centered={true} sx={{ marginBottom: 4 }}>
-          <Tab
-            value={HomepageTabs.AllVideos}
-            label='Wszystkie Wideło'
-            component={Link}
-            to={HomepageTabs.AllVideos}
-          />
-          <Tab
-            value={HomepageTabs.Subscriptions}
-            label='Subskrypcje'
-            component={Link}
-            to={`${HomepageTabs.Subscriptions}`}
-          />
-        </Tabs>
-
-        <Routes>
-          <Route
-            path={HomepageTabs.AllVideos}
-            element={<HomepageVideos userId={userId} />}
-          />
-          <Route path={HomepageTabs.Subscriptions} element={<SubscribedVideos />} />
-        </Routes>
+        <TabRouter
+          rootPath={ROUTES.HOMEPAGE}
+          defaultTab={HomepageTabs.AllVideos}
+          tabs={[
+            {
+              index: true,
+              label: 'Wszystkie wideło',
+              element: <HomepageVideos userId={userId} />,
+            },
+            {
+              path: HomepageTabs.Subscriptions,
+              label: 'Subskrypcje',
+              element: <SubscribedVideos />,
+            },
+          ]}
+        />
       </PageLayout>
     </>
   );
