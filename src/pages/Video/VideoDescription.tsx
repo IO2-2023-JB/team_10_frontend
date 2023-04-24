@@ -1,7 +1,7 @@
 import { Card, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
-import { getNumberWithLabel } from '../../utils/words';
-import { getTextSummary } from '../../utils/utils';
+import { useRef, useState } from 'react';
+import { useMaxLines } from '../../utils/hooks';
+import { Word, getNumberWithLabel } from '../../utils/words';
 
 interface VideoDescriptionProps {
   viewCount: number;
@@ -15,12 +15,13 @@ function VideoDescription({
   videoDescription,
 }: VideoDescriptionProps) {
   const [expanded, setExpanded] = useState(false);
-  const viewCountText = getNumberWithLabel(viewCount, 'wyświetlenie');
-  const descriptionSummary = getTextSummary(videoDescription, 50, 350);
+  const viewCountText = getNumberWithLabel(viewCount, Word.View);
 
-  const isDescriptionExpandable: boolean =
-    videoDescription.length > descriptionSummary.length;
-  const description = expanded ? videoDescription : descriptionSummary;
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const { isEllipsisActive, style: descriptionMaxLinesStyle } = useMaxLines(
+    3,
+    descriptionRef
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -49,8 +50,10 @@ function VideoDescription({
         </Typography>
       </Stack>
       <Stack marginTop={1} spacing={1}>
-        <Typography>{description}</Typography>
-        {isDescriptionExpandable && (
+        <Typography ref={descriptionRef} sx={!expanded ? descriptionMaxLinesStyle : null}>
+          {videoDescription}
+        </Typography>
+        {(isEllipsisActive || expanded) && (
           <Typography
             onClick={handleExpandClick}
             sx={{

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import FormDialog from '../../components/layout/FormDialog';
 import { GetUserDetailsResponse, getUserTypeString } from '../../types/UserTypes';
-import { getNumberWithLabel } from '../../utils/words';
+import { Word, getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import SubscribeButton from './SubscribeButton';
@@ -24,7 +24,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
   if (userDetails.subscriptionsCount !== null)
     textBottom += ` · ${getNumberWithLabel(
       userDetails.subscriptionsCount,
-      'subskrypcja'
+      Word.Subscription
     )}`;
   if (userDetails.accountBalance !== null)
     textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;

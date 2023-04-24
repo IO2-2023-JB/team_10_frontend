@@ -1,8 +1,9 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
-import Avatar from '../../components/Avatar';
 import { Link } from 'react-router-dom';
-import { GetUserDetailsResponse } from './../../types/UserTypes';
+import Avatar from '../../components/Avatar';
+import { Word, getNumberWithLabel } from '../../utils/words';
 import SubscribeButton from '../User/SubscribeButton';
+import { GetUserDetailsResponse } from './../../types/UserTypes';
 
 const avatarSize = 60;
 
@@ -37,7 +38,11 @@ function CreatorInfo({ userDetails, isAuthor }: CreatorInfoProps) {
             {userDetails ? userDetails.nickname : <Skeleton width={150} />}
           </Typography>
           <Typography variant='subtitle2'>
-            {userDetails ? `${userDetails.subscriptionsCount} subskrypcji` : <Skeleton />}
+            {userDetails ? (
+              getNumberWithLabel(userDetails.subscriptionsCount!, Word.Subscription)
+            ) : (
+              <Skeleton />
+            )}
           </Typography>
         </Stack>
       </Stack>

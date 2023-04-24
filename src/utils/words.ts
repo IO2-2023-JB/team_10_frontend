@@ -4,14 +4,27 @@ interface WordData {
   genitivePlural: string;
 }
 
-export function getNumberWithLabel(value: number, word: string) {
-  const wordData = words[word];
-  let label = word;
+export enum Word {
+  View,
+  Subscription,
+}
 
-  if (wordData === undefined) {
-    console.error(`Missing definition for word ${word}`);
-    return `${value} ${word}`;
-  }
+const words: Record<Word, WordData> = {
+  [Word.View]: {
+    nominativeSingular: 'wyświetlenie',
+    nominativePlural: 'wyświetlenia',
+    genitivePlural: 'wyświetleń',
+  },
+  [Word.Subscription]: {
+    nominativeSingular: 'subskrypcja',
+    nominativePlural: 'subskrypcje',
+    genitivePlural: 'subskrypcji',
+  },
+};
+
+export function getNumberWithLabel(value: number, word: Word) {
+  const wordData = words[word];
+  let label = '';
 
   if (value === 0) label = wordData.genitivePlural;
   else if (value === 1) label = wordData.nominativeSingular;
@@ -25,16 +38,3 @@ export function getNumberWithLabel(value: number, word: string) {
 
   return `${value} ${label}`;
 }
-
-const words: Record<string, WordData> = {
-  wyświetlenie: {
-    nominativeSingular: 'wyświetlenie',
-    nominativePlural: 'wyświetlenia',
-    genitivePlural: 'wyświetleń',
-  },
-  subskrypcja: {
-    nominativeSingular: 'subskrypcja',
-    nominativePlural: 'subskrypcje',
-    genitivePlural: 'subskrypcji',
-  },
-};

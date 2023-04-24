@@ -1,4 +1,5 @@
-import { Box } from '@mui/system';
+import { Box, Skeleton } from '@mui/material';
+import { useState } from 'react';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoThumbnailProps {
@@ -6,6 +7,8 @@ interface VideoThumbnailProps {
 }
 
 function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
+  const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
+
   return (
     <Box
       sx={{
@@ -17,6 +20,7 @@ function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
       <Box
         component='img'
         src={videoMetadata.thumbnail ?? '/placeholder_image.webp'}
+        onLoad={() => setIsSkeleton(false)}
         sx={{
           display: 'block',
           objectFit: 'cover',
@@ -24,8 +28,15 @@ function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
           height: '100%',
           width: '100%',
           borderRadius: 2,
+          visibility: isSkeleton ? 'hidden' : null,
         }}
       />
+      {isSkeleton && (
+        <Skeleton
+          animation={isSkeleton ? 'pulse' : false}
+          sx={{ transform: 'none', position: 'absolute', inset: 0 }}
+        />
+      )}
       {videoMetadata.duration !== null && (
         <Box
           sx={{
