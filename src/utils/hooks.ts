@@ -10,11 +10,12 @@ export function useMaxLines(
 } {
   const [isEllipsisActive, setIsEllipsisActive] = useState<boolean>(false);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useLayoutEffect(() => {
     setIsEllipsisActive(
       ref.current !== null && ref.current.offsetHeight < ref.current.scrollHeight
     );
-  }, [ref]);
+  });
 
   return {
     style: {

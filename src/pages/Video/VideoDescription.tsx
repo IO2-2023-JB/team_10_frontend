@@ -1,5 +1,5 @@
 import { Card, Stack, Typography } from '@mui/material';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMaxLines } from '../../utils/hooks';
 import { Word, getNumberWithLabel } from '../../utils/words';
 
@@ -22,6 +22,10 @@ function VideoDescription({
     3,
     descriptionRef
   );
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [videoDescription]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
