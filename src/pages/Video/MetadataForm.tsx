@@ -1,5 +1,5 @@
 import { Mode } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
@@ -34,9 +34,10 @@ const formFields = (
 
 interface MetadataFormProps {
   videoMetadata: GetVideoMetadataResponse;
+  asMenuItem?: boolean;
 }
 
-function MetadataForm({ videoMetadata }: MetadataFormProps) {
+function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) {
   const { mutate, error, isLoading } = useEditVideoMetadata(videoMetadata.id);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -63,7 +64,11 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
 
   return (
     <>
-      <Button onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</Button>
+      {asMenuItem ? (
+        <MenuItem onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</MenuItem>
+      ) : (
+        <Button onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</Button>
+      )}
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<MetadataFormValues>
           title='Edycja filmu'

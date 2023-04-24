@@ -14,7 +14,6 @@ import { PostReaction, UploadVideoMetadata } from '../types/VideoTypes';
 
 const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
-const userVideosKey = 'user/videos';
 
 export function useVideoMetadata(id: string) {
   return useQuery<GetVideoMetadataResponse, AxiosError>({
@@ -28,7 +27,7 @@ export function useEditVideoMetadata(id: string) {
   return useMutation<void, AxiosError, UploadVideoMetadata>({
     mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
     },
   });
 }
@@ -90,7 +89,7 @@ export function useAllVideos() {
 
 export function useUserVideos(id: string) {
   return useQuery<GetUserVideosResponse, AxiosError>({
-    queryKey: [userVideosKey, id],
-    queryFn: async () => (await axios.get(userVideosKey, { params: { id } })).data,
+    queryKey: [videoMetadataKey, 'user', id],
+    queryFn: async () => (await axios.get('user/videos', { params: { id } })).data,
   });
 }

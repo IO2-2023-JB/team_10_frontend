@@ -1,6 +1,11 @@
-import { Stack, Tooltip, Typography } from '@mui/material';
-import { useRef } from 'react';
+import { MoreVert } from '@mui/icons-material';
+import { Box, IconButton, Menu, Stack, Tooltip, Typography } from '@mui/material';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from '../../data/UserData';
+import MetadataForm from '../../pages/Video/MetadataForm';
+import VideoDelete from '../../pages/Video/VideoDelete';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useMaxLines } from '../../utils/hooks';
 import { Word, getNumberWithLabel } from '../../utils/words';
@@ -19,7 +24,13 @@ function VideoListItem({ videoMetadata }: VideoListItemProps) {
 
   const navigate = useNavigate();
 
+  const loggedInUser = useRecoilValue(userDetailsState);
+  const isAuthor = videoMetadata.authorId === loggedInUser?.id;
+
   const videoUrl = `/video/${videoMetadata.id}`;
+
+  const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
+  const isMenuOpen = menuAnchorElement !== null;
 
   return (
     <Stack
@@ -77,6 +88,35 @@ function VideoListItem({ videoMetadata }: VideoListItemProps) {
           {videoMetadata.description}
         </Typography>
       </Stack>
+      {isAuthor && (
+        <>
+          <Box
+            sx={{
+              paddingInlineEnd: 1,
+              marginInlineStart: 'auto !important',
+              alignSelf: 'center',
+            }}
+          >
+            <IconButton
+              onClick={(event) => {
+                event.stopPropagation();
+                setMenuAnchorElement(event.currentTarget);
+              }}
+            >
+              <MoreVert />
+            </IconButton>
+          </Box>
+          <Menu
+            open={isMenuOpen}
+            anchorEl={menuAnchorElement}
+            onClick={(event) => event.stopPropagation()}
+            onClose={() => setMenuAnchorElement(null)}
+          >
+            <MetadataForm videoMetadata={videoMetadata} asMenuItem />
+            <VideoDelete videoId={videoMetadata.id} asMenuItem />
+          </Menu>
+        </>
+      )}
     </Stack>
   );
 }
