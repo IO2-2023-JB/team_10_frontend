@@ -4,9 +4,10 @@ import VideoListItem from './VideoListItem';
 
 interface VideoListProps {
   videos: GetVideoMetadataResponse[];
+  disableAuthorLink?: boolean;
 }
 
-function VideoList({ videos }: VideoListProps) {
+function VideoList({ videos, disableAuthorLink = false }: VideoListProps) {
   if (videos.length === 0) {
     return <Alert severity='info'>Brak filmów do wyświetlenia</Alert>;
   }
@@ -14,7 +15,11 @@ function VideoList({ videos }: VideoListProps) {
   return (
     <Stack spacing={2}>
       {videos.map((videoData) => (
-        <VideoListItem key={videoData.id} videoMetadata={videoData} />
+        <VideoListItem
+          key={videoData.id}
+          videoMetadata={videoData}
+          disableAuthorLink={disableAuthorLink}
+        />
       ))}
     </Stack>
   );

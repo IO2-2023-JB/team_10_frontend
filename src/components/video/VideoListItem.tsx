@@ -13,9 +13,10 @@ import VideoThumbnail from './VideoThumbnail';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
+  disableAuthorLink: boolean;
 }
 
-function VideoListItem({ videoMetadata }: VideoListItemProps) {
+function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps) {
   const titleRef = useRef<HTMLAnchorElement>(null);
   const { isEllipsisActive, style: titleMaxLinesStyle } = useMaxLines(1, titleRef);
 
@@ -67,18 +68,22 @@ function VideoListItem({ videoMetadata }: VideoListItemProps) {
           </Typography>
         </Tooltip>
         <Stack direction='row' spacing={0.5}>
-          <Typography
-            onClick={(event) => event.stopPropagation()}
-            component={Link}
-            to={`/user/${videoMetadata.authorId}`}
-            sx={{
-              color: 'inherit',
-              textDecoration: 'none',
-              '&:hover': { color: 'primary.main' },
-            }}
-          >
-            {videoMetadata.authorNickname}
-          </Typography>
+          {disableAuthorLink ? (
+            <Typography>{videoMetadata.authorNickname}</Typography>
+          ) : (
+            <Typography
+              onClick={(event) => event.stopPropagation()}
+              component={Link}
+              to={`/user/${videoMetadata.authorId}`}
+              sx={{
+                color: 'inherit',
+                textDecoration: 'none',
+                '&:hover': { color: 'primary.main' },
+              }}
+            >
+              {videoMetadata.authorNickname}
+            </Typography>
+          )}
           <Typography>·</Typography>
           <Typography>
             {getNumberWithLabel(videoMetadata.viewCount, Word.View)}

@@ -11,7 +11,7 @@ function UserVideos({ userId }: UserVideosProps) {
 
   return (
     <ContentSection error={error} isLoading={isLoading}>
-      {userVideos && <VideoList videos={userVideos.videos} />}
+      {userVideos && <VideoList videos={userVideos.videos} disableAuthorLink />}
     </ContentSection>
   );
 }
