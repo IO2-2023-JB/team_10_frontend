@@ -32,10 +32,7 @@ function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
         }}
       />
       {isSkeleton && (
-        <Skeleton
-          animation={isSkeleton ? 'pulse' : false}
-          sx={{ transform: 'none', position: 'absolute', inset: 0 }}
-        />
+        <Skeleton sx={{ transform: 'none', position: 'absolute', inset: 0 }} />
       )}
       {videoMetadata.duration !== null && (
         <Box
