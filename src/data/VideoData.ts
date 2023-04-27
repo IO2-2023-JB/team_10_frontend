@@ -26,7 +26,7 @@ const clearNotif = (
   }, NOTIFICATION_TIMEOUT);
 };
 
-export const pageNotificationState = atom<NotificationData>({
+export const videoNotificationState = atom<NotificationData>({
   key: 'NavbarNotification',
   default: {
     open: false,

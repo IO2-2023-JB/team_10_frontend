@@ -14,9 +14,16 @@ function Video() {
     <PageLayout>
       <ContentSection error={error} isLoading={isLoading}>
         <>
-          <Player videoId={videoId!} />
-          {videoMetadata && <Metadata videoMetadata={videoMetadata} />}
-          {videoId && <CommentSection videoId={videoId} />}
+          {videoMetadata && (
+            <>
+              <Player
+                videoId={videoId!}
+                processingState={videoMetadata.processingProgress}
+              />
+              <Metadata videoMetadata={videoMetadata} />
+              <CommentSection videoId={videoId} />
+            </>
+          )}
         </>
       </ContentSection>
     </PageLayout>
