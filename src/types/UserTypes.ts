@@ -1,3 +1,5 @@
+import { RegisterFormValues } from '../pages/Register/RegisterForm';
+
 export interface GetUserDetailsResponse {
   id: string;
   email: string;
@@ -28,3 +30,13 @@ export function getUserTypeString(userDetails: GetUserDetailsResponse): string {
       return 'Administrator';
   }
 }
+
+export type PostUserDetails = Pick<
+  RegisterFormValues,
+  'email' | 'nickname' | 'name' | 'surname' | 'password' | 'userType'
+> & { avatarImage: string | null };
+
+export type PutUserDetails = Pick<
+  GetUserDetailsResponse,
+  'name' | 'surname' | 'nickname' | 'userType' | 'avatarImage'
+>;

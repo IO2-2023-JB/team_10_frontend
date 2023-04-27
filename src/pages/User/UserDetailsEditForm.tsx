@@ -4,21 +4,22 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
-import AvatarSection from '../../components/formikFields/FormikAvatarField';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { AccountType } from '../../types/UserTypes';
 import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import { shallowComparison } from '../../utils/utils';
+import { shallowComparison, toBase64 } from '../../utils/utils';
+import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
   name: string;
   surname: string;
   userType: AccountType;
-  avatarImage: string | null;
+  avatarImage: File | null;
 }
 
 const userDetailsEditValidationForm = new Yup.ObjectSchema({
@@ -37,7 +38,13 @@ const formFields = (
       labels={['Widz', 'Twórca']}
       options={[AccountType.Simple, AccountType.Creator]}
     />
-    <AvatarSection name='avatarImage' />
+    <FormikFileUploader
+      name='avatarImage'
+      preview={true}
+      acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
+      acceptObject={ALLOWED_IMAGE_OBJECT}
+      label='Avatar'
+    />
   </>
 );
 
@@ -50,7 +57,7 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
   const [errorMessage, setErrorMessage] = useState('');
 
-  const [avatarImage, setAvatarImage] = useState<string | null>(null);
+  const [avatarImage, setAvatarImage] = useState<File | null>(null);
   const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>(
     userDetails.avatarImage === null
   );
@@ -64,19 +71,12 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   };
 
   const prepareInitialValues = useCallback(async () => {
-    const { data: file } = await axios.get<Blob>(userDetails.avatarImage!, {
+    const { data: file } = await axios.get<File>(userDetails.avatarImage!, {
       responseType: 'blob',
     });
 
-    const reader = new FileReader();
-    if (file === undefined) return;
-
-    reader.onload = () => {
-      setAvatarImage(reader.result as string);
-      setAreInitialValuesReady(true);
-    };
-
-    reader.readAsDataURL(file);
+    setAvatarImage(file);
+    setAreInitialValuesReady(true);
   }, [userDetails.avatarImage]);
 
   useEffect(() => {
@@ -90,7 +90,10 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   const handleSubmit = (values: UserDetailsEditFormValues) => {
     setErrorMessage(error?.message ?? '');
     if (!shallowComparison(values, formikInitialValues)) {
-      mutate(values);
+      toBase64(values.avatarImage!).then((res) => {
+        const payload = { ...values, avatarImage: res };
+        mutate(payload);
+      });
     } else setErrorMessage('Wprowadź nowe wartości');
   };
 

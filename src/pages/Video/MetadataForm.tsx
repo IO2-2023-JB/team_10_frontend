@@ -7,14 +7,17 @@ import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import BaseForm from '../Login/BaseForm';
-import { UploadVideoMetadata } from './../../types/VideoTypes';
 import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
+import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { toBase64 } from '../../utils/utils';
 
 export interface MetadataFormValues {
   title: string;
   description: string;
   tags: string;
   visibility: VideoVisibility;
+  thumbnail: File | null;
 }
 
 const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
@@ -29,6 +32,13 @@ const formFields = (
       labels={['Prywatny', 'Publiczny']}
       options={[VideoVisibility.Private, VideoVisibility.Public]}
     />
+    <FormikFileUploader
+      name='thumbnail'
+      label='Thumbnail'
+      acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
+      acceptObject={ALLOWED_IMAGE_OBJECT}
+      preview={true}
+    />
   </>
 );
 
@@ -42,15 +52,17 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleSubmit = (values: MetadataFormValues) => {
-    const parsedValues: UploadVideoMetadata = {
-      ...values,
-      tags: values.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0),
-      thumbnail: null,
-    };
-    mutate(parsedValues);
+    toBase64(values.thumbnail!).then((res) => {
+      const payload = {
+        ...values,
+        tags: values.tags
+          .split(',')
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length > 0),
+        thumbnail: res,
+      };
+      mutate(payload);
+    });
   };
 
   const errorMessage = error?.message ?? '';
@@ -60,6 +72,7 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
     description: videoMetadata.description,
     tags: videoMetadata.tags.join(', '),
     visibility: videoMetadata.visibility,
+    thumbnail: null,
   };
 
   return (

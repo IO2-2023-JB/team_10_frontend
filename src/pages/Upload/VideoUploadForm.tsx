@@ -46,12 +46,14 @@ function VideoUploadForm() {
         label='Miniaturka'
         acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
         acceptObject={ALLOWED_IMAGE_OBJECT}
+        preview={true}
       />
       <FormikFileUploader
         name='videoFile'
         label='Wideo'
         acceptedFileTypes={ALLOWED_VIDEO_FORMATS}
         acceptObject={ALLOWED_VIDEO_OBJECT}
+        preview={false}
       />
       <FormikSwitch
         checked={true}
