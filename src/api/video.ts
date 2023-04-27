@@ -12,7 +12,7 @@ import {
 } from '../types/VideoTypes';
 import { PostReaction, UploadVideoMetadata } from '../types/VideoTypes';
 
-const videoMetadataKey = 'video-metadata';
+export const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
 
 export function useVideoMetadata(id: string) {

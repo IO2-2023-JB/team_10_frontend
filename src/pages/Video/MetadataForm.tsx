@@ -1,6 +1,6 @@
 import { Mode } from '@mui/icons-material';
 import { Button, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
@@ -11,6 +11,7 @@ import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { toBase64 } from '../../utils/utils';
+import axios from 'axios';
 
 export interface MetadataFormValues {
   title: string;
@@ -34,7 +35,7 @@ const formFields = (
     />
     <FormikFileUploader
       name='thumbnail'
-      label='Thumbnail'
+      label='Miniaturka'
       acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
       acceptObject={ALLOWED_IMAGE_OBJECT}
       preview={true}
@@ -48,8 +49,12 @@ interface MetadataFormProps {
 }
 
 function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) {
-  const { mutate, error, isLoading } = useEditVideoMetadata(videoMetadata.id);
+  const { mutate, error, isLoading, isSuccess } = useEditVideoMetadata(videoMetadata.id);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>(
+    videoMetadata.thumbnail === null
+  );
+  const [thumbnailImage, setThumbnailImage] = useState<File | null>(null);
 
   const handleSubmit = (values: MetadataFormValues) => {
     toBase64(values.thumbnail!).then((res) => {
@@ -67,13 +72,30 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
 
   const errorMessage = error?.message ?? '';
 
+  const prepareInitialValues = useCallback(async () => {
+    const { data: file } = await axios.get<File>(videoMetadata.thumbnail!, {
+      responseType: 'blob',
+    });
+
+    setThumbnailImage(file);
+    setAreInitialValuesReady(true);
+  }, [videoMetadata.thumbnail]);
+
+  useEffect(() => {
+    if (!areInitialValuesReady) prepareInitialValues();
+  }, [areInitialValuesReady, prepareInitialValues]);
+
   const formikInitialValues: MetadataFormValues = {
     title: videoMetadata.title,
     description: videoMetadata.description,
     tags: videoMetadata.tags.join(', '),
     visibility: videoMetadata.visibility,
-    thumbnail: null,
+    thumbnail: thumbnailImage,
   };
+
+  useEffect(() => {
+    if (isSuccess) setIsDialogOpen(false);
+  }, [isSuccess]);
 
   return (
     <>

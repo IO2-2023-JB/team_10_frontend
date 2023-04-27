@@ -118,7 +118,7 @@ function FormikFileUploader({
                 }}
               >
                 {preview && !meta.touched && meta.initialValue !== null
-                  ? 'Current avatar'
+                  ? `Aktualny ${label}`
                   : meta.value.name}
               </Typography>
               <Button onClick={handleDelete}>Usuń</Button>

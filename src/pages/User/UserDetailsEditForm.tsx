@@ -58,9 +58,7 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   const [errorMessage, setErrorMessage] = useState('');
 
   const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>(
-    userDetails.avatarImage === null
-  );
+  const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>();
 
   const formikInitialValues: UserDetailsEditFormValues = {
     nickname: userDetails.nickname,
