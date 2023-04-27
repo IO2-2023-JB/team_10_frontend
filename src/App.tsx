@@ -42,7 +42,7 @@ function App() {
                     <Route path='/login' element={<Login />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/upload' element={<Upload />} />
-                    <Route path='/user/:userId' element={<User />} />
+                    <Route path='/user/:userId/*' element={<User />} />
                     <Route path='/video/:videoId' element={<Video />} />
                   </Routes>
                 </AppLayout>

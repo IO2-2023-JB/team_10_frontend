@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { pageNotificationState } from '../data/VideoData';
 import {
+  GetUserVideosResponse,
   GetVideoMetadataResponse,
   ProcessingProgress,
   ReactionCounts,
@@ -26,7 +27,7 @@ export function useEditVideoMetadata(id: string) {
   return useMutation<void, AxiosError, UploadVideoMetadata>({
     mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
     },
   });
 }
@@ -83,5 +84,12 @@ export function useAllVideos() {
   return useQuery<GetVideoMetadataResponse[], AxiosError>({
     queryKey: [videoMetadataKey],
     queryFn: async () => (await axios.get('getAllVideos')).data,
+  });
+}
+
+export function useUserVideos(id: string) {
+  return useQuery<GetUserVideosResponse, AxiosError>({
+    queryKey: [videoMetadataKey, 'user', id],
+    queryFn: async () => (await axios.get('user/videos', { params: { id } })).data,
   });
 }

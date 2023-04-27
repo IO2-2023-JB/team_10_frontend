@@ -11,7 +11,7 @@ import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import { shallowComparison } from './../../utils';
+import { shallowComparison } from '../../utils/utils';
 
 export interface UserDetailsEditFormValues {
   nickname: string;

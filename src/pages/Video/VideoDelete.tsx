@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, Button, MenuItem, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDeleteVideo } from '../../api/video';
@@ -7,9 +7,10 @@ import SpinningButton from '../../components/SpinningButton';
 
 interface VideoDeleteProps {
   videoId: string;
+  asMenuItem?: boolean;
 }
 
-function VideoDelete({ videoId }: VideoDeleteProps) {
+function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   const navigate = useNavigate();
 
   const { mutate, error, isSuccess, isLoading } = useDeleteVideo(videoId);
@@ -25,7 +26,11 @@ function VideoDelete({ videoId }: VideoDeleteProps) {
 
   return (
     <>
-      <Button onClick={() => setIsDeleteDialogOpen(true)}>Usuń</Button>
+      {asMenuItem ? (
+        <MenuItem onClick={() => setIsDeleteDialogOpen(true)}>Usuń</MenuItem>
+      ) : (
+        <Button onClick={() => setIsDeleteDialogOpen(true)}>Usuń</Button>
+      )}
       <FormDialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <Stack spacing={3}>
           {error && (

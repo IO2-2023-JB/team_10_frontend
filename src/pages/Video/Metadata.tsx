@@ -33,14 +33,16 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
           alignItems: 'center',
         }}
       >
-        <Typography sx={{ marginInlineEnd: 'auto' }} variant='h5' fontWeight={600}>
-          {videoMetadata.title}
-        </Typography>
-        <Box sx={{ marginRight: 2 }}>
+        <Stack sx={{ marginInlineEnd: 'auto' }} spacing={1}>
+          <Typography variant='h5' fontWeight={600}>
+            {videoMetadata.title}
+          </Typography>
+          <VideoTags tags={videoMetadata.tags} />
+        </Stack>
+        <Box sx={{ marginRight: 2, flexShrink: 0 }}>
           <Reaction videoId={videoMetadata.id} />
         </Box>
       </Stack>
-      <VideoTags tags={videoMetadata.tags} />
       <Stack direction='row' alignItems='center'>
         <CreatorInfo userDetails={userDetails} isAuthor={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>

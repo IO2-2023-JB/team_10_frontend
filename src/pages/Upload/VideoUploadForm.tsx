@@ -7,7 +7,7 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
-import { toBase64 } from '../../utils';
+import { toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { ALLOWED_VIDEO_FORMATS, ALLOWED_VIDEO_OBJECT } from './../../const';
 import { MetadataFormValues } from './../Video/MetadataForm';
@@ -17,7 +17,7 @@ export type VideoUploadFormValues = {
   thumbnail: File | null;
 } & MetadataFormValues;
 
-const videoUploadValidationSchema = Yup.object({
+export const videoUploadValidationSchema = Yup.object({
   title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
   description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
   tags: Yup.string(),
