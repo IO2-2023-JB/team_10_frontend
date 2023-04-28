@@ -5,11 +5,19 @@ import { useVideoUpload } from '../../api/video';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import {
+  ALLOWED_IMAGE_FORMATS,
+  ALLOWED_IMAGE_OBJECT,
+  MAX_VIDEO_TITLE_LENGTH,
+} from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { ALLOWED_VIDEO_FORMATS, ALLOWED_VIDEO_OBJECT } from './../../const';
+import {
+  ALLOWED_VIDEO_FORMATS,
+  ALLOWED_VIDEO_OBJECT,
+  MAX_VIDEO_DESCRIPTION_LENGTH,
+} from './../../const';
 import { MetadataFormValues } from './../Video/MetadataForm';
 
 export type VideoUploadFormValues = {
@@ -18,8 +26,13 @@ export type VideoUploadFormValues = {
 } & MetadataFormValues;
 
 export const videoUploadValidationSchema = Yup.object({
-  title: Yup.string().max(100, 'Maksymalnie 100 znaków').required('Pole wymagane'),
-  description: Yup.string().max(1000, 'Maksymalnie 1000 znaków'),
+  title: Yup.string()
+    .max(MAX_VIDEO_TITLE_LENGTH, `Maksymalnie ${MAX_VIDEO_TITLE_LENGTH} znaków`)
+    .required('Pole wymagane'),
+  description: Yup.string().max(
+    MAX_VIDEO_DESCRIPTION_LENGTH,
+    `Maksymalnie ${MAX_VIDEO_DESCRIPTION_LENGTH} znaków`
+  ),
   tags: Yup.string(),
   videoFile: Yup.string().required('Pole wymagane'),
 });

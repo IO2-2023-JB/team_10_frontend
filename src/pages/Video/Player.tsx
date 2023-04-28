@@ -21,9 +21,8 @@ function Player({ videoId, processingState }: PlayerProps) {
   )}`;
 
   useEffect(() => {
-    if (processingNotification.videoId === videoId)
-      queryClient.invalidateQueries({ queryKey: [videoMetadataKey, videoId] });
-  }, [processingNotification, queryClient, videoId]);
+    queryClient.invalidateQueries({ queryKey: [videoMetadataKey, videoId] });
+  }, [processingNotification.status, queryClient, videoId]);
 
   return (
     <Box
