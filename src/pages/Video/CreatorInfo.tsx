@@ -19,7 +19,12 @@ function CreatorInfo({ userDetails, isAuthor }: CreatorInfoProps) {
         direction='row'
         color='inherit'
         sx={{
+          padding: 1,
+          borderRadius: 2,
           textDecoration: 'inherit',
+          '&:hover': {
+            backgroundColor: 'background.light',
+          },
         }}
         component={Link}
         to={userDetails ? `/user/${userDetails?.id}` : '.'}
