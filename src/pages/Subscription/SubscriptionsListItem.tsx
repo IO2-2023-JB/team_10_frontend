@@ -15,7 +15,7 @@ function SubscriptionsListItem({ userId }: SubscriptionsListItemProps) {
   return (
     <ListItem key={userId}>
       <CreatorInfo
-        isSelf={loggedUserDetails?.id == userId}
+        isSelf={loggedUserDetails?.id === userId}
         userDetails={userDetails}
         width='100%'
       />

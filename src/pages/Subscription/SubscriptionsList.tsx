@@ -14,7 +14,7 @@ function SubscriptionsList({ subscriptions }: SubscriptionsListProps) {
   return (
     <Stack>
       {subscriptions.map((sub) => (
-        <SubscriptionsListItem userId={sub.id} />
+        <SubscriptionsListItem key={sub.id} userId={sub.id} />
       ))}
     </Stack>
   );

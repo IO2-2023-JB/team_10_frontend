@@ -2,7 +2,7 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import { Word, getNumberWithLabel } from '../../utils/words';
-import SubscribeButton from '../User/SubscribeButton';
+import SubscribeButton from '../Subscription/SubscribeButton';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { ROUTES } from '../../const';
 

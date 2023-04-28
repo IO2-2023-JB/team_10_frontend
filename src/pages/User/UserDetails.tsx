@@ -10,7 +10,7 @@ import {
 import { Word, getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import SubscribeButton from './SubscribeButton';
+import SubscribeButton from '../Subscription/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
 
 interface UserDetailsProps {
@@ -65,7 +65,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           >
             Edytuj profil
           </Button>
-        ) : userDetails.userType == AccountType.Creator ? (
+        ) : userDetails.userType === AccountType.Creator ? (
           <SubscribeButton creatorId={userDetails.id} />
         ) : (
           <></>
