@@ -56,8 +56,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             <Typography variant='h5'>{textBottom}</Typography>
           </Stack>
         </Stack>
-
-        {userDetails.id === loggedUserDetails?.id ? (
+        {userDetails.id === loggedUserDetails?.id && (
           <Button
             onClick={handleDialogOpen}
             sx={{ marginInlineStart: 'auto' }}
@@ -65,11 +64,11 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           >
             Edytuj profil
           </Button>
-        ) : userDetails.userType === AccountType.Creator ? (
-          <SubscribeButton creatorId={userDetails.id} />
-        ) : (
-          <></>
         )}
+        {userDetails.id !== loggedUserDetails?.id &&
+          userDetails.userType === AccountType.Creator && (
+            <SubscribeButton creatorId={userDetails.id} />
+          )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />

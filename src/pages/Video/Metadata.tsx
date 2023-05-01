@@ -44,7 +44,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
         </Box>
       </Stack>
       <Stack direction='row' alignItems='center'>
-        <CreatorInfo userDetails={userDetails} isSelf={isAuthor} width='auto' />
+        <CreatorInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
           {isAuthor && (
             <>

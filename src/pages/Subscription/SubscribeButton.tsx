@@ -26,7 +26,7 @@ function SubscribeButton({ creatorId }: SubscribeButtonProps) {
       onClick={() => {
         handleSubscribe();
       }}
-      onMouseOver={() => {
+      onMouseEnter={() => {
         setSubscribedText(SubscribeButtonText.Unsubscribe);
       }}
       onMouseLeave={() => {

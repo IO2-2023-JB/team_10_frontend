@@ -11,7 +11,7 @@ const avatarSize = 60;
 interface CreatorInfoProps {
   userDetails?: GetUserDetailsResponse;
   isSelf: boolean;
-  width: string;
+  width?: string;
 }
 
 function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps) {

@@ -13,7 +13,7 @@ function SubscriptionsListItem({ userId }: SubscriptionsListItemProps) {
   const { data: userDetails } = useUserDetails(userId);
 
   return (
-    <ListItem key={userId}>
+    <ListItem>
       <CreatorInfo
         isSelf={loggedUserDetails?.id === userId}
         userDetails={userDetails}
