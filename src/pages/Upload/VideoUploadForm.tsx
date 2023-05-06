@@ -11,7 +11,7 @@ import {
   MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
-import { toBase64 } from '../../utils/utils';
+import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import {
   ALLOWED_VIDEO_FORMATS,
@@ -90,7 +90,6 @@ function VideoUploadForm() {
     mutate(parsedValues);
   };
 
-  const errorMessage = error?.message ?? '';
   return (
     <Stack sx={{ alignItems: 'center' }}>
       <BaseForm<VideoUploadFormValues>
@@ -101,7 +100,7 @@ function VideoUploadForm() {
         initialValues={formikInitialValues}
         validationSchema={videoUploadValidationSchema}
         onSubmit={handleSubmit}
-        errorMessage={errorMessage}
+        errorMessage={getErrorMessage(error)}
         isLoading={isLoading}
         alertCollapse={false}
       />

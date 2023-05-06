@@ -11,7 +11,7 @@ import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import { shallowComparison } from '../../utils/utils';
+import { getErrorMessage, shallowComparison } from '../../utils/utils';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
@@ -48,7 +48,7 @@ interface UserDetailsEditFormProps {
 
 function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
   const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [avatarImage, setAvatarImage] = useState<string | null>(null);
   const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>(
@@ -88,7 +88,7 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
   }, [isSuccess, closeDialog]);
 
   const handleSubmit = (values: UserDetailsEditFormValues) => {
-    setErrorMessage(error?.message ?? '');
+    setErrorMessage(getErrorMessage(error));
     if (!shallowComparison(values, formikInitialValues)) {
       mutate(values);
     } else setErrorMessage('Wprowadź nowe wartości');

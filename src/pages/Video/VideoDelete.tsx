@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useDeleteVideo } from '../../api/video';
 import FormDialog from '../../components/layout/FormDialog';
 import SpinningButton from '../../components/SpinningButton';
+import { getErrorMessage } from '../../utils/utils';
 
 interface VideoDeleteProps {
   videoId: string;
@@ -36,7 +37,7 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
           {error && (
             <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
               <AlertTitle>Wystąpił błąd!</AlertTitle>
-              {error?.message}
+              {getErrorMessage(error)}
             </Alert>
           )}
           <Typography variant='h5'>Czy na pewno chcesz usunąć film?</Typography>

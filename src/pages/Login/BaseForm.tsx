@@ -10,7 +10,7 @@ type BaseFormProps<T> = {
   buttonText: string;
   icon: ReactNode;
   formFields: ReactNode;
-  errorMessage: string;
+  errorMessage: string | null;
   isLoading: boolean;
   alertCollapse: boolean;
 } & FormikConfig<T>;
@@ -39,11 +39,12 @@ function BaseForm<T extends FormikValues>({
         alignItems: 'center',
       }}
     >
-      {(!alertCollapse || (alertCollapse && errorMessage !== '')) && (
+      {(!alertCollapse || (alertCollapse && errorMessage !== null)) && (
         <Alert
           variant='filled'
           sx={{
-            visibility: errorMessage === '' && !successfulRegister ? 'hidden' : 'visible',
+            visibility:
+              errorMessage === null && !successfulRegister ? 'hidden' : 'visible',
             marginY: 2,
             width: '100%',
           }}
