@@ -2,7 +2,7 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import { Word, getNumberWithLabel } from '../../utils/words';
-import SubscribeButton from '../User/SubscribeButton';
+import SubscribeButton from '../Subscription/SubscribeButton';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { ROUTES } from '../../const';
 
@@ -10,12 +10,13 @@ const avatarSize = 60;
 
 interface CreatorInfoProps {
   userDetails?: GetUserDetailsResponse;
-  isAuthor: boolean;
+  isSelf: boolean;
+  width?: string;
 }
 
-function CreatorInfo({ userDetails, isAuthor }: CreatorInfoProps) {
+function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps) {
   return (
-    <Stack direction='row' alignItems='center'>
+    <Stack direction='row' alignItems='center' width={width}>
       <Stack
         direction='row'
         color='inherit'

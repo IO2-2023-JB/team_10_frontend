@@ -2,11 +2,15 @@ import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import FormDialog from '../../components/layout/FormDialog';
-import { GetUserDetailsResponse, getUserTypeString } from '../../types/UserTypes';
+import {
+  AccountType,
+  GetUserDetailsResponse,
+  getUserTypeString,
+} from '../../types/UserTypes';
 import { Word, getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import SubscribeButton from './SubscribeButton';
+import SubscribeButton from '../Subscription/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
 
 interface UserDetailsProps {
@@ -52,8 +56,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             <Typography variant='h5'>{textBottom}</Typography>
           </Stack>
         </Stack>
-
-        {userDetails.id === loggedUserDetails?.id ? (
+        {userDetails.id === loggedUserDetails?.id && (
           <Button
             onClick={handleDialogOpen}
             sx={{ marginInlineStart: 'auto' }}
@@ -61,9 +64,11 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           >
             Edytuj profil
           </Button>
-        ) : (
-          <SubscribeButton creatorId={userDetails.id} />
         )}
+        {userDetails.id !== loggedUserDetails?.id &&
+          userDetails.userType === AccountType.Creator && (
+            <SubscribeButton creatorId={userDetails.id} />
+          )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />
