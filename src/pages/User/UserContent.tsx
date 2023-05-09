@@ -1,6 +1,6 @@
 import TabRouter from '../../components/TabRouter';
 import { AccountType, GetUserDetailsResponse } from '../../types/UserTypes';
-import UserSubscriptions from '../Subscription/UserSubscriptions';
+import UserSubscriptions from './Subscriptions/UserSubscriptions';
 import UserVideos from './UserVideos';
 
 enum UserProfileTabs {

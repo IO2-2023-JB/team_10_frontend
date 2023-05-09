@@ -1,8 +1,8 @@
 import { ListItem } from '@mui/material';
-import CreatorInfo from '../Video/CreatorInfo';
-import { useUserDetails } from '../../api/user';
+import CreatorInfo from '../../Video/CreatorInfo';
+import { useUserDetails } from '../../../api/user';
 import { useRecoilValue } from 'recoil';
-import { userDetailsState } from '../../data/UserData';
+import { userDetailsState } from '../../../data/UserData';
 
 interface SubscriptionsListItemProps {
   userId: string;

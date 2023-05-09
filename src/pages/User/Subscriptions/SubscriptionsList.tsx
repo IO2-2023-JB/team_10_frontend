@@ -1,5 +1,5 @@
 import { Alert, Stack } from '@mui/material';
-import { Subscription } from '../../data/Subscription';
+import { Subscription } from '../../../data/Subscription';
 import SubscriptionsListItem from './SubscriptionsListItem';
 
 interface SubscriptionsListProps {
