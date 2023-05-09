@@ -4,13 +4,18 @@ import PlaylistTile from './PlaylistTile';
 
 interface PlaylistListProps {
   playlists: Playlist[];
+  showVisibility: boolean;
 }
 
-function PlaylistList({ playlists }: PlaylistListProps) {
+function PlaylistList({ playlists, showVisibility }: PlaylistListProps) {
   return (
     <Grid container spacing={2}>
       {playlists.map((playlist) => (
-        <PlaylistTile key={playlist.id} playlist={playlist} />
+        <PlaylistTile
+          key={playlist.id}
+          playlist={playlist}
+          showVisibility={showVisibility}
+        />
       ))}
     </Grid>
   );
