@@ -32,7 +32,7 @@ function App() {
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <CssBaseline enableColorScheme />
             <AppLoader>
               <AuthGate>
                 <AppLayout>
