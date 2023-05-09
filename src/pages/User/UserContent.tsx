@@ -1,11 +1,13 @@
 import TabRouter from '../../components/TabRouter';
 import { AccountType, GetUserDetailsResponse } from '../../types/UserTypes';
 import UserSubscriptions from './Subscriptions/UserSubscriptions';
+import UserPlaylists from './Playlists/UserPlaylists';
 import UserVideos from './UserVideos';
 
 enum UserProfileTabs {
   Videos = 'videos',
   Subscriptions = 'subscriptions',
+  Playlists = 'playlists',
 }
 
 interface UserDetailsProps {
@@ -33,6 +35,11 @@ function UserContent({ userDetails }: UserDetailsProps) {
           path: UserProfileTabs.Subscriptions,
           label: 'Subskrypcje',
           element: <UserSubscriptions userId={userDetails.id} />,
+        },
+        {
+          path: UserProfileTabs.Playlists,
+          label: 'Playlisty',
+          element: <UserPlaylists userId={userDetails.id} />,
         },
       ]}
     />
