@@ -26,6 +26,12 @@ const theme = createTheme({
   },
 });
 
+export const transitionShort = (property: string): string =>
+  `${property} ease-in-out 100ms`;
+
+export const transitionLong = (property: string): string =>
+  `${property} ease-in-out 200ms`;
+
 declare module '@mui/material/styles' {
   interface TypeBackground {
     light: string;

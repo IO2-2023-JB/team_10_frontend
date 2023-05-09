@@ -11,6 +11,7 @@ import { useMaxLines } from '../../utils/hooks';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import VideoThumbnail from './VideoThumbnail';
 import { ROUTES } from '../../const';
+import { transitionShort } from '../../theme';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -44,7 +45,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
         color: 'inherit',
         textDecoration: 'none',
         borderRadius: 2,
-        transition: 'background-color ease-in-out 100ms',
+        transition: transitionShort('background-color'),
         '&:hover': {
           backgroundColor: 'background.light',
         },

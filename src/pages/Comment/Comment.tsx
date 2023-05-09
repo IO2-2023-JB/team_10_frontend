@@ -9,6 +9,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CommentSection from './CommentSection';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from './../../data/UserData';
+import { transitionLong } from '../../theme';
 
 interface CommentProps {
   comment: CommentValues;
@@ -40,7 +41,7 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
   const hover = !isResponse
     ? {
         '&:hover': {
-          transition: 'background-color ease-in-out 200ms',
+          transition: transitionLong('background-color'),
           backgroundColor: 'background.light',
         },
       }
