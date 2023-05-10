@@ -1,15 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { useVideoMetadata } from '../../api/video';
+import ContentSection from '../../components/layout/ContentSection';
+import { videoMetadataKey } from './../../api/video';
+import PageLayout from './../../components/layout/PageLayout';
+import { videoNotificationState } from './../../data/VideoData';
+import CommentSection from './Comment/CommentSection';
 import Metadata from './Metadata';
 import Player from './Player';
-import ContentSection from '../../components/layout/ContentSection';
-import { useVideoMetadata } from '../../api/video';
-import CommentSection from './../Comment/CommentSection';
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { videoMetadataKey } from './../../api/video';
-import { useRecoilValue } from 'recoil';
-import { videoNotificationState } from './../../data/VideoData';
-import PageLayout from './../../components/layout/PageLayout';
 
 function Video() {
   const { videoId } = useParams();
