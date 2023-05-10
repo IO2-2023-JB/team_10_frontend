@@ -1,19 +1,22 @@
-import { LockOutlined, Public } from '@mui/icons-material';
 import { Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { ROUTES } from '../../../const';
 import { transitionShort } from '../../../theme';
-import { Playlist, PlaylistVisibility } from '../../../types/PlaylistTypes';
+import { PlaylistBase } from '../../../types/PlaylistTypes';
 import { useMaxLines } from '../../../utils/hooks';
+import PlaylistVisibilityLabel from '../../Playlist/PlaylistVisibilityLabel';
 
 interface PlaylistTileProps {
-  playlist: Playlist;
+  playlist: PlaylistBase;
   showVisibility: boolean;
 }
 
 function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
   const nameRef = useRef<HTMLHeadingElement>(null);
   const { isEllipsisActive, style: maxLinesStyle } = useMaxLines(1, nameRef);
+
+  const playlistUrl = `${ROUTES.PLAYLIST}/${playlist.id}`;
 
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -28,7 +31,7 @@ function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
           },
         }}
         component={Link}
-        to='' // TODO add target
+        to={playlistUrl}
       >
         <Stack spacing={2}>
           <Tooltip title={isEllipsisActive ? playlist.name : null}>
@@ -44,30 +47,7 @@ function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
               {playlist.name}
             </Typography>
           </Tooltip>
-          {showVisibility && (
-            <Stack
-              direction='row'
-              spacing={1}
-              sx={{
-                color: 'text.disabled',
-                alignItems: 'center',
-                '& > .MuiSvgIcon-root': {
-                  fontSize: '1.35rem',
-                },
-              }}
-            >
-              {playlist.visibility === PlaylistVisibility.Public ? (
-                <Public />
-              ) : (
-                <LockOutlined />
-              )}
-              <Typography variant='subtitle2'>
-                {playlist.visibility === PlaylistVisibility.Public
-                  ? 'Publiczna'
-                  : 'Prywatna'}
-              </Typography>
-            </Stack>
-          )}
+          {showVisibility && <PlaylistVisibilityLabel visibility={playlist.visibility} />}
         </Stack>
       </Paper>
     </Grid>

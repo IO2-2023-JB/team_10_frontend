@@ -1,9 +1,9 @@
 import { Grid } from '@mui/material';
-import { Playlist } from '../../../types/PlaylistTypes';
+import { PlaylistBase } from '../../../types/PlaylistTypes';
 import PlaylistTile from './PlaylistTile';
 
 interface PlaylistListProps {
-  playlists: Playlist[];
+  playlists: PlaylistBase[];
   showVisibility: boolean;
 }
 

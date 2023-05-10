@@ -23,6 +23,7 @@ export const ROUTES = {
   UPLOAD: '/upload',
   USER: '/user',
   VIDEO: '/video',
+  PLAYLIST: '/playlist',
 };
 
 export const EXAMPLE_TAGS = [

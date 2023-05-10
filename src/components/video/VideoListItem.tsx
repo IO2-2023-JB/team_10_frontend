@@ -80,6 +80,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
               sx={{
                 color: 'inherit',
                 textDecoration: 'none',
+                transition: transitionShort('color'),
                 '&:hover': { color: 'primary.main' },
               }}
             >
