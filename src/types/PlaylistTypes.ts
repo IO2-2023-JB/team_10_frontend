@@ -16,3 +16,7 @@ export type Playlist = Omit<PlaylistBase, 'id'> & {
   authorNickname: string;
   videos: GetVideoMetadataResponse[];
 };
+
+export type CreatePlaylist = Omit<PlaylistBase, 'id'>;
+
+export type CreatePlaylistResponse = Pick<PlaylistBase, 'id'>;

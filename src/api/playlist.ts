@@ -1,6 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { Playlist, PlaylistBase } from '../types/PlaylistTypes';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from '../data/UserData';
+import {
+  CreatePlaylist,
+  CreatePlaylistResponse,
+  Playlist,
+  PlaylistBase,
+} from '../types/PlaylistTypes';
 
 const playlistKey = 'playlist';
 const playlistVideoKey = 'playlist-content';
@@ -18,5 +25,19 @@ export function usePlaylistVideos(playlistId: string) {
     queryKey: [playlistVideoKey, playlistId],
     queryFn: async () =>
       (await axios.get('playlist/video', { params: { id: playlistId } })).data,
+  });
+}
+
+export function useCreatePlaylist() {
+  const queryClient = useQueryClient();
+  const loggedInUser = useRecoilValue(userDetailsState);
+
+  const userId = loggedInUser?.id;
+
+  return useMutation<CreatePlaylistResponse, AxiosError, CreatePlaylist>({
+    mutationFn: async (body) => (await axios.post('playlist/details', body)).data,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [playlistKey, userId] });
+    },
   });
 }

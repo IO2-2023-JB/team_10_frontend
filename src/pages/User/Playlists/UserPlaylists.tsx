@@ -16,9 +16,7 @@ function UserPlaylists({ userId }: UserPlaylistsProps) {
 
   return (
     <ContentSection isLoading={isLoading} error={error}>
-      {playlists && (
-        <PlaylistList playlists={playlists} showVisibility={showVisibility} />
-      )}
+      {playlists && <PlaylistList playlists={playlists} isOwn={showVisibility} />}
     </ContentSection>
   );
 }
