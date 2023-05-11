@@ -33,7 +33,7 @@ function Playlist() {
                 )}
               </Stack>
             </Stack>
-            <VideoList videos={playlist.videos} />
+            <VideoList videos={playlist.videos} playlistId={playlistId!} />
           </Stack>
         )}
       </ContentSection>

@@ -74,3 +74,12 @@ export function useAddVideoToPlaylist(videoId: string) {
       queryClient.invalidateQueries({ queryKey: [playlistVideoKey, playlistId] }),
   });
 }
+
+export function useRemoveVideoFromPlaylist(videoId: string, playlistId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError>({
+    mutationFn: async () => await axios.delete(`playlist/${playlistId}/${videoId}`),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: [playlistVideoKey, playlistId] }),
+  });
+}

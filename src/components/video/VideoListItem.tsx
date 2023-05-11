@@ -12,13 +12,19 @@ import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclin
 import VideoThumbnail from './VideoThumbnail';
 import { ROUTES } from '../../const';
 import { transitionShort } from '../../theme';
+import RemoveVideoFromPlaylist from './RemoveVideoFromPlaylist';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
   disableAuthorLink: boolean;
+  playlistId?: string;
 }
 
-function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps) {
+function VideoListItem({
+  videoMetadata,
+  disableAuthorLink,
+  playlistId,
+}: VideoListItemProps) {
   const titleRef = useRef<HTMLAnchorElement>(null);
   const { isEllipsisActive, style: titleMaxLinesStyle } = useMaxLines(1, titleRef);
 
@@ -34,6 +40,8 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
 
   const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
   const isMenuOpen = menuAnchorElement !== null;
+
+  const showMenu = Boolean(isAuthor || playlistId);
 
   return (
     <Stack
@@ -96,7 +104,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
           {videoMetadata.description}
         </Typography>
       </Stack>
-      {isAuthor && (
+      {showMenu && (
         <>
           <Box
             sx={{
@@ -120,8 +128,18 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
             onClick={(event) => event.stopPropagation()}
             onClose={() => setMenuAnchorElement(null)}
           >
-            <MetadataForm videoMetadata={videoMetadata} asMenuItem />
-            <VideoDelete videoId={videoMetadata.id} asMenuItem />
+            {playlistId && (
+              <RemoveVideoFromPlaylist
+                videoId={videoMetadata.id}
+                playlistId={playlistId}
+              />
+            )}
+            {isAuthor && (
+              <>
+                <MetadataForm videoMetadata={videoMetadata} asMenuItem />
+                <VideoDelete videoId={videoMetadata.id} asMenuItem />
+              </>
+            )}
           </Menu>
         </>
       )}
