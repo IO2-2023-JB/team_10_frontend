@@ -18,5 +18,6 @@ export type Playlist = Omit<PlaylistBase, 'id'> & {
 };
 
 export type CreatePlaylist = Omit<PlaylistBase, 'id'>;
-
 export type CreatePlaylistResponse = Pick<PlaylistBase, 'id'>;
+
+export type EditPlaylist = CreatePlaylist;

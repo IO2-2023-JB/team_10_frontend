@@ -8,7 +8,7 @@ import FormDialog from '../../../components/layout/FormDialog';
 import { CreatePlaylist, PlaylistVisibility } from '../../../types/PlaylistTypes';
 import BaseForm from '../../Login/BaseForm';
 
-const formFields = (
+export const formFields = (
   <>
     <FormikTextField name='name' label='Nazwa' />
     <FormikSwitch

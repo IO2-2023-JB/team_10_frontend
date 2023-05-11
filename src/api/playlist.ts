@@ -5,6 +5,7 @@ import { userDetailsState } from '../data/UserData';
 import {
   CreatePlaylist,
   CreatePlaylistResponse,
+  EditPlaylist,
   Playlist,
   PlaylistBase,
 } from '../types/PlaylistTypes';
@@ -39,5 +40,26 @@ export function useCreatePlaylist() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [playlistKey, userId] });
     },
+  });
+}
+
+export function useEditPlaylist(playlistId: string, ownerId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError, EditPlaylist>({
+    mutationFn: async (body) =>
+      await axios.put('playlist/details', body, { params: { id: playlistId } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [playlistKey, ownerId] });
+      queryClient.invalidateQueries({ queryKey: [playlistVideoKey, playlistId] });
+    },
+  });
+}
+
+export function useDeletePlaylist(playlistId: string, ownerId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError>({
+    mutationFn: async () =>
+      await axios.delete('playlist/details', { params: { id: playlistId } }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistKey, ownerId] }),
   });
 }
