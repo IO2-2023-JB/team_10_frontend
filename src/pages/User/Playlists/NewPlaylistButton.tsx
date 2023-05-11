@@ -1,7 +1,8 @@
 import { Add } from '@mui/icons-material';
-import { Alert, Button, Grid, Snackbar } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Button, Grid } from '@mui/material';
+import { useState } from 'react';
 import { useCreatePlaylist } from '../../../api/playlist';
+import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormikSwitch from '../../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../../components/formikFields/FormikTextField';
 import FormDialog from '../../../components/layout/FormDialog';
@@ -26,33 +27,22 @@ const initialValues = {
 
 function NewPlaylistButton() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = useState<boolean>(false);
   const [newPlaylistName, setNewPlaylistName] = useState<string | null>(null);
 
-  const {
-    data: newPlaylist,
-    mutate: createPlaylist,
-    isLoading,
-    error,
-  } = useCreatePlaylist();
+  const { mutate: createPlaylist, isLoading, isSuccess, error } = useCreatePlaylist();
 
   const handleSubmit = (values: CreatePlaylist) => {
     setNewPlaylistName(values.name);
+    setIsDialogOpen(false);
     createPlaylist(values);
   };
-
-  useEffect(() => {
-    if (isDialogOpen && newPlaylist !== undefined) {
-      setIsDialogOpen(false);
-      setIsSuccessSnackbarOpen(true);
-    }
-  }, [isDialogOpen, newPlaylist]);
 
   return (
     <>
       <Grid item xs={12} sm={6} md={4}>
         <Button
           onClick={() => setIsDialogOpen(true)}
+          disabled={isLoading}
           startIcon={<Add />}
           variant='contained'
           size='large'
@@ -77,14 +67,14 @@ function NewPlaylistButton() {
           onSubmit={handleSubmit}
         />
       </FormDialog>
-      <Snackbar
-        open={isSuccessSnackbarOpen}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        autoHideDuration={5000}
-        onClose={() => setIsSuccessSnackbarOpen(false)}
-      >
-        <Alert variant='filled'>Pomyślnie utworzono playlistę {newPlaylistName}!</Alert>
-      </Snackbar>
+      <StatusSnackbar
+        loadingMessage={`Tworzenie playlisty ${newPlaylistName}…`}
+        successMessage={`Pomyślnie utworzono playlistę ${newPlaylistName}!`}
+        errorMessage='Nie udało się utworzyć playlisty'
+        error={error}
+        isLoading={isLoading}
+        isSuccess={isSuccess}
+      />
     </>
   );
 }

@@ -1,12 +1,12 @@
 import { PlaylistAdd } from '@mui/icons-material';
 import {
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    Stack,
-    Tooltip,
-    Typography,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  Stack,
+  Tooltip,
+  Typography,
 } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -15,6 +15,8 @@ import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
 import { userDetailsState } from '../../data/UserData';
 import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
+import StatusSnackbar from '../../components/StatusSnackbar';
+import { PlaylistBase } from '../../types/PlaylistTypes';
 
 interface AddToPlaylistProps {
   videoId: string;
@@ -22,12 +24,20 @@ interface AddToPlaylistProps {
 
 function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [playlistName, setPlaylistName] = useState<string | null>(null);
   const loggedInUser = useRecoilValue(userDetailsState);
   const { data: playlists, error, isLoading } = useUserPlaylists(loggedInUser?.id);
-  const { mutate: addToPlaylist } = useAddVideoToPlaylist(videoId);
+  const {
+    mutate: addToPlaylist,
+    error: addError,
+    isSuccess: isAddSuccess,
+    isLoading: isAddLoading,
+  } = useAddVideoToPlaylist(videoId);
 
-  const handleAdd = (playlistId: string) => {
-    addToPlaylist(playlistId);
+  const handleAdd = (playlist: PlaylistBase) => {
+    setPlaylistName(playlist.name);
+    setIsDialogOpen(false);
+    addToPlaylist(playlist.id);
   };
 
   return (
@@ -51,7 +61,7 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
               {playlists.map((playlist) => (
                 <ListItem key={playlist.id} disablePadding>
                   <ListItemButton
-                    onClick={() => handleAdd(playlist.id)}
+                    onClick={() => handleAdd(playlist)}
                     sx={{ paddingX: 3, paddingY: 2, minWidth: 400 }}
                   >
                     <Stack spacing={1}>
@@ -65,6 +75,14 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
           )}
         </ContentSection>
       </FormDialog>
+      <StatusSnackbar
+        loadingMessage={`Dodawanie do playlisty ${playlistName}…`}
+        successMessage={`Pomyślnie dodano do playlisty ${playlistName}!`}
+        errorMessage={`Nie udało się dodać do playlisty`}
+        isLoading={isAddLoading}
+        isSuccess={isAddSuccess}
+        error={addError}
+      />
     </>
   );
 }
