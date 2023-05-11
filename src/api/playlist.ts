@@ -13,11 +13,12 @@ import {
 const playlistKey = 'playlist';
 const playlistVideoKey = 'playlist-content';
 
-export function useUserPlaylists(userId: string) {
+export function useUserPlaylists(userId?: string) {
   return useQuery<PlaylistBase[], AxiosError>({
     queryKey: [playlistKey, userId],
     queryFn: async () =>
       (await axios.get('playlist/user', { params: { id: userId } })).data,
+    enabled: userId !== undefined,
   });
 }
 
@@ -61,5 +62,15 @@ export function useDeletePlaylist(playlistId: string, ownerId: string) {
     mutationFn: async () =>
       await axios.delete('playlist/details', { params: { id: playlistId } }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [playlistKey, ownerId] }),
+  });
+}
+
+export function useAddVideoToPlaylist(videoId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError, string>({
+    mutationFn: async (playlistId) =>
+      await axios.post(`playlist/${playlistId}/${videoId}`),
+    onSuccess: (_, playlistId) =>
+      queryClient.invalidateQueries({ queryKey: [playlistVideoKey, playlistId] }),
   });
 }
