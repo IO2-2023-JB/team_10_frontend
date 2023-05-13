@@ -125,12 +125,14 @@ function VideoListItem({
                 playlistId={playlistId}
               />
             )}
-            {isAuthor && (
-              <>
-                <MetadataForm videoMetadata={videoMetadata} asMenuItem />
-                <VideoDelete videoId={videoMetadata.id} asMenuItem />
-              </>
-            )}
+            {isAuthor && [
+              <MetadataForm
+                key='MetadataForm'
+                videoMetadata={videoMetadata}
+                asMenuItem
+              />,
+              <VideoDelete key='VideoDelete' videoId={videoMetadata.id} asMenuItem />,
+            ]}
           </Menu>
         </>
       )}
