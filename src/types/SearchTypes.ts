@@ -38,3 +38,23 @@ export interface SearchParams {
   startDate?: string | null;
   endDate?: string | null;
 }
+
+export function getSortingTypeString(sortingType: SortingTypes): string {
+  switch (sortingType) {
+    case SortingTypes.Alphabetical:
+      return 'Alfabetycznie';
+    case SortingTypes.Popularity:
+      return 'Popularność';
+    case SortingTypes.PublishDate:
+      return 'Data publikacji';
+  }
+}
+
+export function getSortingDirectionString(sortingDirection: SortingDirections): string {
+  switch (sortingDirection) {
+    case SortingDirections.Ascending:
+      return 'Rosnąco';
+    case SortingDirections.Descending:
+      return 'Malejąco';
+  }
+}

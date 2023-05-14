@@ -8,6 +8,8 @@ import VideoList from '../../components/video/VideoList';
 import ContentSection from '../../components/layout/ContentSection';
 import UsersList from '../User/UsersList';
 import PlaylistList from '../User/Playlists/PlaylistList';
+import { Stack, Typography } from '@mui/material';
+import SearchFilters from './SearchFilters';
 
 function GetParams(params: URLSearchParams): SearchParams {
   return {
@@ -27,44 +29,51 @@ enum SearchResultsTabs {
 
 function SearchPage() {
   const location = useLocation();
-  const {
-    data: searchResults,
-    isLoading,
-    error,
-  } = useSearch(GetParams(new URLSearchParams(location.search)));
+  const params = new URLSearchParams(location.search);
+  const { data: searchResults, isLoading, error } = useSearch(GetParams(params));
+
+  const header = `Wyniki wyszukiwania "${params.get(SEARCH_PARAMS.QUERY)}":`;
 
   return (
-    <ContentSection isLoading={isLoading} error={error}>
-      {searchResults && (
-        <PageLayout>
-          <TabRouter
-            rootPath={ROUTES.SEARCH}
-            query={location.search}
-            defaultTab={SearchResultsTabs.Videos}
-            tabs={[
-              {
-                index: true,
-                path: SearchResultsTabs.Videos,
-                label: 'Filmy',
-                element: <VideoList videos={searchResults?.videos} />,
-              },
-              {
-                path: SearchResultsTabs.Users,
-                label: 'Użytkownicy',
-                element: <UsersList users={searchResults.users} />,
-              },
-              {
-                path: SearchResultsTabs.Playlists,
-                label: 'Playlisty',
-                element: (
-                  <PlaylistList playlists={searchResults.playlists} isOwn={false} />
-                ),
-              },
-            ]}
-          />
-        </PageLayout>
-      )}
-    </ContentSection>
+    <PageLayout>
+      <Stack spacing={2}>
+        <Stack direction='row' spacing='stretch'>
+          <Typography width='100%' variant='h5'>
+            {header}
+          </Typography>
+          <SearchFilters />
+        </Stack>
+        <ContentSection isLoading={isLoading} error={error}>
+          {searchResults && (
+            <TabRouter
+              rootPath={ROUTES.SEARCH}
+              query={location.search}
+              defaultTab={SearchResultsTabs.Videos}
+              tabs={[
+                {
+                  index: true,
+                  path: SearchResultsTabs.Videos,
+                  label: 'Filmy',
+                  element: <VideoList videos={searchResults?.videos} />,
+                },
+                {
+                  path: SearchResultsTabs.Users,
+                  label: 'Użytkownicy',
+                  element: <UsersList users={searchResults.users} />,
+                },
+                {
+                  path: SearchResultsTabs.Playlists,
+                  label: 'Playlisty',
+                  element: (
+                    <PlaylistList playlists={searchResults.playlists} isOwn={false} />
+                  ),
+                },
+              ]}
+            />
+          )}
+        </ContentSection>
+      </Stack>
+    </PageLayout>
   );
 }
 
