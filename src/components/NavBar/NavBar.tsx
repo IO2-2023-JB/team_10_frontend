@@ -1,8 +1,8 @@
 import { Button, IconButton, Stack } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
-import { ROUTES } from '../../const';
+import { ROUTES, SEARCH_PARAMS } from '../../const';
 import { userDetailsState } from '../../data/UserData';
 import { videoNotificationState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
@@ -15,6 +15,9 @@ function NavBar() {
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
   const notif = useRecoilValue(videoNotificationState);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const query = new URLSearchParams(location.search).get(SEARCH_PARAMS.QUERY);
 
   const handleLogout = () => {
     setUserDetails(null);
@@ -51,7 +54,7 @@ function NavBar() {
       </Stack>
       {userDetails !== null && (
         <>
-          <SearchField />
+          <SearchField query={query ?? ''} />
           <Stack direction='row' spacing={2} alignItems='center'>
             <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
               Wyloguj się

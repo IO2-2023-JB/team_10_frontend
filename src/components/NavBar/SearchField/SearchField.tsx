@@ -12,6 +12,10 @@ import {
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
 
+interface SearchFieldProps {
+  query: string;
+}
+
 function prepareSearchResults(searchResults: SearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
     type: SearchResultType.Video,
@@ -50,10 +54,10 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
   return `${urlPrefix}/${searchResult.result.id}`;
 }
 
-function SearchField() {
+function SearchField({ query: queryFromUrl }: SearchFieldProps) {
   const navigate = useNavigate();
 
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string>(queryFromUrl);
   const queryDebounced = useDebounce(query);
   const { data: searchResults } = useSearch({ query: queryDebounced });
 
@@ -61,8 +65,6 @@ function SearchField() {
     if (searchResults === undefined) return undefined;
     return prepareSearchResults(searchResults);
   }, [searchResults]);
-
-  const navigate = useNavigate();
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
