@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 import { PlaylistBase } from '../../../types/PlaylistTypes';
 import NewPlaylistButton from './NewPlaylistButton';
 import PlaylistTile from './PlaylistTile';
@@ -11,6 +11,10 @@ interface PlaylistListProps {
 const GridProps = { xs: 12, sm: 6, md: 4 };
 
 function PlaylistList({ playlists, isOwn }: PlaylistListProps) {
+  if (!isOwn && playlists.length === 0) {
+    return <Alert severity='info'>Brak playlist do wyświetlenia</Alert>;
+  }
+
   return (
     <Grid container spacing={2}>
       {isOwn && (

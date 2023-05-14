@@ -30,3 +30,11 @@ export interface PreparedSearchResult {
   label: string;
   result: GetVideoMetadataResponse | GetUserDetailsResponse | PlaylistBase;
 }
+
+export interface SearchParams {
+  query?: string | null;
+  sortBy?: string | null;
+  sortAsc?: boolean;
+  startDate?: string | null;
+  endDate?: string | null;
+}

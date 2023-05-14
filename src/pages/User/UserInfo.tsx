@@ -1,20 +1,22 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
-import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import SubscribeButton from '../../components/SubscribeButton';
-import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { ROUTES } from '../../const';
+import { AccountType, GetUserDetailsResponse } from '../../types/UserTypes';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 
 const avatarSize = 60;
 
-interface CreatorInfoProps {
+interface UserInfoProps {
   userDetails?: GetUserDetailsResponse;
   isSelf: boolean;
   width?: string;
 }
 
-function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps) {
+function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
+  const isCreator = userDetails?.userType === AccountType.Creator;
+
   return (
     <Stack direction='row' alignItems='center' width={width}>
       <Stack
@@ -44,21 +46,25 @@ function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps)
           <Typography variant='h6'>
             {userDetails ? userDetails.nickname : <Skeleton width={150} />}
           </Typography>
-          <Typography variant='subtitle2'>
-            {userDetails ? (
-              getNumberWithLabel(
-                userDetails.subscriptionsCount!,
-                NumberDeclinedNoun.Subscription
-              )
-            ) : (
-              <Skeleton />
-            )}
-          </Typography>
+          {isCreator && (
+            <Typography variant='subtitle2'>
+              {userDetails ? (
+                getNumberWithLabel(
+                  userDetails.subscriptionsCount!,
+                  NumberDeclinedNoun.Subscription
+                )
+              ) : (
+                <Skeleton />
+              )}
+            </Typography>
+          )}
         </Stack>
       </Stack>
-      {!isAuthor && userDetails && <SubscribeButton creatorId={userDetails.id} />}
+      {!isAuthor && userDetails && isCreator && (
+        <SubscribeButton creatorId={userDetails.id} />
+      )}
     </Stack>
   );
 }
 
-export default CreatorInfo;
+export default UserInfo;

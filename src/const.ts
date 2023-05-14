@@ -24,6 +24,15 @@ export const ROUTES = {
   USER: '/user',
   VIDEO: '/video',
   PLAYLIST: '/playlist',
+  SEARCH: '/search',
+};
+
+export const SEARCH_PARAMS = {
+  QUERY: 'query',
+  SORT_BY: 'sortBy',
+  SORT_ASC: 'sortAsc',
+  START_DATE: 'startDate',
+  END_DATE: 'endDate',
 };
 
 export const EXAMPLE_TAGS = [

@@ -1,6 +1,6 @@
 import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
 import { SyntheticEvent, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
 import { ROUTES } from '../../../const';
@@ -51,9 +51,11 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
 }
 
 function SearchField() {
+  const navigate = useNavigate();
+
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
-  const { data: searchResults } = useSearch(queryDebounced);
+  const { data: searchResults } = useSearch({ query: queryDebounced });
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
@@ -91,6 +93,15 @@ function SearchField() {
       value={query}
       onChange={handleChange}
       onInputChange={handleInputChange}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter')
+          navigate({
+            pathname: ROUTES.SEARCH,
+            search: createSearchParams({
+              query: query,
+            }).toString(),
+          });
+      }}
       renderOption={(props, option) => (
         <SearchSuggestion props={props} option={option} key={option.result.id} />
       )}
