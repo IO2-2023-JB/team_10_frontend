@@ -8,7 +8,7 @@ import { videoNotificationState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
 import Logo from './Logo';
-import SearchField from './SearchField';
+import SearchField from './SearchField/SearchField';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);

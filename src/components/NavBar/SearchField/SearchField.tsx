@@ -1,11 +1,11 @@
 import { Search } from '@mui/icons-material';
 import { Autocomplete, Box, InputAdornment, TextField } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useSearch } from '../../api/search';
-import { SearchResults } from '../../types/SearchTypes';
-import { GetVideoMetadataResponse } from '../../types/VideoTypes';
-import { GetUserDetailsResponse } from '../../types/UserTypes';
-import { PlaylistBase } from '../../types/PlaylistTypes';
+import { useSearch } from '../../../api/search';
+import { SearchResults } from '../../../types/SearchTypes';
+import { GetVideoMetadataResponse } from '../../../types/VideoTypes';
+import { GetUserDetailsResponse } from '../../../types/UserTypes';
+import { PlaylistBase } from '../../../types/PlaylistTypes';
 
 enum SearchResultType {
   Video,
