@@ -2,11 +2,6 @@ import { Box, Typography, Stack } from '@mui/material';
 import { BACKEND_URL } from '../../const';
 import { HourglassFull } from '@mui/icons-material';
 import { ProcessingProgress } from '../../types/VideoTypes';
-import { useRecoilValue } from 'recoil';
-import { videoNotificationState } from './../../data/VideoData';
-import { useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { videoMetadataKey } from './../../api/video';
 
 interface PlayerProps {
   videoId: string;
@@ -14,15 +9,9 @@ interface PlayerProps {
 }
 
 function Player({ videoId, processingState }: PlayerProps) {
-  const queryClient = useQueryClient();
-  const processingNotification = useRecoilValue(videoNotificationState);
   const videoUrl = `${BACKEND_URL}/video/${videoId}?access_token=${localStorage.getItem(
     'bearerToken'
   )}`;
-
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [videoMetadataKey, videoId] });
-  }, [processingNotification.status, queryClient, videoId]);
 
   return (
     <Box
