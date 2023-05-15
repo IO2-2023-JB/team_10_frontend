@@ -1,5 +1,6 @@
 import { Autocomplete } from '@mui/material';
 import { useMemo, useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
 import {
   PreparedSearchResult,
@@ -31,8 +32,8 @@ function prepareSearchResults(searchResults: SearchResults): PreparedSearchResul
 
 function SearchField() {
   const [query, setQuery] = useState<string>('');
-  // TODO add useDebounce
-  const { data: searchResults } = useSearch(query);
+  const queryDebounced = useDebounce(query);
+  const { data: searchResults } = useSearch(queryDebounced);
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
