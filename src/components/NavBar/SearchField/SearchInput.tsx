@@ -8,10 +8,6 @@ interface SearchInputProps {
 function SearchInput({ params }: SearchInputProps) {
   return (
     <TextField
-      sx={{
-        width: 500,
-        flexShrink: 1,
-      }}
       {...params}
       variant='outlined'
       placeholder='Szukaj filmów, użytkowników, playlist…'

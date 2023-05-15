@@ -59,6 +59,9 @@ function SearchField() {
       ListboxProps={{
         sx: { maxHeight: 1000 },
       }}
+      sx={{
+        flex: '0 1 500px',
+      }}
     />
   );
 }
