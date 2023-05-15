@@ -6,30 +6,25 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { SortingTypes, getSortingTypeString } from '../../types/SearchTypes';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ROUTES, SEARCH_PARAMS } from '../../const';
-import { removeEmptySearchParams } from '../../utils/utils';
+import { useSearchParams } from 'react-router-dom';
+import { SEARCH_PARAMS } from '../../const';
 
 interface SortingTypeFieldProps {
   minWidth: number;
+  search: (key: string, value?: string) => void;
 }
 
 const label = 'Sortuj według';
 
-function SortingTypeField({ minWidth }: SortingTypeFieldProps) {
+function SortingTypeField({ minWidth, search }: SortingTypeFieldProps) {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
 
   const value =
     SortingTypes[searchParams.get(SEARCH_PARAMS.SORT_BY) as keyof typeof SortingTypes] ??
     SortingTypes.Popularity;
 
   const handleChange = (event: SelectChangeEvent<SortingTypes>) => {
-    searchParams.set(SEARCH_PARAMS.SORT_BY, event.target.value);
-    navigate({
-      pathname: ROUTES.SEARCH,
-      search: removeEmptySearchParams(searchParams).toString(),
-    });
+    search(SEARCH_PARAMS.SORT_BY, event.target.value);
   };
 
   return (

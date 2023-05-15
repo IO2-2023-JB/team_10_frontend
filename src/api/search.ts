@@ -14,11 +14,11 @@ export function useSearch(searchParams: SearchParams) {
     ? SortingTypes[searchParams.sortBy as keyof typeof SortingTypes]
     : SortingTypes.Popularity;
 
-  const sortDirection = searchParams.sortAsc
-    ? SortingDirections[searchParams.sortAsc as keyof typeof SortingDirections]
+  const sortDirection = searchParams.sortDirection
+    ? SortingDirections[searchParams.sortDirection as keyof typeof SortingDirections]
     : SortingDirections.Descending;
-  const startDate = searchParams.startDate ? new Date(searchParams.startDate) : null;
-  const endDate = searchParams.endDate ? new Date(searchParams.endDate) : null;
+  const startDate = searchParams.startDate ?? null;
+  const endDate = searchParams.endDate ?? null;
 
   return useQuery<SearchResults, AxiosError>({
     queryKey: [searchKey, searchParams.query, sortBy, sortDirection, startDate, endDate],

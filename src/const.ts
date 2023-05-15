@@ -30,7 +30,7 @@ export const ROUTES = {
 export const SEARCH_PARAMS = {
   QUERY: 'query',
   SORT_BY: 'sortBy',
-  SORT_ASC: 'sortAsc',
+  SORT_DIRECTION: 'sort',
   START_DATE: 'startDate',
   END_DATE: 'endDate',
 };

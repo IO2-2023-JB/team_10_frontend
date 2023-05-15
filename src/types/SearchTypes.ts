@@ -36,7 +36,7 @@ export interface PreparedSearchResult {
 export interface SearchParams {
   query?: string | null;
   sortBy?: string | null;
-  sortAsc?: string | null;
+  sortDirection?: string | null;
   startDate?: string | null;
   endDate?: string | null;
 }
@@ -46,7 +46,7 @@ export function GetSearchParams(params: URLSearchParams): SearchParams {
   return {
     query: params.get(SEARCH_PARAMS.QUERY),
     sortBy: params.get(SEARCH_PARAMS.SORT_BY),
-    sortAsc: params.get(SEARCH_PARAMS.SORT_ASC),
+    sortDirection: params.get(SEARCH_PARAMS.SORT_DIRECTION),
     startDate: params.get(SEARCH_PARAMS.START_DATE),
     endDate: params.get(SEARCH_PARAMS.END_DATE),
   };

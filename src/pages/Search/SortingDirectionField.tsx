@@ -6,28 +6,25 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { SortingDirections, getSortingDirectionString } from '../../types/SearchTypes';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ROUTES, SEARCH_PARAMS } from '../../const';
-import { removeEmptySearchParams } from '../../utils/utils';
+import { useSearchParams } from 'react-router-dom';
+import { SEARCH_PARAMS } from '../../const';
 
 interface SortingDirectionFieldProps {
   minWidth: number;
+  search: (key: string, value?: string) => void;
 }
 
 const label = 'Typ sortowania';
 
-function SortingDirectionField({ minWidth }: SortingDirectionFieldProps) {
+function SortingDirectionField({ minWidth, search }: SortingDirectionFieldProps) {
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const queryValue = searchParams.get(SEARCH_PARAMS.SORT_ASC);
-  const value = queryValue ? SortingDirections.Ascending : SortingDirections.Descending;
+  const queryValue = searchParams.get(SEARCH_PARAMS.SORT_DIRECTION);
+  const value =
+    SortingDirections[queryValue as keyof typeof SortingDirections] ??
+    SortingDirections.Descending;
 
   const handleChange = (event: SelectChangeEvent<SortingDirections>) => {
-    searchParams.set(SEARCH_PARAMS.SORT_ASC, event.target.value);
-    navigate({
-      pathname: ROUTES.SEARCH,
-      search: removeEmptySearchParams(searchParams).toString(),
-    });
+    search(SEARCH_PARAMS.SORT_DIRECTION, event.target.value);
   };
 
   return (
