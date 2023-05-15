@@ -1,19 +1,20 @@
 import { MoreVert } from '@mui/icons-material';
-import { Box, IconButton, Menu, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Menu, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
 import MetadataForm from '../../pages/Video/MetadataForm';
 import VideoDelete from '../../pages/Video/VideoDelete';
+import { transitionShort } from '../../theme';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useMaxLines } from '../../utils/hooks';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
-import VideoThumbnail from './VideoThumbnail';
-import { ROUTES } from '../../const';
-import { transitionShort } from '../../theme';
+import OneLineTypography from '../OneLineTypography';
 import RemoveVideoFromPlaylist from './RemoveVideoFromPlaylist';
 import TypographyLink from '../TypographyLink';
+import VideoThumbnail from './VideoThumbnail';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -26,9 +27,6 @@ function VideoListItem({
   disableAuthorLink,
   playlistId,
 }: VideoListItemProps) {
-  const titleRef = useRef<HTMLAnchorElement>(null);
-  const { isEllipsisActive, style: titleMaxLinesStyle } = useMaxLines(1, titleRef);
-
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const { style: descriptionMaxLinesStyle } = useMaxLines(2, descriptionRef);
 
@@ -62,22 +60,18 @@ function VideoListItem({
     >
       <VideoThumbnail videoMetadata={videoMetadata} />
       <Stack spacing={1} padding={1}>
-        <Tooltip title={isEllipsisActive ? videoMetadata.title : null}>
-          <Typography
-            ref={titleRef}
-            variant='h5'
-            sx={{
-              fontWeight: 600,
-              color: 'inherit',
-              textDecoration: 'none',
-              ...titleMaxLinesStyle,
-            }}
-            component={Link}
-            to={videoUrl}
-          >
-            {videoMetadata.title}
-          </Typography>
-        </Tooltip>
+        <OneLineTypography
+          variant='h5'
+          sx={{
+            fontWeight: 600,
+            color: 'inherit',
+            textDecoration: 'none',
+          }}
+          component={Link}
+          to={videoUrl}
+        >
+          {videoMetadata.title}
+        </OneLineTypography>
         <Stack direction='row' spacing={0.5}>
           <TypographyLink
             to={

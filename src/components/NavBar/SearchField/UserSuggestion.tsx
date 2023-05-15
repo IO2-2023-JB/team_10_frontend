@@ -7,6 +7,7 @@ import {
   getNumberWithLabel,
 } from '../../../utils/numberDeclinedNouns';
 import Avatar from '../../Avatar';
+import OneLineTypography from '../../OneLineTypography';
 import SearchSuggestionWrapper from './SearchSuggestionWrapper';
 
 interface UserSuggestionProps {
@@ -27,7 +28,7 @@ function UserSuggestion({ componentProps, user }: UserSuggestionProps) {
       <Stack direction='row' spacing={2}>
         <Avatar userDetails={user} size={50} />
         <Stack justifyContent='center'>
-          <Typography fontWeight={600}>{user.nickname}</Typography>
+          <OneLineTypography fontWeight={600}>{user.nickname}</OneLineTypography>
           <Typography variant='body2'>{label}</Typography>
         </Stack>
       </Stack>

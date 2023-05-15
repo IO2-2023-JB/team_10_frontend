@@ -6,6 +6,7 @@ import {
   NumberDeclinedNoun,
   getNumberWithLabel,
 } from '../../../utils/numberDeclinedNouns';
+import OneLineTypography from '../../OneLineTypography';
 import VideoThumbnail from '../../video/VideoThumbnail';
 import SearchSuggestionWrapper from './SearchSuggestionWrapper';
 
@@ -22,7 +23,7 @@ function VideoSuggestion({ componentProps, video }: VideoSuggestionProps) {
       <Stack direction='row' spacing={2}>
         <VideoThumbnail videoMetadata={video} height={50} hideDuration />
         <Stack justifyContent='center'>
-          <Typography fontWeight={600}>{video.title}</Typography>
+          <OneLineTypography fontWeight={600}>{video.title}</OneLineTypography>
           <Typography variant='body2'>
             {video.authorNickname} ·{' '}
             {getNumberWithLabel(video.viewCount, NumberDeclinedNoun.View)}

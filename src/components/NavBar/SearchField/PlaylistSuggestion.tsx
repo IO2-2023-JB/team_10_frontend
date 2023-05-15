@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import { HTMLAttributes } from 'react';
 import { ROUTES } from '../../../const';
 import { PlaylistBase } from '../../../types/PlaylistTypes';
+import OneLineTypography from '../../OneLineTypography';
 import SearchSuggestionWrapper from './SearchSuggestionWrapper';
 
 interface PlaylistSuggestionProps {
@@ -15,7 +16,7 @@ function PlaylistSuggestion({ componentProps, playlist }: PlaylistSuggestionProp
   return (
     <SearchSuggestionWrapper componentProps={componentProps} url={url}>
       <Stack justifyContent='center'>
-        <Typography fontWeight={600}>{playlist.name}</Typography>
+        <OneLineTypography fontWeight={600}>{playlist.name}</OneLineTypography>
         <Typography variant='body2'>Playlista</Typography>
       </Stack>
     </SearchSuggestionWrapper>
