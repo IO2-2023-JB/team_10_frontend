@@ -55,7 +55,15 @@ function SearchField() {
       renderOption={(props, option) => (
         <SearchSuggestion props={props} option={option} key={option.result.id} />
       )}
-      renderInput={(params) => <SearchInput params={params} />}
+      renderInput={(params) => (
+        <SearchInput
+          params={params}
+          showButton={query.length > 0}
+          onSubmit={() => {
+            // TODO redirect to search results
+          }}
+        />
+      )}
       ListboxProps={{
         sx: { maxHeight: 1000 },
       }}

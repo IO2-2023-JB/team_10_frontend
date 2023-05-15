@@ -1,11 +1,18 @@
 import { Search } from '@mui/icons-material';
-import { AutocompleteRenderInputParams, InputAdornment, TextField } from '@mui/material';
+import {
+  AutocompleteRenderInputParams,
+  Button,
+  InputAdornment,
+  TextField,
+} from '@mui/material';
 
 interface SearchInputProps {
   params: AutocompleteRenderInputParams;
+  showButton: boolean;
+  onSubmit: () => void;
 }
 
-function SearchInput({ params }: SearchInputProps) {
+function SearchInput({ params, showButton, onSubmit }: SearchInputProps) {
   return (
     <TextField
       {...params}
@@ -25,6 +32,11 @@ function SearchInput({ params }: SearchInputProps) {
             <Search />
           </InputAdornment>
         ),
+        endAdornment: showButton ? (
+          <InputAdornment position='end'>
+            <Button onClick={onSubmit}>Szukaj</Button>
+          </InputAdornment>
+        ) : null,
       }}
     />
   );
