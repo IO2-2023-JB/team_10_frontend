@@ -6,7 +6,7 @@ const minWidth = 150;
 
 function SearchFilters() {
   return (
-    <Stack direction='row' spacing={1}>
+    <Stack alignSelf='end' direction='row' spacing={1}>
       <SortingTypeField minWidth={minWidth} />
       <SortingDirectionField minWidth={minWidth} />
     </Stack>

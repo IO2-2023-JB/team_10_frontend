@@ -10,23 +10,23 @@ import {
 const searchKey = 'search';
 
 export function useSearch(searchParams: SearchParams) {
-  const sortBy: SortingTypes = searchParams.sortBy
+  const sortBy = searchParams.sortBy
     ? SortingTypes[searchParams.sortBy as keyof typeof SortingTypes]
     : SortingTypes.Popularity;
 
-  const sortType = searchParams.sortAsc
-    ? SortingDirections.Ascending
+  const sortDirection = searchParams.sortAsc
+    ? SortingDirections[searchParams.sortAsc as keyof typeof SortingDirections]
     : SortingDirections.Descending;
   const startDate = searchParams.startDate ? new Date(searchParams.startDate) : null;
   const endDate = searchParams.endDate ? new Date(searchParams.endDate) : null;
 
   return useQuery<SearchResults, AxiosError>({
-    queryKey: [searchKey, searchParams.query, sortBy, sortType, startDate, endDate],
+    queryKey: [searchKey, searchParams.query, sortBy, sortDirection, startDate, endDate],
     queryFn: async () => {
       const params = {
         query: searchParams.query,
         sortingCriterion: sortBy,
-        sortingType: sortType,
+        sortingType: sortDirection,
         beginDate: startDate,
         endDate: endDate,
       };

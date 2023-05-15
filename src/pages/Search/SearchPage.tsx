@@ -1,25 +1,14 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { ROUTES, SEARCH_PARAMS } from '../../const';
 import { useSearch } from '../../api/search';
-import { SearchParams } from '../../types/SearchTypes';
 import PageLayout from '../../components/layout/PageLayout';
 import TabRouter from '../../components/TabRouter';
-import VideoList from '../../components/video/VideoList';
 import ContentSection from '../../components/layout/ContentSection';
 import UsersList from '../User/UsersList';
 import PlaylistList from '../User/Playlists/PlaylistList';
 import { Stack, Typography } from '@mui/material';
-import SearchFilters from './SearchFilters';
-
-function GetParams(params: URLSearchParams): SearchParams {
-  return {
-    query: params.get(SEARCH_PARAMS.QUERY),
-    sortBy: params.get(SEARCH_PARAMS.SORT_BY),
-    sortAsc: params.get(SEARCH_PARAMS.SORT_ASC) === 'true',
-    startDate: params.get(SEARCH_PARAMS.START_DATE),
-    endDate: params.get(SEARCH_PARAMS.END_DATE),
-  };
-}
+import VideoFiltersList from '../../components/video/VideoFiltersList';
+import { GetSearchParams } from '../../types/SearchTypes';
 
 enum SearchResultsTabs {
   Videos = '',
@@ -29,20 +18,17 @@ enum SearchResultsTabs {
 
 function SearchPage() {
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const { data: searchResults, isLoading, error } = useSearch(GetParams(params));
+  const [params] = useSearchParams();
+  const { data: searchResults, isLoading, error } = useSearch(GetSearchParams(params));
 
   const header = `Wyniki wyszukiwania "${params.get(SEARCH_PARAMS.QUERY)}":`;
 
   return (
     <PageLayout>
       <Stack spacing={2}>
-        <Stack direction='row' spacing='stretch'>
-          <Typography width='100%' variant='h5'>
-            {header}
-          </Typography>
-          <SearchFilters />
-        </Stack>
+        <Typography width='100%' variant='h5'>
+          {header}
+        </Typography>
         <ContentSection isLoading={isLoading} error={error}>
           {searchResults && (
             <TabRouter
@@ -54,7 +40,7 @@ function SearchPage() {
                   index: true,
                   path: SearchResultsTabs.Videos,
                   label: 'Filmy',
-                  element: <VideoList videos={searchResults?.videos} />,
+                  element: <VideoFiltersList videos={searchResults?.videos} />,
                 },
                 {
                   path: SearchResultsTabs.Users,

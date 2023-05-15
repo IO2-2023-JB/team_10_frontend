@@ -1,27 +1,41 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import { SortingTypes, getSortingTypeString } from '../../types/SearchTypes';
-import { useLocation } from 'react-router-dom';
-import { SEARCH_PARAMS } from '../../const';
-
-function handleChange() {
-  console.log('type changed');
-}
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ROUTES, SEARCH_PARAMS } from '../../const';
+import { removeEmptySearchParams } from '../../utils/utils';
 
 interface SortingTypeFieldProps {
   minWidth: number;
 }
 
+const label = 'Sortuj według';
+
 function SortingTypeField({ minWidth }: SortingTypeFieldProps) {
-  const location = useLocation();
-  const queryValue = new URLSearchParams(location.search).get(SEARCH_PARAMS.SORT_BY);
-  const value = queryValue
-    ? SortingTypes[queryValue as keyof typeof SortingTypes]
-    : SortingTypes.Popularity;
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const value =
+    SortingTypes[searchParams.get(SEARCH_PARAMS.SORT_BY) as keyof typeof SortingTypes] ??
+    SortingTypes.Popularity;
+
+  const handleChange = (event: SelectChangeEvent<SortingTypes>) => {
+    searchParams.set(SEARCH_PARAMS.SORT_BY, event.target.value);
+    navigate({
+      pathname: ROUTES.SEARCH,
+      search: removeEmptySearchParams(searchParams).toString(),
+    });
+  };
 
   return (
     <FormControl sx={{ minWidth }} size='small'>
-      <InputLabel>Sortuj według</InputLabel>
-      <Select label='Typ sortowania' defaultValue={value} onChange={handleChange}>
+      <InputLabel>{label}</InputLabel>
+      <Select label={label} value={value} onChange={handleChange}>
         <MenuItem value={SortingTypes.Popularity}>
           {getSortingTypeString(SortingTypes.Popularity)}
         </MenuItem>
