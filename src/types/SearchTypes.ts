@@ -18,3 +18,15 @@ export interface SearchResults {
   users: GetUserDetailsResponse[];
   playlists: PlaylistBase[];
 }
+
+export enum SearchResultType {
+  Video,
+  User,
+  Playlist,
+}
+
+export interface PreparedSearchResult {
+  type: SearchResultType;
+  label: string;
+  result: GetVideoMetadataResponse | GetUserDetailsResponse | PlaylistBase;
+}

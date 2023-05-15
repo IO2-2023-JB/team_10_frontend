@@ -1,23 +1,13 @@
-import { Search } from '@mui/icons-material';
-import { Autocomplete, Box, InputAdornment, TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { useSearch } from '../../../api/search';
-import { SearchResults } from '../../../types/SearchTypes';
-import { GetVideoMetadataResponse } from '../../../types/VideoTypes';
-import { GetUserDetailsResponse } from '../../../types/UserTypes';
-import { PlaylistBase } from '../../../types/PlaylistTypes';
-
-enum SearchResultType {
-  Video,
-  User,
-  Playlist,
-}
-
-interface PreparedSearchResult {
-  type: SearchResultType;
-  label: string;
-  result: GetVideoMetadataResponse | GetUserDetailsResponse | PlaylistBase;
-}
+import {
+  PreparedSearchResult,
+  SearchResultType,
+  SearchResults,
+} from '../../../types/SearchTypes';
+import SearchInput from './SearchInput';
+import SearchSuggestion from './SearchSuggestion';
 
 function prepareSearchResults(searchResults: SearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
@@ -54,38 +44,19 @@ function SearchField() {
       freeSolo
       options={preparedSearchResults ?? []}
       disableClearable
+      blurOnSelect
       value={query}
-      onInputChange={(_, value) => setQuery(value)}
-      renderOption={(props, option) => {
-        return (
-          <Box component='li' {...props} key={option.result.id}>
-            {option.label}
-          </Box>
-        );
+      onInputChange={(_, value, reason) => {
+        if (reason === 'input') setQuery(value);
+        else setQuery('');
       }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          variant='outlined'
-          placeholder='Szukaj filmów, użytkowników, playlist…'
-          InputProps={{
-            ...params.InputProps,
-            sx: {
-              width: 350,
-              backgroundColor: 'rgba(255, 255, 255, 0.09)',
-              '&:not(.Mui-focused)': {
-                borderColor: 'transparent',
-                '& fieldset': { borderColor: 'transparent' },
-              },
-            },
-            startAdornment: (
-              <InputAdornment position='start' sx={{ marginLeft: 1 }}>
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-        />
+      renderOption={(props, option) => (
+        <SearchSuggestion props={props} option={option} key={option.result.id} />
       )}
+      renderInput={(params) => <SearchInput params={params} />}
+      ListboxProps={{
+        sx: { maxHeight: 1000 },
+      }}
     />
   );
 }
