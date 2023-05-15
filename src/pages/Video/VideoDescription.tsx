@@ -1,17 +1,12 @@
 import { Card, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useMaxLines } from '../../utils/hooks';
+import { Word, getNumberWithLabel } from '../../utils/words';
 
 interface VideoDescriptionProps {
   viewCount: number;
   uploadDate: string;
   videoDescription: string;
-}
-
-const collapsedDescriptionWordCount = 50;
-
-function prepareDescription(description: string, splice: boolean = true): string {
-  if (!splice) return description;
-  return description.split(' ').splice(0, collapsedDescriptionWordCount).join(' ') + '…';
 }
 
 function VideoDescription({
@@ -20,15 +15,17 @@ function VideoDescription({
   videoDescription,
 }: VideoDescriptionProps) {
   const [expanded, setExpanded] = useState(false);
-  const viewCountText = `${viewCount} wyświetleń`;
-  const isDescriptionExpandable: boolean =
-    videoDescription !== null &&
-    videoDescription.split(' ').length > collapsedDescriptionWordCount;
+  const viewCountText = getNumberWithLabel(viewCount, Word.View);
 
-  const description = prepareDescription(
-    videoDescription,
-    isDescriptionExpandable && !expanded
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const { isEllipsisActive, style: descriptionMaxLinesStyle } = useMaxLines(
+    3,
+    descriptionRef
   );
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [videoDescription]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -48,11 +45,19 @@ function VideoDescription({
     >
       <Stack direction='row' spacing={2}>
         <Typography>{viewCountText}</Typography>
-        <Typography>{new Date(uploadDate).toLocaleDateString()}</Typography>
+        <Typography>
+          {new Date(uploadDate).toLocaleDateString('pl', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </Typography>
       </Stack>
       <Stack marginTop={1} spacing={1}>
-        <Typography>{description}</Typography>
-        {isDescriptionExpandable && (
+        <Typography ref={descriptionRef} sx={!expanded ? descriptionMaxLinesStyle : null}>
+          {videoDescription}
+        </Typography>
+        {(isEllipsisActive || expanded) && (
           <Typography
             onClick={handleExpandClick}
             sx={{

@@ -1,24 +1,35 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import FormDialog from '../../components/FormDialog';
-import { GetUserDetailsResponse, getUserTypeString } from '../../data/UserData';
+import FormDialog from '../../components/layout/FormDialog';
+import {
+  AccountType,
+  GetUserDetailsResponse,
+  getUserTypeString,
+} from '../../types/UserTypes';
+import { Word, getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
+import SubscribeButton from '../Subscription/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
+
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
+
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
 
   let textBottom = getUserTypeString(userDetails);
   if (userDetails.subscriptionsCount !== null)
-    textBottom += ` · ${userDetails.subscriptionsCount} subskrypcji`;
+    textBottom += ` · ${getNumberWithLabel(
+      userDetails.subscriptionsCount,
+      Word.Subscription
+    )}`;
   if (userDetails.accountBalance !== null)
     textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;
 
@@ -45,8 +56,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             <Typography variant='h5'>{textBottom}</Typography>
           </Stack>
         </Stack>
-
-        {userDetails.id === loggedUserDetails?.id ? (
+        {userDetails.id === loggedUserDetails?.id && (
           <Button
             onClick={handleDialogOpen}
             sx={{ marginInlineStart: 'auto' }}
@@ -54,11 +64,11 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           >
             Edytuj profil
           </Button>
-        ) : (
-          <Button onClick={() => {}} variant='contained'>
-            Subskrybuj
-          </Button>
         )}
+        {userDetails.id !== loggedUserDetails?.id &&
+          userDetails.userType === AccountType.Creator && (
+            <SubscribeButton creatorId={userDetails.id} />
+          )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />

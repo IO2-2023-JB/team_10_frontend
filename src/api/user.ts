@@ -1,17 +1,16 @@
-import {
-  useMutation,
-  useQuery, useQueryClient
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { GetUserDetailsResponse, UserDetails, userDetailsState } from '../data/UserData';
+import { userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../pages/Login/LoginForm';
 import { RegisterFormValues } from '../pages/Register/RegisterForm';
 import { UserDetailsEditFormValues } from '../pages/User/UserDetailsEditForm';
+import { UserDetails } from '../types/UserTypes';
+import { GetUserDetailsResponse } from './../types/UserTypes';
 
-const userKey = 'user';
+export const userKey = 'user';
 
 export function useLogin() {
   const navigate = useNavigate();

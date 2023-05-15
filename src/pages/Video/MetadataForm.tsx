@@ -1,17 +1,14 @@
 import { Mode } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
-import * as Yup from 'yup';
 import { useEditVideoMetadata } from '../../api/video';
-import FormDialog from '../../components/FormDialog';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import {
-  GetVideoMetadataResponse,
-  UploadVideo,
-  VideoVisibility,
-} from '../../data/VideoMetadata';
+import FormDialog from '../../components/layout/FormDialog';
+import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import BaseForm from '../Login/BaseForm';
+import { UploadVideoMetadata } from './../../types/VideoTypes';
+import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 
 export interface MetadataFormValues {
   title: string;
@@ -20,11 +17,7 @@ export interface MetadataFormValues {
   visibility: VideoVisibility;
 }
 
-const validationSchema = Yup.object({
-  title: Yup.string().required(),
-  description: Yup.string().required(),
-  tags: Yup.string().required(),
-});
+const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
 
 const formFields = (
   <>
@@ -41,14 +34,15 @@ const formFields = (
 
 interface MetadataFormProps {
   videoMetadata: GetVideoMetadataResponse;
+  asMenuItem?: boolean;
 }
 
-function MetadataForm({ videoMetadata }: MetadataFormProps) {
+function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) {
   const { mutate, error, isLoading } = useEditVideoMetadata(videoMetadata.id);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const handleSubmit = (values: MetadataFormValues) => {
-    const parsedValues: UploadVideo = {
+    const parsedValues: UploadVideoMetadata = {
       ...values,
       tags: values.tags
         .split(',')
@@ -70,7 +64,11 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
 
   return (
     <>
-      <Button onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</Button>
+      {asMenuItem ? (
+        <MenuItem onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</MenuItem>
+      ) : (
+        <Button onClick={() => setIsDialogOpen(true)}>Edytuj szczegóły</Button>
+      )}
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<MetadataFormValues>
           title='Edycja filmu'
@@ -82,7 +80,7 @@ function MetadataForm({ videoMetadata }: MetadataFormProps) {
           onSubmit={handleSubmit}
           errorMessage={errorMessage}
           isLoading={isLoading}
-          alertCollapse={false}
+          alertCollapse={true}
         />
       </FormDialog>
     </>

@@ -1,13 +1,14 @@
-import { GetVideoMetadataResponse } from '../../data/VideoMetadata';
 import { Box, Stack, Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { useUserDetails } from '../../api/user';
+import { userDetailsState } from '../../data/UserData';
+import CreatorInfo from './CreatorInfo';
+import MetadataForm from './MetadataForm';
+import Reaction from './Reaction';
+import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import CreatorInfo from './CreatorInfo';
-import { useUserDetails } from '../../api/user';
-import { useRecoilValue } from 'recoil';
-import { userDetailsState } from '../../data/UserData';
-import MetadataForm from './MetadataForm';
-import VideoDelete from './VideoDelete';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -22,15 +23,28 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
     <Stack
       spacing={2}
       sx={{
-        marginY: 2,
+        paddingY: 3,
       }}
     >
-      <Typography variant='h5' fontWeight={600}>
-        {videoMetadata.title}
-      </Typography>
-      <VideoTags tags={videoMetadata.tags} />
+      <Stack
+        direction='row'
+        sx={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
+        <Stack sx={{ marginInlineEnd: 'auto' }} spacing={1}>
+          <Typography variant='h5' fontWeight={600}>
+            {videoMetadata.title}
+          </Typography>
+          <VideoTags tags={videoMetadata.tags} />
+        </Stack>
+        <Box sx={{ marginRight: 2, flexShrink: 0 }}>
+          <Reaction videoId={videoMetadata.id} />
+        </Box>
+      </Stack>
       <Stack direction='row' alignItems='center'>
-        {userDetails && <CreatorInfo userDetails={userDetails!} />}
+        <CreatorInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
           {isAuthor && (
             <>

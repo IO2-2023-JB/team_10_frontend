@@ -49,7 +49,9 @@ function BaseForm<T extends FormikValues>({
           }}
           severity={successfulRegister ? 'success' : 'error'}
         >
-          {successfulRegister ? 'Registered successfully!' : errorMessage}
+          {successfulRegister
+            ? 'Pomyślnie zarejestrowano! Teraz możesz się zalogować.'
+            : errorMessage}
         </Alert>
       )}
       <Box
