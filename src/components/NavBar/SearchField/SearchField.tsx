@@ -46,6 +46,7 @@ function SearchField() {
       options={preparedSearchResults ?? []}
       disableClearable
       blurOnSelect
+      filterOptions={(x) => x}
       value={query}
       onInputChange={(_, value, reason) => {
         if (reason === 'input') setQuery(value);
