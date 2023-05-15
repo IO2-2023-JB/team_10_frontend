@@ -85,6 +85,15 @@ function SearchField({ query: queryFromUrl }: SearchFieldProps) {
     else setQuery('');
   };
 
+  const handleRedirect = () => {
+    navigate({
+      pathname: ROUTES.SEARCH,
+      search: createSearchParams({
+        query: query,
+      }).toString(),
+    });
+  };
+
   return (
     <Autocomplete
       freeSolo
@@ -96,13 +105,7 @@ function SearchField({ query: queryFromUrl }: SearchFieldProps) {
       onChange={handleChange}
       onInputChange={handleInputChange}
       onKeyDown={(event) => {
-        if (event.key === 'Enter')
-          navigate({
-            pathname: ROUTES.SEARCH,
-            search: createSearchParams({
-              query: query,
-            }).toString(),
-          });
+        if (event.key === 'Enter') handleRedirect();
       }}
       renderOption={(props, option) => (
         <SearchSuggestion props={props} option={option} key={option.result.id} />
@@ -111,9 +114,7 @@ function SearchField({ query: queryFromUrl }: SearchFieldProps) {
         <SearchInput
           params={params}
           showButton={query.length > 0}
-          onSubmit={() => {
-            // redirect to search results
-          }}
+          onSubmit={() => handleRedirect()}
         />
       )}
       ListboxProps={{
