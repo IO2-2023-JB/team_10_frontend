@@ -1,15 +1,19 @@
-import { Avatar, Box, Button, Stack, Typography, Skeleton } from '@mui/material';
+import { Avatar, Box, Button, Stack, Typography, AvatarProps } from '@mui/material';
 import { useField } from 'formik';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
+import { nounGenders } from '../../utils/genderDeclinedAdjectives';
 import { toBase64 } from '../../utils/utils';
+import { Adjective, genderDeclension } from '../../utils/genderDeclinedAdjectives';
 
-interface ImageUploaderProps {
+interface FormikFileUploaderProps {
   name: string;
   label: string;
   acceptedFileTypes: string[];
   acceptObject: Accept;
-  preview: boolean | null;
+  preview?: boolean;
+  previewProps?: AvatarProps;
+  previewSkeleton?: ReactNode;
 }
 
 function FormikFileUploader({
@@ -18,11 +22,13 @@ function FormikFileUploader({
   acceptedFileTypes,
   acceptObject,
   preview,
-}: ImageUploaderProps) {
-  const [_, meta, helpers] = useField(name);
+  previewProps,
+  previewSkeleton,
+}: FormikFileUploaderProps) {
+  const [_, meta, helpers] = useField<File | null>(name);
   const [dragged, setDragged] = useState<boolean>(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [isPreviewLoading, setIsPreviewLoading] = useState<boolean>(false);
+
   const handleDrop = async (files: File[]) => {
     helpers.setTouched(true);
     setDragged(false);
@@ -47,10 +53,8 @@ function FormikFileUploader({
 
   useEffect(() => {
     if (preview && meta.value) {
-      setIsPreviewLoading(true);
-      toBase64(meta.value).then((res) => {
-        setPreviewImage(res);
-        setIsPreviewLoading(false);
+      toBase64(meta.value).then((file) => {
+        setPreviewImage(file);
       });
     }
   }, [meta.value, preview]);
@@ -67,26 +71,19 @@ function FormikFileUploader({
       </Typography>
       <Stack alignItems='center' direction='row'>
         {preview &&
+          meta.value !== null &&
           (previewImage !== null ? (
-            <Avatar
-              src={previewImage}
-              sx={{
-                backgroundColor: 'primary.main',
-                width: 70,
-                height: 70,
-                marginRight: 2,
-              }}
-            />
-          ) : isPreviewLoading ? (
-            <Skeleton variant='circular' sx={{ width: 90, height: 70, marginRight: 2 }} />
+            <Box sx={{ marginRight: 2 }}>
+              <Avatar src={previewImage} {...previewProps} />
+            </Box>
           ) : (
-            <></>
+            <Box sx={{ marginRight: 2 }}>{previewSkeleton}</Box>
           ))}
         <input {...getInputProps()} />
         <Stack
           direction='row'
           sx={{
-            width: '100%',
+            flex: 1,
             borderRadius: '4.5px',
             borderWidth: dragged ? 2 : 1,
             borderStyle:
@@ -101,7 +98,7 @@ function FormikFileUploader({
                 : '#3b3b3b',
             alignItems: 'center',
             height: 56,
-            backgroundColor: dragged ? 'background.light' : 'inherit',
+            backgroundColor: dragged ? 'background.light' : null,
           }}
         >
           {meta.value !== null ? (
@@ -118,7 +115,12 @@ function FormikFileUploader({
                 }}
               >
                 {preview && !meta.touched && meta.initialValue !== null
-                  ? `Aktualny ${label}`
+                  ? `${genderDeclension(
+                      Adjective.Current,
+                      nounGenders[label.toLowerCase()],
+                      false,
+                      true
+                    )} ${label.toLowerCase()}`
                   : meta.value.name}
               </Typography>
               <Button onClick={handleDelete}>Usuń</Button>

@@ -1,7 +1,7 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useMaxLines } from '../../utils/hooks';
-import { Word, getNumberWithLabel } from '../../utils/words';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 
 interface VideoDescriptionProps {
   viewCount: number;
@@ -15,7 +15,7 @@ function VideoDescription({
   videoDescription,
 }: VideoDescriptionProps) {
   const [expanded, setExpanded] = useState(false);
-  const viewCountText = getNumberWithLabel(viewCount, Word.View);
+  const viewCountText = getNumberWithLabel(viewCount, NumberDeclinedNoun.View);
 
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const { isEllipsisActive, style: descriptionMaxLinesStyle } = useMaxLines(

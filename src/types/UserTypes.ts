@@ -1,5 +1,3 @@
-import { RegisterFormValues } from '../pages/Register/RegisterForm';
-
 export interface GetUserDetailsResponse {
   id: string;
   email: string;
@@ -32,11 +30,8 @@ export function getUserTypeString(userDetails: GetUserDetailsResponse): string {
 }
 
 export type PostUserDetails = Pick<
-  RegisterFormValues,
-  'email' | 'nickname' | 'name' | 'surname' | 'password' | 'userType'
-> & { avatarImage: string | null };
-
-export type PutUserDetails = Pick<
   GetUserDetailsResponse,
-  'name' | 'surname' | 'nickname' | 'userType' | 'avatarImage'
->;
+  'email' | 'nickname' | 'name' | 'surname' | 'userType' | 'avatarImage'
+> & { password: string };
+
+export type PutUserDetails = Omit<PostUserDetails, 'email' | 'password'>;

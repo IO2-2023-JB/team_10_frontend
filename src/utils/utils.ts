@@ -9,7 +9,7 @@ export const shallowComparison = (obj1: object, obj2: object) => {
   );
 };
 
-export const toBase64 = (file: File) =>
+export const toBase64 = (file: Blob) =>
   new Promise<string | null>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);

@@ -1,7 +1,5 @@
 import { Mode } from '@mui/icons-material';
-import { Box, CircularProgress } from '@mui/material';
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
@@ -13,13 +11,15 @@ import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { shallowComparison, toBase64 } from '../../utils/utils';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { useLoadImage } from '../../utils/hooks';
+import { Skeleton } from '@mui/material';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
   name: string;
   surname: string;
   userType: AccountType;
-  avatarImage: File | null;
+  avatarImage: Blob | null;
 }
 
 const userDetailsEditValidationForm = new Yup.ObjectSchema({
@@ -40,10 +40,14 @@ const formFields = (
     />
     <FormikFileUploader
       name='avatarImage'
-      preview={true}
+      preview
       acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
       acceptObject={ALLOWED_IMAGE_OBJECT}
       label='Avatar'
+      previewProps={{ sx: { height: 70, width: 70 } }}
+      previewSkeleton={
+        <Skeleton variant='circular' sx={{ width: 70, height: 70 }} />
+      }
     />
   </>
 );
@@ -56,51 +60,35 @@ interface UserDetailsEditFormProps {
 function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
   const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
   const [errorMessage, setErrorMessage] = useState('');
+  const [avatarImage, setAvatarImage] = useState<Blob | null>(null);
+  const prepareInitialValues = useLoadImage(userDetails.avatarImage, setAvatarImage);
 
-  const [avatarImage, setAvatarImage] = useState<File | null>(null);
-  const [areInitialValuesReady, setAreInitialValuesReady] = useState<boolean>();
+  useEffect(() => {
+    prepareInitialValues();
+  }, [prepareInitialValues]);
+
+  useEffect(() => {
+    if (isSuccess) closeDialog();
+  }, [isSuccess, closeDialog]);
+
+  const handleSubmit = async (values: UserDetailsEditFormValues) => {
+    setErrorMessage(error?.message ?? '');
+    if (!shallowComparison(values, formikInitialValues)) {
+      const file =
+        values.avatarImage !== null ? await toBase64(values.avatarImage) : null;
+      const payload = { ...values, avatarImage: file };
+      mutate(payload);
+    } else setErrorMessage('Wprowadź nowe wartości');
+    setAvatarImage(values.avatarImage);
+  };
 
   const formikInitialValues: UserDetailsEditFormValues = {
     nickname: userDetails.nickname,
     name: userDetails.name,
     surname: userDetails.surname,
     userType: userDetails.userType,
-    avatarImage,
+    avatarImage: avatarImage,
   };
-
-  const prepareInitialValues = useCallback(async () => {
-    const { data: file } = await axios.get<File>(userDetails.avatarImage!, {
-      responseType: 'blob',
-    });
-
-    setAvatarImage(file);
-    setAreInitialValuesReady(true);
-  }, [userDetails.avatarImage]);
-
-  useEffect(() => {
-    if (!areInitialValuesReady) prepareInitialValues();
-  }, [areInitialValuesReady, prepareInitialValues]);
-
-  useEffect(() => {
-    if (isSuccess) closeDialog();
-  }, [isSuccess, closeDialog]);
-
-  const handleSubmit = (values: UserDetailsEditFormValues) => {
-    setErrorMessage(error?.message ?? '');
-    if (!shallowComparison(values, formikInitialValues)) {
-      toBase64(values.avatarImage!).then((res) => {
-        const payload = { ...values, avatarImage: res };
-        mutate(payload);
-      });
-    } else setErrorMessage('Wprowadź nowe wartości');
-  };
-
-  if (!areInitialValuesReady)
-    return (
-      <Box sx={{ height: '100%', width: '100%', display: 'grid', placeItems: 'center' }}>
-        <CircularProgress />
-      </Box>
-    );
 
   return (
     <BaseForm<UserDetailsEditFormValues>
@@ -113,7 +101,8 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
       onSubmit={handleSubmit}
       errorMessage={errorMessage}
       isLoading={isLoading}
-      alertCollapse={true}
+      alertCollapse
+      enableReinitialize
     />
   );
 }

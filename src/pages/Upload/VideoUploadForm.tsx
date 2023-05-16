@@ -1,5 +1,5 @@
 import { Publish } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Stack, Skeleton } from '@mui/material';
 import * as Yup from 'yup';
 import { useVideoUpload } from '../../api/video';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
@@ -46,17 +46,29 @@ function VideoUploadForm() {
         label='Miniaturka'
         acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
         acceptObject={ALLOWED_IMAGE_OBJECT}
-        preview={true}
+        preview
+        previewProps={{
+          sx: {
+            height: 70,
+            width: 124,
+          },
+          variant: 'rounded',
+        }}
+        previewSkeleton={
+          <Skeleton
+            variant='rounded'
+            sx={{ aspectRatio: '16 / 9', height: 70 }}
+          />
+        }
       />
       <FormikFileUploader
         name='videoFile'
         label='Wideo'
         acceptedFileTypes={ALLOWED_VIDEO_FORMATS}
         acceptObject={ALLOWED_VIDEO_OBJECT}
-        preview={false}
       />
       <FormikSwitch
-        checked={true}
+        checked
         name='visibility'
         labels={['Prywatny', 'Publiczny']}
         options={[VideoVisibility.Private, VideoVisibility.Public]}

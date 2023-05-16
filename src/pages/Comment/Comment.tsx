@@ -121,7 +121,7 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
         </Stack>
       </Paper>
       <Collapse in={isOpen} timeout='auto'>
-        {isOpen && <CommentSection commentId={comment.id} isResponse={true} />}
+        {isOpen && <CommentSection commentId={comment.id} isResponse />}
       </Collapse>
     </Stack>
   );

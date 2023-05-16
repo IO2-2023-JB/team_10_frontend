@@ -25,10 +25,10 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   useEffect(() => {
     if (isSuccess) {
       setIsDeleteDialogOpen(false);
-      navigate('/');
+      if (!asMenuItem) navigate('/');
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
     }
-  }, [isSuccess, navigate, queryClient]);
+  }, [isSuccess, navigate, queryClient, asMenuItem]);
 
   return (
     <>

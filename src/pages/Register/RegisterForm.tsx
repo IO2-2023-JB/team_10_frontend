@@ -8,17 +8,12 @@ import { AccountType, PostUserDetails } from '../../types/UserTypes';
 import { toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
+import { Skeleton } from '@mui/material';
 
-export interface RegisterFormValues {
-  email: string;
-  nickname: string;
-  name: string;
-  surname: string;
-  password: string;
-  repeatPassword: string;
-  userType: string;
-  avatarImage: File | null;
-}
+export type RegisterFormValues = Pick<
+  PostUserDetails,
+  'email' | 'nickname' | 'name' | 'surname' | 'userType' | 'password'
+> & { avatarImage: File | null; repeatPassword?: string };
 
 const formikInitialValues = {
   email: '',
@@ -67,7 +62,11 @@ const formFields = (
       label='Avatar'
       acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
       acceptObject={ALLOWED_IMAGE_OBJECT}
-      preview={true}
+      preview
+      previewProps={{ sx: { height: 70, width: 70 } }}
+      previewSkeleton={
+        <Skeleton variant='circular' sx={{ width: 70, height: 70 }} />
+      }
     />
   </>
 );
@@ -75,11 +74,12 @@ const formFields = (
 function RegisterForm() {
   const { isLoading, error, mutate } = useRegister();
 
-  const handleSubmit = (values: RegisterFormValues) => {
-    toBase64(values.avatarImage!).then((res) => {
-      const payload: PostUserDetails = { ...values, avatarImage: res };
-      mutate(payload);
-    });
+  const handleSubmit = async (values: RegisterFormValues) => {
+    delete values.repeatPassword;
+    const avatarImage =
+      values.avatarImage !== null ? await toBase64(values.avatarImage) : null;
+    const payload: PostUserDetails = { ...values, avatarImage };
+    mutate(payload);
   };
 
   const errorMessage = error?.message ?? '';

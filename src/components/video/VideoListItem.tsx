@@ -8,7 +8,7 @@ import MetadataForm from '../../pages/Video/MetadataForm';
 import VideoDelete from '../../pages/Video/VideoDelete';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useMaxLines } from '../../utils/hooks';
-import { Word, getNumberWithLabel } from '../../utils/words';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import VideoThumbnail from './VideoThumbnail';
 
 interface VideoListItemProps {
@@ -86,7 +86,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
           )}
           <Typography>·</Typography>
           <Typography>
-            {getNumberWithLabel(videoMetadata.viewCount, Word.View)}
+            {getNumberWithLabel(videoMetadata.viewCount, NumberDeclinedNoun.View)}
           </Typography>
         </Stack>
         <Typography ref={descriptionRef} sx={descriptionMaxLinesStyle}>
