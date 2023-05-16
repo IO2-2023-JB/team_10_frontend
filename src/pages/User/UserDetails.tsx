@@ -12,6 +12,7 @@ import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import SubscribeButton from '../../components/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import DonateButton from '../../components/donate/DonateButton';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -67,7 +68,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
         )}
         {userDetails.id !== loggedUserDetails?.id &&
           userDetails.userType === AccountType.Creator && (
-            <SubscribeButton creatorId={userDetails.id} />
+            <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
+              <SubscribeButton creatorId={userDetails.id} />
+              <DonateButton creator={userDetails} />
+            </Stack>
           )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>

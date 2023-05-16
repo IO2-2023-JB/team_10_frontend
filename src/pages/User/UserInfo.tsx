@@ -2,6 +2,7 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import SubscribeButton from '../../components/SubscribeButton';
+import DonateButton from '../../components/donate/DonateButton';
 import { ROUTES } from '../../const';
 import { AccountType, GetUserDetailsResponse } from '../../types/UserTypes';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
@@ -61,7 +62,10 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
         </Stack>
       </Stack>
       {!isAuthor && userDetails && isCreator && (
-        <SubscribeButton creatorId={userDetails.id} />
+        <Stack direction='row' spacing={2} sx={{ marginInlineStart: 'auto' }}>
+          <SubscribeButton creatorId={userDetails.id} />
+          <DonateButton creator={userDetails} />
+        </Stack>
       )}
     </Stack>
   );
