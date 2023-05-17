@@ -20,3 +20,10 @@ export const toBase64 = (file: File) =>
 export function getInitials(userDetails: GetUserDetailsResponse): string {
   return ((userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '')).toUpperCase();
 }
+
+export function getCurrentSubroute(path: string, root: string): string {
+  root = root.replace('/', '');
+  const pathParts = path.split('/');
+  const rootIndex = pathParts.indexOf(root);
+  return pathParts[rootIndex + 1] ?? '';
+}

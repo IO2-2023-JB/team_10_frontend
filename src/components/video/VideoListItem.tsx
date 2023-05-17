@@ -10,6 +10,7 @@ import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useMaxLines } from '../../utils/hooks';
 import { Word, getNumberWithLabel } from '../../utils/words';
 import VideoThumbnail from './VideoThumbnail';
+import { ROUTES } from '../../const';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -28,7 +29,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
   const loggedInUser = useRecoilValue(userDetailsState);
   const isAuthor = videoMetadata.authorId === loggedInUser?.id;
 
-  const videoUrl = `/video/${videoMetadata.id}`;
+  const videoUrl = `${ROUTES.VIDEO}/${videoMetadata.id}`;
 
   const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
   const isMenuOpen = menuAnchorElement !== null;
@@ -74,7 +75,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
             <Typography
               onClick={(event) => event.stopPropagation()}
               component={Link}
-              to={`/user/${videoMetadata.authorId}`}
+              to={`${ROUTES.USER}/${videoMetadata.authorId}`}
               sx={{
                 color: 'inherit',
                 textDecoration: 'none',

@@ -7,6 +7,7 @@ import { videoNotificationState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
 import Logo from './Logo';
+import { ROUTES } from '../../const';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
@@ -59,7 +60,7 @@ function NavBar() {
           <IconButton
             color='inherit'
             component={Link}
-            to={`/user/${userDetails.id}`}
+            to={`${ROUTES.USER}/${userDetails.id}`}
             aria-label='twój profil'
           >
             <Avatar userDetails={userDetailsFull} size={40} />

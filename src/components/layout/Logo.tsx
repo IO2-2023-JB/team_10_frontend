@@ -1,5 +1,6 @@
 import { Box, SxProps, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { ROUTES } from '../../const';
 
 interface LogoProps {
   sx?: SxProps;
@@ -18,7 +19,7 @@ function Logo({ sx }: LogoProps) {
         ...sx,
       }}
       component={Link}
-      to='/'
+      to={ROUTES.HOMEPAGE}
     >
       <Box
         sx={{

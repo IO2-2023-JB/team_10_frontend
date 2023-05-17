@@ -67,3 +67,5 @@ export interface NotificationData {
 export interface GetUserVideosResponse {
   videos: GetVideoMetadataResponse[];
 }
+
+export type GetSubscribedVideosResponse = GetUserVideosResponse;
