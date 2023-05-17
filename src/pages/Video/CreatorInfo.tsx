@@ -21,7 +21,12 @@ function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps)
         direction='row'
         color='inherit'
         sx={{
+          padding: 1,
+          borderRadius: 2,
           textDecoration: 'inherit',
+          '&:hover': {
+            backgroundColor: 'background.light',
+          },
         }}
         component={Link}
         to={userDetails ? `${ROUTES.USER}/${userDetails?.id}` : '.'}
