@@ -11,6 +11,7 @@ interface DonateDialogProps {
 }
 
 const minValue = 0.0;
+const regex = /^(\d*\.?\d{0,2}|\d+)$/;
 
 function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
   const { mutate, error, isLoading, isSuccess } = useDonate(creator.id);
@@ -24,7 +25,8 @@ function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
   };
 
   const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const value = event.target.value;
+    if (regex.test(value) || value === '') setValue(value);
   };
 
   const isValueValid = (value: number) => value > minValue;

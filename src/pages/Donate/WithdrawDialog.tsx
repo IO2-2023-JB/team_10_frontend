@@ -10,6 +10,7 @@ interface WithdrawDialogProps {
 }
 
 const minValue = 0.0;
+const regex = /^(\d*\.?\d{0,2}|\d+)$/;
 
 function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
   const { mutate, error, isLoading, isSuccess } = useWithdraw();
@@ -23,7 +24,8 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
   };
 
   const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const value = event.target.value;
+    if (regex.test(value) || value === '') setValue(value);
   };
 
   const isValueValid = (value: number) =>

@@ -21,7 +21,7 @@ function DonateButton({ creator }: DonateButtonProps) {
   return (
     <>
       <Button variant='outlined' size='large' onClick={handleDialogOpen}>
-        Donejtuj
+        Wesprzyj
       </Button>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <DonateDialog creator={creator} closeDialog={handleDialogClose} />
