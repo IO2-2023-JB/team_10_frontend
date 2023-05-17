@@ -1,14 +1,14 @@
 import { Button } from '@mui/material';
 import FormDialog from '../layout/FormDialog';
-import DonateDialog from '../../pages/Donate/DonateDialog';
 import { useState } from 'react';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
+import WithdrawDialog from '../../pages/Donate/WithdrawDialog';
 
-interface DonateButtonProps {
+interface WithdrawButtonProps {
   creator: GetUserDetailsResponse;
 }
 
-function DonateButton({ creator }: DonateButtonProps) {
+function WithdrawButton({ creator }: WithdrawButtonProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleDialogOpen = () => {
@@ -21,13 +21,13 @@ function DonateButton({ creator }: DonateButtonProps) {
   return (
     <>
       <Button variant='outlined' size='large' onClick={handleDialogOpen}>
-        Donejtuj
+        Wypłać środki
       </Button>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <DonateDialog creator={creator} closeDialog={handleDialogClose} />
+        <WithdrawDialog creator={creator} closeDialog={handleDialogClose} />
       </FormDialog>
     </>
   );
 }
 
-export default DonateButton;
+export default WithdrawButton;
