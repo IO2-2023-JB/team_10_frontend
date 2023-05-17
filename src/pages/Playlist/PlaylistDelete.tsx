@@ -6,6 +6,7 @@ import SpinningButton from '../../components/SpinningButton';
 import FormDialog from '../../components/layout/FormDialog';
 import { ROUTES } from '../../const';
 import { Playlist } from '../../types/PlaylistTypes';
+import { getErrorMessage } from '../../utils/utils';
 
 interface PlaylistDeleteProps {
   id: string;
@@ -40,8 +41,7 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
           {error && (
             <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
               <AlertTitle>Wystąpił błąd!</AlertTitle>
-              {/* TODO convert to getErrorMessage! */}
-              {error?.message}
+              {getErrorMessage(error)}
             </Alert>
           )}
           <Typography variant='h5'>

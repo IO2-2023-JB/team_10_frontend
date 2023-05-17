@@ -1,6 +1,7 @@
 import { Alert, AlertProps, AlertTitle, Snackbar } from '@mui/material';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { getErrorMessage } from '../utils/utils';
 
 interface StatusSnackbarProps {
   loadingMessage: string;
@@ -30,7 +31,7 @@ function StatusSnackbar({
     severity = 'success';
   } else if (error) {
     title = errorMessage;
-    message = error?.message; // TODO add getErrorMessage()
+    message = getErrorMessage(error)!;
     severity = 'error';
   }
 

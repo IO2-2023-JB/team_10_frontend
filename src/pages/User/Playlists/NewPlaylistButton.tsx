@@ -7,6 +7,7 @@ import FormikSwitch from '../../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../../components/formikFields/FormikTextField';
 import FormDialog from '../../../components/layout/FormDialog';
 import { CreatePlaylist, PlaylistVisibility } from '../../../types/PlaylistTypes';
+import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
 
 export const formFields = (
@@ -60,7 +61,7 @@ function NewPlaylistButton() {
           buttonText='Utwórz'
           icon={<Add />}
           formFields={formFields}
-          errorMessage={error?.message ?? ''} // TODO getErrorMessage!
+          errorMessage={getErrorMessage(error)}
           isLoading={isLoading}
           alertCollapse={true}
           initialValues={initialValues}

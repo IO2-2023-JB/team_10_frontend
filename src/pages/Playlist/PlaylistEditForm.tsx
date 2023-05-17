@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { useEditPlaylist } from '../../api/playlist';
 import FormDialog from '../../components/layout/FormDialog';
 import { EditPlaylist, Playlist } from '../../types/PlaylistTypes';
+import { getErrorMessage } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { formFields } from '../User/Playlists/NewPlaylistButton';
 
@@ -47,7 +48,7 @@ function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
           initialValues={formikInitialValues}
           validationSchema={Yup.object()}
           onSubmit={handleSubmit}
-          errorMessage={error?.message ?? ''} // TODO change to getErrorMessage()
+          errorMessage={getErrorMessage(error)}
           isLoading={isLoading}
           alertCollapse={true}
         />
