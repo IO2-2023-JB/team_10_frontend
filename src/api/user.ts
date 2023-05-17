@@ -56,12 +56,12 @@ export function useUserDetails(id?: string) {
 
 export function useLoggedInUserDetails(): {
   isLoading: boolean;
-  error: string | null;
+  error: AxiosError | null;
   reload: () => void;
   logOut: () => void;
 } {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(
     localStorage.getItem('bearerToken') !== null && userDetails === null
   );
@@ -74,7 +74,7 @@ export function useLoggedInUserDetails(): {
       });
       setUserDetails({ ...data, token });
     } catch (error) {
-      setError((error as AxiosError).message);
+      setError(error as AxiosError);
       setIsLoading(false);
     }
   }, [setUserDetails]);

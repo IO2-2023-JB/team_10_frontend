@@ -6,6 +6,7 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { AccountType } from '../../types/UserTypes';
 import BaseForm from '../Login/BaseForm';
+import { getErrorMessage } from '../../utils/utils';
 
 export interface RegisterFormValues {
   email: string;
@@ -71,8 +72,6 @@ function RegisterForm() {
     mutate(values);
   };
 
-  const errorMessage = error?.message ?? '';
-
   return (
     <BaseForm<RegisterFormValues>
       title='Rejestracja'
@@ -82,7 +81,7 @@ function RegisterForm() {
       initialValues={formikInitialValues}
       validationSchema={registerValidationSchema}
       onSubmit={handleSubmit}
-      errorMessage={errorMessage}
+      errorMessage={getErrorMessage(error)}
       isLoading={isLoading}
       alertCollapse={false}
     />

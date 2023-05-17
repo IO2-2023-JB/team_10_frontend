@@ -12,7 +12,6 @@ export const ALLOWED_VIDEO_FORMATS = ['.mp4', '.avi', '.mkv', '.webm'];
 export const ALLOWED_IMAGE_OBJECT = { 'image/*': ALLOWED_IMAGE_FORMATS };
 export const ALLOWED_VIDEO_OBJECT = { 'video/*': ALLOWED_VIDEO_FORMATS };
 
-
 export const MAX_VIDEO_TITLE_LENGTH = 100;
 export const MAX_VIDEO_DESCRIPTION_LENGTH = 1000;
 
@@ -25,4 +24,3 @@ export const ROUTES = {
   USER: '/user',
   VIDEO: '/video',
 };
-

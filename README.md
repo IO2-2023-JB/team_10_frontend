@@ -95,7 +95,7 @@ This command should be run before each commit to ensure code quality
 yarn lint
 ```
 
-This runs a TypeScript check and an ESLint check
+This runs a TypeScript check, an ESLint check and a Prettier check
 
 ## Testing
 

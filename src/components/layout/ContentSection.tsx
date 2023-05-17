@@ -1,6 +1,7 @@
 import { Alert, AlertTitle, Box, CircularProgress } from '@mui/material';
 import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
+import { getErrorMessage } from '../../utils/utils';
 
 interface ContentSectionProps {
   isLoading: boolean;
@@ -27,7 +28,7 @@ function ContentSection({ isLoading, error, children }: ContentSectionProps) {
         }}
       >
         <AlertTitle>Nie udało się załadować danych</AlertTitle>
-        {error.message}
+        {getErrorMessage(error)}
       </Alert>
     );
   }

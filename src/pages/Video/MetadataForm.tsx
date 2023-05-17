@@ -9,6 +9,7 @@ import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoType
 import BaseForm from '../Login/BaseForm';
 import { UploadVideoMetadata } from './../../types/VideoTypes';
 import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
+import { getErrorMessage } from '../../utils/utils';
 
 export interface MetadataFormValues {
   title: string;
@@ -53,8 +54,6 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
     mutate(parsedValues);
   };
 
-  const errorMessage = error?.message ?? '';
-
   const formikInitialValues: MetadataFormValues = {
     title: videoMetadata.title,
     description: videoMetadata.description,
@@ -78,7 +77,7 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           initialValues={formikInitialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
-          errorMessage={errorMessage}
+          errorMessage={getErrorMessage(error)}
           isLoading={isLoading}
           alertCollapse={true}
         />
