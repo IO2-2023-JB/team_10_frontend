@@ -2,22 +2,22 @@ import { Publish } from '@mui/icons-material';
 import { Skeleton, Stack } from '@mui/material';
 import * as Yup from 'yup';
 import { useVideoUpload } from '../../api/video';
+import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import {
   ALLOWED_IMAGE_FORMATS,
   ALLOWED_IMAGE_OBJECT,
-  MAX_VIDEO_TITLE_LENGTH
+  ALLOWED_VIDEO_FORMATS,
+  ALLOWED_VIDEO_OBJECT,
+  EXAMPLE_TAGS,
+  MAX_VIDEO_DESCRIPTION_LENGTH,
+  MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import {
-  ALLOWED_VIDEO_FORMATS,
-  ALLOWED_VIDEO_OBJECT,
-  MAX_VIDEO_DESCRIPTION_LENGTH
-} from './../../const';
 import { MetadataFormValues } from './../Video/MetadataForm';
 
 export type VideoUploadFormValues = {
@@ -33,7 +33,7 @@ export const videoUploadValidationSchema = Yup.object({
     MAX_VIDEO_DESCRIPTION_LENGTH,
     `Maksymalnie ${MAX_VIDEO_DESCRIPTION_LENGTH} znaków`
   ),
-  tags: Yup.string(),
+  tags: Yup.array(Yup.string()),
   videoFile: Yup.string().required('Pole wymagane'),
 });
 
@@ -41,7 +41,7 @@ const formikInitialValues = {
   title: '',
   description: '',
   thumbnail: null,
-  tags: '',
+  tags: [],
   visibility: VideoVisibility.Private,
   videoFile: null,
 };
@@ -53,7 +53,23 @@ function VideoUploadForm() {
     <>
       <FormikTextField name='title' label='Tytuł' />
       <FormikTextField name='description' label='Opis' />
-      <FormikTextField name='tags' label='Tagi' />
+      <FormikAutocomplete
+        name='tags'
+        multiple
+        freeSolo
+        autoSelect
+        options={EXAMPLE_TAGS}
+        onInputChange={(event, value) => {
+          if (value.endsWith(',')) {
+            const target = event.currentTarget as HTMLInputElement;
+            target.blur();
+            target.focus();
+          }
+        }}
+        TextFieldProps={{
+          label: 'Tagi',
+        }}
+      />
       <FormikFileUploader
         name='thumbnail'
         label='Miniaturka'
@@ -68,10 +84,7 @@ function VideoUploadForm() {
           variant: 'rounded',
         }}
         previewSkeleton={
-          <Skeleton
-            variant='rounded'
-            sx={{ aspectRatio: '16 / 9', height: 70 }}
-          />
+          <Skeleton variant='rounded' sx={{ aspectRatio: '16 / 9', height: 70 }} />
         }
       />
       <FormikFileUploader
@@ -81,7 +94,6 @@ function VideoUploadForm() {
         acceptObject={ALLOWED_VIDEO_OBJECT}
       />
       <FormikSwitch
-        checked
         name='visibility'
         labels={['Prywatny', 'Publiczny']}
         options={[VideoVisibility.Private, VideoVisibility.Public]}
@@ -96,10 +108,6 @@ function VideoUploadForm() {
       ...values,
       videoFile: formData,
       thumbnail: values.thumbnail !== null ? await toBase64(values.thumbnail) : null,
-      tags: values.tags
-        .split(',')
-        .map((tag) => tag.trim())
-        .filter((tag) => tag.length > 0),
     };
     mutate(parsedValues);
   };

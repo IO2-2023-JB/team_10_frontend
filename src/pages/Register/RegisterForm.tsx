@@ -64,9 +64,7 @@ const formFields = (
       acceptObject={ALLOWED_IMAGE_OBJECT}
       preview
       previewProps={{ sx: { height: 70, width: 70 } }}
-      previewSkeleton={
-        <Skeleton variant='circular' sx={{ width: 70, height: 70 }} />
-      }
+      previewSkeleton={<Skeleton variant='circular' sx={{ width: 70, height: 70 }} />}
     />
   </>
 );
