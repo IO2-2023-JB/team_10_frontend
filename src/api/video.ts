@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { pageNotificationState } from '../data/VideoData';
+import { videoNotificationState } from '../data/VideoData';
 import {
   GetUserVideosResponse,
   GetVideoMetadataResponse,
@@ -58,7 +58,7 @@ export function useReaction(id: string) {
 
 export function useVideoUpload() {
   const navigate = useNavigate();
-  const setNotif = useSetRecoilState(pageNotificationState);
+  const setNotif = useSetRecoilState(videoNotificationState);
 
   return useMutation<void, AxiosError, UploadVideo>({
     mutationFn: async (body) => {

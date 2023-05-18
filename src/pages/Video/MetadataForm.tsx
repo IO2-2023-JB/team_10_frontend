@@ -10,7 +10,7 @@ import BaseForm from '../Login/BaseForm';
 import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { toBase64 } from '../../utils/utils';
+import { toBase64, getErrorMessage } from '../../utils/utils';
 import { useLoadImage } from '../../utils/hooks';
 
 export interface MetadataFormValues {
@@ -117,7 +117,7 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           initialValues={formikInitialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
-          errorMessage={errorMessage}
+          errorMessage={getErrorMessage(error)}
           isLoading={isLoading}
           alertCollapse
           enableReinitialize

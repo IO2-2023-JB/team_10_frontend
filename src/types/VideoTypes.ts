@@ -63,7 +63,8 @@ export interface NotificationData {
   status: ProcessingProgress;
 }
 
-
 export interface GetUserVideosResponse {
   videos: GetVideoMetadataResponse[];
 }
+
+export type GetSubscribedVideosResponse = GetUserVideosResponse;

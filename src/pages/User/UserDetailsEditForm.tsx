@@ -8,7 +8,7 @@ import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import { shallowComparison, toBase64 } from '../../utils/utils';
+import { shallowComparison, toBase64, getErrorMessage } from '../../utils/utils';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { useLoadImage } from '../../utils/hooks';
@@ -71,8 +71,9 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
     if (isSuccess) closeDialog();
   }, [isSuccess, closeDialog]);
 
-  const handleSubmit = async (values: UserDetailsEditFormValues) => {
-    setErrorMessage(error?.message ?? '');
+  const handleSubmit = (values: UserDetailsEditFormValues) => {
+    setErrorMessage(getErrorMessage(error));
+
     if (!shallowComparison(values, formikInitialValues)) {
       const file =
         values.avatarImage !== null ? await toBase64(values.avatarImage) : null;

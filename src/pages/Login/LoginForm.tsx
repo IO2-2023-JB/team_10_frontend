@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import BaseForm from './BaseForm';
 import { useLogin } from '../../api/user';
+import { getErrorMessage } from '../../utils/utils';
 export interface LoginFormValues {
   email: string;
   password: string;
@@ -31,7 +32,6 @@ function LoginForm() {
     mutate(values);
   };
 
-  const errorMessage = error?.message ?? '';
   return (
     <BaseForm<LoginFormValues>
       title='Logowanie'
@@ -41,7 +41,7 @@ function LoginForm() {
       initialValues={formikInitialValues}
       validationSchema={loginValidationSchema}
       onSubmit={onSubmit}
-      errorMessage={errorMessage}
+      errorMessage={getErrorMessage(error)}
       isLoading={isLoading}
       alertCollapse={false}
     />

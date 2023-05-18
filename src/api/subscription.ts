@@ -4,8 +4,10 @@ import { Subscription, SubscriptionsList } from '../data/Subscription';
 import { userKey } from './user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
+import { GetSubscribedVideosResponse } from '../types/VideoTypes';
 
 const subscriptionsKey = 'subscriptions';
+const subscribedVideosKey = 'user/videos/subscribed';
 
 export function isUserSubscribed(
   creatorId: string,
@@ -67,4 +69,14 @@ export function useSubscribe(creatorId: string) {
   };
 
   return { isSubscribed, handleSubscribe };
+}
+
+export function useSubscribedVideos() {
+  const userDetails = useRecoilValue(userDetailsState);
+
+  return useQuery<GetSubscribedVideosResponse, AxiosError>({
+    queryKey: [subscribedVideosKey, userDetails?.id],
+    queryFn: async () => (await axios.get(subscribedVideosKey)).data,
+    enabled: userDetails !== undefined,
+  });
 }

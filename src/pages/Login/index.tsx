@@ -1,5 +1,6 @@
 import LoginLayout from './LoginLayout';
 import LoginForm from './LoginForm';
+import { ROUTES } from '../../const';
 
 function Login() {
   return (
@@ -7,7 +8,7 @@ function Login() {
       form={<LoginForm />}
       hintText='Pierwszy raz?'
       buttonText='Zarejestruj się'
-      buttonHref='/register'
+      buttonHref={ROUTES.REGISTER}
     />
   );
 }

@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { GetUserDetailsResponse } from '../types/UserTypes';
 
 export const shallowComparison = (obj1: object, obj2: object) => {
@@ -19,4 +20,16 @@ export const toBase64 = (file: Blob) =>
 
 export function getInitials(userDetails: GetUserDetailsResponse): string {
   return ((userDetails.name[0] ?? '') + (userDetails.surname[0] ?? '')).toUpperCase();
+}
+
+export function getCurrentSubroute(path: string, root: string): string {
+  root = root.replace('/', '');
+  const pathParts = path.split('/');
+  const rootIndex = pathParts.indexOf(root);
+  return pathParts[rootIndex + 1] ?? '';
+}
+
+export function getErrorMessage(error: AxiosError | null): string | null {
+  if (error === null) return null;
+  return error.response?.data?.toString() ?? error.message;
 }

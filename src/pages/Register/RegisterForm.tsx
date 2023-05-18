@@ -9,6 +9,7 @@ import { toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import { Skeleton } from '@mui/material';
+import { getErrorMessage } from '../../utils/utils';
 
 export type RegisterFormValues = Pick<
   PostUserDetails,
@@ -82,8 +83,6 @@ function RegisterForm() {
     mutate(payload);
   };
 
-  const errorMessage = error?.message ?? '';
-
   return (
     <BaseForm<RegisterFormValues>
       title='Rejestracja'
@@ -93,7 +92,7 @@ function RegisterForm() {
       initialValues={formikInitialValues}
       validationSchema={registerValidationSchema}
       onSubmit={handleSubmit}
-      errorMessage={errorMessage}
+      errorMessage={getErrorMessage(error)}
       isLoading={isLoading}
       alertCollapse={false}
     />

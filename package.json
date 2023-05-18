@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "lint:ts": "tsc --noEmit",
     "lint:eslint": "eslint --ignore-path .gitignore .",
+    "lint:prettier": "prettier --check --ignore-path .gitignore .",
     "lint": "npm-run-all --continue-on-error lint:*"
   },
   "dependencies": {
