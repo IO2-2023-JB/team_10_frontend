@@ -2,10 +2,11 @@ import { Mode } from '@mui/icons-material';
 import { Button, MenuItem, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
+import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT, EXAMPLE_TAGS } from '../../const';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
@@ -16,7 +17,7 @@ import FormikFileUploader from './../../components/formikFields/FormikFileUpload
 export interface MetadataFormValues {
   title: string;
   description: string;
-  tags: string;
+  tags: string[];
   visibility: VideoVisibility;
   thumbnail: Blob | null;
 }
@@ -27,7 +28,23 @@ const formFields = (
   <>
     <FormikTextField name='title' label='Tytuł' />
     <FormikTextField name='description' label='Opis' />
-    <FormikTextField name='tags' label='Tagi' />
+    <FormikAutocomplete
+      name='tags'
+      multiple
+      freeSolo
+      autoSelect
+      options={EXAMPLE_TAGS}
+      onInputChange={(event, value) => {
+        if (value.endsWith(',')) {
+          const target = event.currentTarget as HTMLInputElement;
+          target.blur();
+          target.focus();
+        }
+      }}
+      TextFieldProps={{
+        label: 'Tagi',
+      }}
+    />
     <FormikSwitch
       name='visibility'
       labels={['Prywatny', 'Publiczny']}
@@ -64,14 +81,9 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
   const [thumbnailImage, setThumbnailImage] = useState<Blob | null>(null);
 
   const handleSubmit = async (values: MetadataFormValues) => {
-    const tagsProcessed = values.tags
-      .split(',')
-      .map((tag) => tag.trim())
-      .filter((tag) => tag.length > 0);
     const file = values.thumbnail !== null ? await toBase64(values.thumbnail) : null;
     const payload = {
       ...values,
-      tags: tagsProcessed,
       thumbnail: file,
     };
     mutate(payload);
@@ -91,7 +103,7 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
   const formikInitialValues: MetadataFormValues = {
     title: videoMetadata.title,
     description: videoMetadata.description,
-    tags: videoMetadata.tags.join(', '),
+    tags: videoMetadata.tags,
     visibility: videoMetadata.visibility,
     thumbnail: thumbnailImage,
   };
@@ -123,3 +135,4 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
 }
 
 export default MetadataForm;
+

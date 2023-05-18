@@ -24,3 +24,18 @@ export const ROUTES = {
   USER: '/user',
   VIDEO: '/video',
 };
+
+export const EXAMPLE_TAGS = [
+  'sport',
+  'rozrywka',
+  'programowanie',
+  'styl życia',
+  'podróżowanie',
+  'edukacja',
+  'wiadomości',
+  'technologia',
+  'zdrowie',
+  'piękno',
+  'motoryzacja',
+  'zwierzęta domowe',
+];
