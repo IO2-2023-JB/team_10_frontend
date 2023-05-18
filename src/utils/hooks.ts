@@ -1,5 +1,8 @@
 import { SxProps } from '@mui/material';
-import { RefObject, useLayoutEffect, useState } from 'react';
+import axios from 'axios';
+import {
+  RefObject, SetStateAction, useCallback, useLayoutEffect, useRef, useState
+} from 'react';
 
 export function useMaxLines(
   count: number,
@@ -27,3 +30,24 @@ export function useMaxLines(
     isEllipsisActive,
   };
 }
+
+export const useLoadImage = (
+  imageFile: string | null,
+  imageSetter: (value: SetStateAction<Blob | null>) => void
+) => {
+  const isImageLoading = useRef<boolean>(false);
+  return useCallback(async () => {
+    if (isImageLoading.current === true) return;
+    isImageLoading.current = true;
+    const file =
+      imageFile !== null
+        ? (
+            await axios.get<Blob>(imageFile, {
+              responseType: 'blob',
+            })
+          ).data
+        : null;
+
+    imageSetter(file);
+  }, [imageFile, imageSetter, isImageLoading]);
+};

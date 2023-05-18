@@ -1,7 +1,7 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
-import { Word, getNumberWithLabel } from '../../utils/words';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import SubscribeButton from '../Subscription/SubscribeButton';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { ROUTES } from '../../const';
@@ -46,7 +46,10 @@ function CreatorInfo({ userDetails, isSelf: isAuthor, width }: CreatorInfoProps)
           </Typography>
           <Typography variant='subtitle2'>
             {userDetails ? (
-              getNumberWithLabel(userDetails.subscriptionsCount!, Word.Subscription)
+              getNumberWithLabel(
+                userDetails.subscriptionsCount!,
+                NumberDeclinedNoun.Subscription
+              )
             ) : (
               <Skeleton />
             )}

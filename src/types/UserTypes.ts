@@ -28,3 +28,10 @@ export function getUserTypeString(userDetails: GetUserDetailsResponse): string {
       return 'Administrator';
   }
 }
+
+export type PostUserDetails = Pick<
+  GetUserDetailsResponse,
+  'email' | 'nickname' | 'name' | 'surname' | 'userType' | 'avatarImage'
+> & { password: string };
+
+export type PutUserDetails = Omit<PostUserDetails, 'email' | 'password'>;

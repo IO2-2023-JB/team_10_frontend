@@ -1,23 +1,19 @@
 import { HowToReg } from '@mui/icons-material';
+import { Skeleton } from '@mui/material';
 import * as Yup from 'yup';
 import { useRegister } from '../../api/user';
-import AvatarSection from '../../components/formikFields/FormikAvatarField';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import { AccountType } from '../../types/UserTypes';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { AccountType, PostUserDetails } from '../../types/UserTypes';
+import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { getErrorMessage } from '../../utils/utils';
+import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 
-export interface RegisterFormValues {
-  email: string;
-  nickname: string;
-  name: string;
-  surname: string;
-  password: string;
-  repeatPassword: string;
-  userType: string;
-  avatarImage: string | null;
-}
+export type RegisterFormValues = Pick<
+  PostUserDetails,
+  'email' | 'nickname' | 'name' | 'surname' | 'userType' | 'password'
+> & { avatarImage: File | null; repeatPassword?: string };
 
 const formikInitialValues = {
   email: '',
@@ -61,15 +57,29 @@ const formFields = (
       labels={['Widz', 'Twórca']}
       options={[AccountType.Simple, AccountType.Creator]}
     />
-    <AvatarSection name='avatarImage' />
+    <FormikFileUploader
+      name='avatarImage'
+      label='Avatar'
+      acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
+      acceptObject={ALLOWED_IMAGE_OBJECT}
+      preview
+      previewProps={{ sx: { height: 70, width: 70 } }}
+      previewSkeleton={
+        <Skeleton variant='circular' sx={{ width: 70, height: 70 }} />
+      }
+    />
   </>
 );
 
 function RegisterForm() {
   const { isLoading, error, mutate } = useRegister();
 
-  const handleSubmit = (values: RegisterFormValues) => {
-    mutate(values);
+  const handleSubmit = async (values: RegisterFormValues) => {
+    delete values.repeatPassword;
+    const avatarImage =
+      values.avatarImage !== null ? await toBase64(values.avatarImage) : null;
+    const payload: PostUserDetails = { ...values, avatarImage };
+    mutate(payload);
   };
 
   return (

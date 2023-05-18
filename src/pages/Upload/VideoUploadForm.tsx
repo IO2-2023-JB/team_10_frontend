@@ -1,5 +1,5 @@
 import { Publish } from '@mui/icons-material';
-import { Stack } from '@mui/material';
+import { Skeleton, Stack } from '@mui/material';
 import * as Yup from 'yup';
 import { useVideoUpload } from '../../api/video';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
@@ -8,7 +8,7 @@ import FormikTextField from '../../components/formikFields/FormikTextField';
 import {
   ALLOWED_IMAGE_FORMATS,
   ALLOWED_IMAGE_OBJECT,
-  MAX_VIDEO_TITLE_LENGTH,
+  MAX_VIDEO_TITLE_LENGTH
 } from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
@@ -16,7 +16,7 @@ import BaseForm from '../Login/BaseForm';
 import {
   ALLOWED_VIDEO_FORMATS,
   ALLOWED_VIDEO_OBJECT,
-  MAX_VIDEO_DESCRIPTION_LENGTH,
+  MAX_VIDEO_DESCRIPTION_LENGTH
 } from './../../const';
 import { MetadataFormValues } from './../Video/MetadataForm';
 
@@ -59,6 +59,20 @@ function VideoUploadForm() {
         label='Miniaturka'
         acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
         acceptObject={ALLOWED_IMAGE_OBJECT}
+        preview
+        previewProps={{
+          sx: {
+            height: 70,
+            width: 124,
+          },
+          variant: 'rounded',
+        }}
+        previewSkeleton={
+          <Skeleton
+            variant='rounded'
+            sx={{ aspectRatio: '16 / 9', height: 70 }}
+          />
+        }
       />
       <FormikFileUploader
         name='videoFile'
@@ -67,7 +81,7 @@ function VideoUploadForm() {
         acceptObject={ALLOWED_VIDEO_OBJECT}
       />
       <FormikSwitch
-        checked={true}
+        checked
         name='visibility'
         labels={['Prywatny', 'Publiczny']}
         options={[VideoVisibility.Private, VideoVisibility.Public]}
