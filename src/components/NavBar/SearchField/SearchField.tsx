@@ -60,7 +60,7 @@ function SearchField() {
           params={params}
           showButton={query.length > 0}
           onSubmit={() => {
-            // TODO redirect to search results
+            // redirect to search results
           }}
         />
       )}
