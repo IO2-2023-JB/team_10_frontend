@@ -1,14 +1,15 @@
 import { Paper, Typography, IconButton, Collapse, Skeleton } from '@mui/material';
 import { Stack } from '@mui/system';
-import { CommentValues } from '../../types/CommentTypes';
+import { CommentValues } from '../../../types/CommentTypes';
 import { Link } from 'react-router-dom';
-import { useUserDetails } from './../../api/user';
-import Avatar from './../../components/Avatar';
-import { useDeleteComment } from './../../api/comment';
+import { useUserDetails } from '../../../api/user';
+import Avatar from '../../../components/Avatar';
+import { useDeleteComment } from '../../../api/comment';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import CommentSection from './CommentSection';
 import { useRecoilValue } from 'recoil';
-import { userDetailsState } from './../../data/UserData';
+import { userDetailsState } from '../../../data/UserData';
+import { transitionLong } from '../../../theme';
 
 interface CommentProps {
   comment: CommentValues;
@@ -40,7 +41,7 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
   const hover = !isResponse
     ? {
         '&:hover': {
-          transition: 'background-color ease-in-out 200ms',
+          transition: transitionLong('background-color'),
           backgroundColor: 'background.light',
         },
       }

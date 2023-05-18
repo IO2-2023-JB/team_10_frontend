@@ -13,7 +13,7 @@ function AppLayout({ children }: AppLayoutProps) {
   const notif = useRecoilValue(videoNotificationState);
 
   return (
-    <Stack>
+    <Stack sx={{ height: '100%' }}>
       <NavBar />
       <Snackbar
         open={notif.open}

@@ -50,7 +50,7 @@ function TabRouter({ rootPath, defaultTab, tabs }: SubrouteHandlerProps) {
 
   return (
     <Box>
-      <Tabs value={currentTab} centered={true} sx={{ marginBottom: 4 }}>
+      <Tabs value={currentTab} sx={{ marginBottom: 2 }}>
         {tabs
           .filter((tab) => tab.show !== false)
           .map((tab) => (

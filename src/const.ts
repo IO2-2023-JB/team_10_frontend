@@ -23,6 +23,7 @@ export const ROUTES = {
   UPLOAD: '/upload',
   USER: '/user',
   VIDEO: '/video',
+  PLAYLIST: '/playlist',
 };
 
 export const EXAMPLE_TAGS = [
@@ -39,3 +40,5 @@ export const EXAMPLE_TAGS = [
   'motoryzacja',
   'zwierzęta domowe',
 ];
+
+export const AUTO_HIDE_DURATION = 5000;

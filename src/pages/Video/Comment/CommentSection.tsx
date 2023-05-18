@@ -1,13 +1,13 @@
 import { Stack, TextField, Button, Typography } from '@mui/material';
-import { useComment, usePostComment, usePostCommentResponse } from './../../api/comment';
+import { useComment, usePostComment, usePostCommentResponse } from '../../../api/comment';
 import Comment from './Comment';
 import { useState, KeyboardEvent, ChangeEvent } from 'react';
-import ContentSection from '../../components/layout/ContentSection';
-import Avatar from './../../components/Avatar';
-import { useUserDetails } from './../../api/user';
+import ContentSection from '../../../components/layout/ContentSection';
+import Avatar from '../../../components/Avatar';
+import { useUserDetails } from '../../../api/user';
 import { useRecoilValue } from 'recoil';
-import { userDetailsState } from './../../data/UserData';
-import { CommentValues } from './../../types/CommentTypes';
+import { userDetailsState } from '../../../data/UserData';
+import { CommentValues } from '../../../types/CommentTypes';
 
 interface CommentSectionProps {
   videoId?: string;

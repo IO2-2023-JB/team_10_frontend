@@ -2,7 +2,7 @@ import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
-import SubscribeButton from '../Subscription/SubscribeButton';
+import SubscribeButton from '../../components/SubscribeButton';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 import { ROUTES } from '../../const';
 

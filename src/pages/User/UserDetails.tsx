@@ -10,7 +10,7 @@ import {
 } from '../../types/UserTypes';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import SubscribeButton from '../Subscription/SubscribeButton';
+import SubscribeButton from '../../components/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
 
 interface UserDetailsProps {

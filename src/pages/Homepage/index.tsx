@@ -11,26 +11,24 @@ enum HomepageTabs {
 
 function Homepage() {
   return (
-    <>
-      <PageLayout>
-        <TabRouter
-          rootPath={ROUTES.HOMEPAGE}
-          defaultTab={HomepageTabs.AllVideos}
-          tabs={[
-            {
-              index: true,
-              label: 'Wszystkie wideło',
-              element: <HomepageVideos />,
-            },
-            {
-              path: HomepageTabs.Subscriptions,
-              label: 'Subskrypcje',
-              element: <SubscribedVideos />,
-            },
-          ]}
-        />
-      </PageLayout>
-    </>
+    <PageLayout>
+      <TabRouter
+        rootPath={ROUTES.HOMEPAGE}
+        defaultTab={HomepageTabs.AllVideos}
+        tabs={[
+          {
+            index: true,
+            label: 'Wszystkie wideło',
+            element: <HomepageVideos />,
+          },
+          {
+            path: HomepageTabs.Subscriptions,
+            label: 'Subskrypcje',
+            element: <SubscribedVideos />,
+          },
+        ]}
+      />
+    </PageLayout>
   );
 }
 
