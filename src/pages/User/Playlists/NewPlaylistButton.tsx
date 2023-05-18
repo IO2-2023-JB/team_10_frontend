@@ -1,5 +1,5 @@
 import { Add } from '@mui/icons-material';
-import { Button, Grid } from '@mui/material';
+import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useCreatePlaylist } from '../../../api/playlist';
 import StatusSnackbar from '../../../components/StatusSnackbar';
@@ -40,21 +40,19 @@ function NewPlaylistButton() {
 
   return (
     <>
-      <Grid item xs={12} sm={6} md={4}>
-        <Button
-          onClick={() => setIsDialogOpen(true)}
-          disabled={isLoading}
-          startIcon={<Add />}
-          variant='contained'
-          size='large'
-          sx={{
-            width: '100%',
-            height: '100%',
-          }}
-        >
-          Utwórz nową
-        </Button>
-      </Grid>
+      <Button
+        onClick={() => setIsDialogOpen(true)}
+        disabled={isLoading}
+        startIcon={<Add />}
+        variant='contained'
+        size='large'
+        sx={{
+          width: '100%',
+          height: '100%',
+        }}
+      >
+        Utwórz nową
+      </Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<CreatePlaylist>
           title='Utwórz playlistę'

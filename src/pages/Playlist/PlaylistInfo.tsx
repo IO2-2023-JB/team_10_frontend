@@ -1,7 +1,6 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import TypographyLink from '../../components/TypographyLink';
 import { ROUTES } from '../../const';
-import { transitionShort } from '../../theme';
 import { Playlist } from '../../types/PlaylistTypes';
 import PlaylistVisibilityLabel from './PlaylistVisibilityLabel';
 
@@ -17,19 +16,9 @@ function PlaylistInfo({ playlist, showVisibility }: PlaylistInfoProps) {
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography variant='h6'>
           Playlista użytkownika{' '}
-          <Box
-            onClick={(event) => event.stopPropagation()}
-            component={Link}
-            to={`${ROUTES.USER}/${playlist.authorId}`}
-            sx={{
-              color: 'inherit',
-              textDecoration: 'none',
-              transition: transitionShort('color'),
-              '&:hover': { color: 'primary.main' },
-            }}
-          >
+          <TypographyLink to={`${ROUTES.USER}/${playlist.authorId}`}>
             {playlist.authorNickname}
-          </Box>
+          </TypographyLink>
         </Typography>
         {showVisibility && (
           <>

@@ -13,6 +13,7 @@ import VideoThumbnail from './VideoThumbnail';
 import { ROUTES } from '../../const';
 import { transitionShort } from '../../theme';
 import RemoveVideoFromPlaylist from './RemoveVideoFromPlaylist';
+import TypographyLink from '../TypographyLink';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -78,23 +79,13 @@ function VideoListItem({
           </Typography>
         </Tooltip>
         <Stack direction='row' spacing={0.5}>
-          {disableAuthorLink ? (
-            <Typography>{videoMetadata.authorNickname}</Typography>
-          ) : (
-            <Typography
-              onClick={(event) => event.stopPropagation()}
-              component={Link}
-              to={`${ROUTES.USER}/${videoMetadata.authorId}`}
-              sx={{
-                color: 'inherit',
-                textDecoration: 'none',
-                transition: transitionShort('color'),
-                '&:hover': { color: 'primary.main' },
-              }}
-            >
-              {videoMetadata.authorNickname}
-            </Typography>
-          )}
+          <TypographyLink
+            to={
+              disableAuthorLink ? undefined : `${ROUTES.USER}/${videoMetadata.authorId}`
+            }
+          >
+            {videoMetadata.authorNickname}
+          </TypographyLink>
           <Typography>·</Typography>
           <Typography>
             {getNumberWithLabel(videoMetadata.viewCount, NumberDeclinedNoun.View)}

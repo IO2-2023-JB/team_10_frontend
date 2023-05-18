@@ -1,5 +1,7 @@
 import { PlaylistAdd } from '@mui/icons-material';
 import {
+  Alert,
+  Box,
   IconButton,
   List,
   ListItem,
@@ -11,12 +13,13 @@ import {
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useAddVideoToPlaylist, useUserPlaylists } from '../../api/playlist';
+import StatusSnackbar from '../../components/StatusSnackbar';
 import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
 import { userDetailsState } from '../../data/UserData';
-import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
-import StatusSnackbar from '../../components/StatusSnackbar';
 import { PlaylistBase } from '../../types/PlaylistTypes';
+import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
+import NewPlaylistButton from '../User/Playlists/NewPlaylistButton';
 
 interface AddToPlaylistProps {
   videoId: string;
@@ -40,6 +43,27 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
     addToPlaylist(playlist.id);
   };
 
+  const playlistList =
+    playlists !== undefined && playlists.length > 0 ? (
+      playlists.map((playlist) => (
+        <ListItem key={playlist.id} disablePadding>
+          <ListItemButton
+            onClick={() => handleAdd(playlist)}
+            sx={{ paddingX: 3, paddingY: 2 }}
+          >
+            <Stack spacing={1}>
+              <Typography variant='h6'>{playlist.name}</Typography>
+              <PlaylistVisibilityLabel visibility={playlist.visibility} />
+            </Stack>
+          </ListItemButton>
+        </ListItem>
+      ))
+    ) : (
+      <Alert severity='info' sx={{ marginX: 3, marginY: 2 }}>
+        Nie masz jeszcze żadnej playlisty!
+      </Alert>
+    );
+
   return (
     <>
       <Tooltip title='Dodaj do playlisty'>
@@ -58,19 +82,10 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
         <ContentSection error={error} isLoading={isLoading}>
           {playlists && (
             <List>
-              {playlists.map((playlist) => (
-                <ListItem key={playlist.id} disablePadding>
-                  <ListItemButton
-                    onClick={() => handleAdd(playlist)}
-                    sx={{ paddingX: 3, paddingY: 2, minWidth: 400 }}
-                  >
-                    <Stack spacing={1}>
-                      <Typography variant='h6'>{playlist.name}</Typography>
-                      <PlaylistVisibilityLabel visibility={playlist.visibility} />
-                    </Stack>
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              <Box sx={{ marginX: 3, marginY: 1, minWidth: 400 }}>
+                <NewPlaylistButton />
+              </Box>
+              {playlistList}
             </List>
           )}
         </ContentSection>

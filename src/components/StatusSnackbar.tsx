@@ -2,6 +2,7 @@ import { Alert, AlertProps, AlertTitle, Snackbar } from '@mui/material';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { getErrorMessage } from '../utils/utils';
+import { AUTO_HIDE_DURATION } from '../const';
 
 interface StatusSnackbarProps {
   loadingMessage: string;
@@ -36,7 +37,7 @@ function StatusSnackbar({
   }
 
   const isOpen = Boolean(isLoading || error || isSuccess) && canOpen;
-  const autoHideDuration = isLoading ? null : 5000;
+  const autoHideDuration = isLoading ? null : AUTO_HIDE_DURATION;
 
   useEffect(() => {
     if (isLoading) setCanOpen(true);

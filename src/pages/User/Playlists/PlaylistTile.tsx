@@ -1,4 +1,4 @@
-import { Grid, Paper, Stack, Tooltip, Typography } from '@mui/material';
+import { Paper, Stack, Tooltip, Typography } from '@mui/material';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../../../const';
@@ -19,38 +19,36 @@ function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
   const playlistUrl = `${ROUTES.PLAYLIST}/${playlist.id}`;
 
   return (
-    <Grid item xs={12} sm={6} md={4}>
-      <Paper
-        sx={{
-          display: 'block',
-          textDecoration: 'none',
-          padding: 2,
-          transition: transitionShort('background-color'),
-          '&:hover': {
-            backgroundColor: 'background.lighter',
-          },
-        }}
-        component={Link}
-        to={playlistUrl}
-      >
-        <Stack spacing={2}>
-          <Tooltip title={isEllipsisActive ? playlist.name : null}>
-            <Typography
-              ref={nameRef}
-              component='h4'
-              sx={{
-                fontSize: '1rem',
-                fontWeight: 600,
-                ...maxLinesStyle,
-              }}
-            >
-              {playlist.name}
-            </Typography>
-          </Tooltip>
-          {showVisibility && <PlaylistVisibilityLabel visibility={playlist.visibility} />}
-        </Stack>
-      </Paper>
-    </Grid>
+    <Paper
+      sx={{
+        display: 'block',
+        textDecoration: 'none',
+        padding: 2,
+        transition: transitionShort('background-color'),
+        '&:hover': {
+          backgroundColor: 'background.lighter',
+        },
+      }}
+      component={Link}
+      to={playlistUrl}
+    >
+      <Stack spacing={2}>
+        <Tooltip title={isEllipsisActive ? playlist.name : null}>
+          <Typography
+            ref={nameRef}
+            component='h4'
+            sx={{
+              fontSize: '1rem',
+              fontWeight: 600,
+              ...maxLinesStyle,
+            }}
+          >
+            {playlist.name}
+          </Typography>
+        </Tooltip>
+        {showVisibility && <PlaylistVisibilityLabel visibility={playlist.visibility} />}
+      </Stack>
+    </Paper>
   );
 }
 

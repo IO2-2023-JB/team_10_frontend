@@ -40,3 +40,5 @@ export const EXAMPLE_TAGS = [
   'motoryzacja',
   'zwierzęta domowe',
 ];
+
+export const AUTO_HIDE_DURATION = 5000;
