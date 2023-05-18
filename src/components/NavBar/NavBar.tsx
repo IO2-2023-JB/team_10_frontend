@@ -49,21 +49,23 @@ function NavBar() {
           )}
         </Stack>
       </Stack>
-      <SearchField />
       {userDetails !== null && (
-        <Stack direction='row' spacing={2} alignItems='center'>
-          <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
-            Wyloguj się
-          </Button>
-          <IconButton
-            color='inherit'
-            component={Link}
-            to={`${ROUTES.USER}/${userDetails.id}`}
-            aria-label='twój profil'
-          >
-            <Avatar userDetails={userDetailsFull} size={40} />
-          </IconButton>
-        </Stack>
+        <>
+          <SearchField />
+          <Stack direction='row' spacing={2} alignItems='center'>
+            <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
+              Wyloguj się
+            </Button>
+            <IconButton
+              color='inherit'
+              component={Link}
+              to={`${ROUTES.USER}/${userDetails.id}`}
+              aria-label='twój profil'
+            >
+              <Avatar userDetails={userDetailsFull} size={40} />
+            </IconButton>
+          </Stack>
+        </>
       )}
     </Stack>
   );
