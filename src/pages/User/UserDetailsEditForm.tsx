@@ -1,18 +1,18 @@
 import { Mode } from '@mui/icons-material';
+import { Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { AccountType } from '../../types/UserTypes';
+import { useLoadImage } from '../../utils/hooks';
+import { getErrorMessage, shallowComparison, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { registerValidationSchema } from '../Register/RegisterForm';
+import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
-import { shallowComparison, toBase64, getErrorMessage } from '../../utils/utils';
-import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { useLoadImage } from '../../utils/hooks';
-import { Skeleton } from '@mui/material';
 
 export interface UserDetailsEditFormValues {
   nickname: string;
@@ -45,9 +45,7 @@ const formFields = (
       acceptObject={ALLOWED_IMAGE_OBJECT}
       label='Avatar'
       previewProps={{ sx: { height: 70, width: 70 } }}
-      previewSkeleton={
-        <Skeleton variant='circular' sx={{ width: 70, height: 70 }} />
-      }
+      previewSkeleton={<Skeleton variant='circular' sx={{ width: 70, height: 70 }} />}
     />
   </>
 );
@@ -59,7 +57,7 @@ interface UserDetailsEditFormProps {
 
 function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
   const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<Blob | null>(null);
   const prepareInitialValues = useLoadImage(userDetails.avatarImage, setAvatarImage);
 
@@ -71,7 +69,7 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
     if (isSuccess) closeDialog();
   }, [isSuccess, closeDialog]);
 
-  const handleSubmit = (values: UserDetailsEditFormValues) => {
+  const handleSubmit = async (values: UserDetailsEditFormValues) => {
     setErrorMessage(getErrorMessage(error));
 
     if (!shallowComparison(values, formikInitialValues)) {

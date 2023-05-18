@@ -1,17 +1,17 @@
 import { Mode } from '@mui/icons-material';
 import { Button, MenuItem, Skeleton } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
+import { useLoadImage } from '../../utils/hooks';
+import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { toBase64, getErrorMessage } from '../../utils/utils';
-import { useLoadImage } from '../../utils/hooks';
 
 export interface MetadataFormValues {
   title: string;
@@ -47,10 +47,7 @@ const formFields = (
         variant: 'rounded',
       }}
       previewSkeleton={
-        <Skeleton
-          variant='rounded'
-          sx={{ aspectRatio: '16 / 9', height: 70 }}
-        />
+        <Skeleton variant='rounded' sx={{ aspectRatio: '16 / 9', height: 70 }} />
       }
     />
   </>
@@ -80,8 +77,6 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
     mutate(payload);
     setThumbnailImage(values.thumbnail);
   };
-
-  const errorMessage = error?.message ?? '';
 
   const prepareInitialValues = useLoadImage(videoMetadata.thumbnail, setThumbnailImage);
 

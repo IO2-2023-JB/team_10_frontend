@@ -1,10 +1,9 @@
-import { Avatar, Box, Button, Stack, Typography, AvatarProps } from '@mui/material';
+import { Avatar, AvatarProps, Box, Button, Stack, Typography } from '@mui/material';
 import { useField } from 'formik';
-import { useState, useEffect, ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Accept, useDropzone } from 'react-dropzone';
-import { nounGenders } from '../../utils/genderDeclinedAdjectives';
+import { Adjective, genderDeclension, nounGenders } from '../../utils/genderDeclinedAdjectives';
 import { toBase64 } from '../../utils/utils';
-import { Adjective, genderDeclension } from '../../utils/genderDeclinedAdjectives';
 
 interface FormikFileUploaderProps {
   name: string;

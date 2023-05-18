@@ -1,15 +1,14 @@
 import { HowToReg } from '@mui/icons-material';
+import { Skeleton } from '@mui/material';
 import * as Yup from 'yup';
 import { useRegister } from '../../api/user';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { AccountType, PostUserDetails } from '../../types/UserTypes';
-import { toBase64 } from '../../utils/utils';
+import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-import { Skeleton } from '@mui/material';
-import { getErrorMessage } from '../../utils/utils';
 
 export type RegisterFormValues = Pick<
   PostUserDetails,
