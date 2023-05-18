@@ -127,7 +127,6 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           errorMessage={getErrorMessage(error)}
           isLoading={isLoading}
           alertCollapse
-          enableReinitialize
         />
       </FormDialog>
     </>
@@ -135,4 +134,3 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
 }
 
 export default MetadataForm;
-

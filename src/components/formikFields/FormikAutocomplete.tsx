@@ -1,11 +1,14 @@
 import {
   Autocomplete,
+  AutocompleteChangeDetails,
+  AutocompleteChangeReason,
   AutocompleteProps,
   AutocompleteValue,
   TextField,
   TextFieldProps,
 } from '@mui/material';
 import { useField } from 'formik';
+import { SyntheticEvent } from 'react';
 
 type FormikAutocompleteProps<
   T,
@@ -45,18 +48,23 @@ function FormikAutocomplete<
     config.helperText = meta.error;
   }
 
-  console.log(config);
+  const handleChange = (
+    event: SyntheticEvent<Element, Event>,
+    value: Value,
+    reason: AutocompleteChangeReason,
+    details?: AutocompleteChangeDetails<T>
+  ) => {
+    AutocompleteProps.onChange?.(event, value, reason, details);
+    field.onChange(event);
+    helpers.setValue(value);
+  };
 
   return (
     <Autocomplete
       {...AutocompleteProps}
       defaultValue={meta.initialValue}
       renderInput={(params) => <TextField {...TextFieldProps} {...params} {...config} />}
-      onChange={(event, value, ...args) => {
-        AutocompleteProps.onChange?.(event, value, ...args);
-        field.onChange(event);
-        helpers.setValue(value);
-      }}
+      onChange={handleChange}
     />
   );
 }

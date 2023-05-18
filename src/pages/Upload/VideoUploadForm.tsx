@@ -13,7 +13,7 @@ import {
   ALLOWED_VIDEO_OBJECT,
   EXAMPLE_TAGS,
   MAX_VIDEO_DESCRIPTION_LENGTH,
-  MAX_VIDEO_TITLE_LENGTH
+  MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
@@ -84,10 +84,7 @@ function VideoUploadForm() {
           variant: 'rounded',
         }}
         previewSkeleton={
-          <Skeleton
-            variant='rounded'
-            sx={{ aspectRatio: '16 / 9', height: 70 }}
-          />
+          <Skeleton variant='rounded' sx={{ aspectRatio: '16 / 9', height: 70 }} />
         }
       />
       <FormikFileUploader
