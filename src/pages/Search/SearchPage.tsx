@@ -1,15 +1,16 @@
+import { Stack, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import { useLocation, useSearchParams } from 'react-router-dom';
-import { ROUTES, SEARCH_PARAMS } from '../../const';
 import { useSearch } from '../../api/search';
-import PageLayout from '../../components/layout/PageLayout';
+import Spinner from '../../components/Spinner';
 import TabRouter from '../../components/TabRouter';
 import ContentSection from '../../components/layout/ContentSection';
-import UsersList from '../User/UsersList';
-import PlaylistList from '../User/Playlists/PlaylistList';
-import { Stack, Typography } from '@mui/material';
+import PageLayout from '../../components/layout/PageLayout';
 import VideoFiltersList from '../../components/video/VideoFiltersList';
+import { ROUTES, SEARCH_PARAMS } from '../../const';
 import { getSearchParams } from '../../types/SearchTypes';
-import { Box } from '@mui/system';
+import PlaylistList from '../User/Playlists/PlaylistList';
+import UsersList from '../User/UsersList';
 
 enum SearchResultsTabs {
   Videos = '',
@@ -31,7 +32,7 @@ function SearchPage() {
             {params.get(SEARCH_PARAMS.QUERY)}
           </Box>
         </Typography>
-        <ContentSection isLoading={isLoading} error={error}>
+        <ContentSection isLoading={false} error={error}>
           <TabRouter
             rootPath={ROUTES.SEARCH}
             query={location.search}
@@ -41,17 +42,28 @@ function SearchPage() {
                 index: true,
                 path: SearchResultsTabs.Videos,
                 label: 'Filmy',
-                element: <VideoFiltersList videos={searchResults?.videos ?? []} />,
+                element: (
+                  <VideoFiltersList
+                    videos={searchResults?.videos ?? []}
+                    isLoading={isLoading}
+                  />
+                ),
               },
               {
                 path: SearchResultsTabs.Users,
                 label: 'Użytkownicy',
-                element: <UsersList users={searchResults?.users ?? []} />,
+                element: isLoading ? (
+                  <Spinner />
+                ) : (
+                  <UsersList users={searchResults?.users ?? []} />
+                ),
               },
               {
                 path: SearchResultsTabs.Playlists,
                 label: 'Playlisty',
-                element: (
+                element: isLoading ? (
+                  <Spinner />
+                ) : (
                   <PlaylistList
                     playlists={searchResults?.playlists ?? []}
                     isOwn={false}
