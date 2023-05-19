@@ -4,9 +4,15 @@ import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoThumbnailProps {
   videoMetadata: GetVideoMetadataResponse;
+  height?: number;
+  hideDuration?: boolean;
 }
 
-function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
+function VideoThumbnail({
+  videoMetadata,
+  height = 150,
+  hideDuration = false,
+}: VideoThumbnailProps) {
   const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
 
   return (
@@ -14,7 +20,7 @@ function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
       sx={{
         position: 'relative',
         aspectRatio: '16 / 9',
-        height: 150,
+        height,
       }}
     >
       <Box
@@ -34,7 +40,7 @@ function VideoThumbnail({ videoMetadata }: VideoThumbnailProps) {
       {isSkeleton && (
         <Skeleton sx={{ transform: 'none', position: 'absolute', inset: 0 }} />
       )}
-      {videoMetadata.duration !== null && (
+      {videoMetadata.duration !== null && !hideDuration && (
         <Box
           sx={{
             position: 'absolute',

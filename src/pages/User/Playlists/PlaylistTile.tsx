@@ -1,10 +1,9 @@
-import { Paper, Stack, Tooltip, Typography } from '@mui/material';
-import { useRef } from 'react';
+import { Paper, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
+import OneLineTypography from '../../../components/OneLineTypography';
 import { ROUTES } from '../../../const';
 import { transitionShort } from '../../../theme';
 import { PlaylistBase } from '../../../types/PlaylistTypes';
-import { useMaxLines } from '../../../utils/hooks';
 import PlaylistVisibilityLabel from '../../Playlist/PlaylistVisibilityLabel';
 
 interface PlaylistTileProps {
@@ -13,9 +12,6 @@ interface PlaylistTileProps {
 }
 
 function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
-  const nameRef = useRef<HTMLHeadingElement>(null);
-  const { isEllipsisActive, style: maxLinesStyle } = useMaxLines(1, nameRef);
-
   const playlistUrl = `${ROUTES.PLAYLIST}/${playlist.id}`;
 
   return (
@@ -33,19 +29,15 @@ function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
       to={playlistUrl}
     >
       <Stack spacing={2}>
-        <Tooltip title={isEllipsisActive ? playlist.name : null}>
-          <Typography
-            ref={nameRef}
-            component='h4'
-            sx={{
-              fontSize: '1rem',
-              fontWeight: 600,
-              ...maxLinesStyle,
-            }}
-          >
-            {playlist.name}
-          </Typography>
-        </Tooltip>
+        <OneLineTypography
+          component='h4'
+          sx={{
+            fontSize: '1rem',
+            fontWeight: 600,
+          }}
+        >
+          {playlist.name}
+        </OneLineTypography>
         {showVisibility && <PlaylistVisibilityLabel visibility={playlist.visibility} />}
       </Stack>
     </Paper>

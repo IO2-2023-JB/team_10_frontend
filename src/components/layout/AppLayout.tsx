@@ -1,7 +1,7 @@
 import { Stack, Snackbar, Alert } from '@mui/material';
 import { ReactNode } from 'react';
 import { videoNotificationState } from '../../data/VideoData';
-import NavBar from './NavBar';
+import NavBar from '../NavBar/NavBar';
 import { useRecoilValue } from 'recoil';
 import { ProcessingProgress } from '../../types/VideoTypes';
 
