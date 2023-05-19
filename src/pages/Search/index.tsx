@@ -18,7 +18,7 @@ enum SearchResultsTabs {
   Playlists = 'playlists',
 }
 
-function SearchPage() {
+function Search() {
   const location = useLocation();
   const [params] = useSearchParams();
   const { data: searchResults, isLoading, error } = useSearch(getSearchParams(params));
@@ -78,4 +78,4 @@ function SearchPage() {
   );
 }
 
-export default SearchPage;
+export default Search;
