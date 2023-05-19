@@ -35,3 +35,7 @@ export type PostUserDetails = Pick<
 > & { password: string };
 
 export type PutUserDetails = Omit<PostUserDetails, 'email' | 'password'>;
+
+export function getBalanceString(value: number): string {
+  return value.toFixed(2).replace('.', ',');
+}
