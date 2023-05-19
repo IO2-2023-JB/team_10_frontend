@@ -3,23 +3,11 @@ import { Button } from '@mui/material';
 import { useState } from 'react';
 import { useCreatePlaylist } from '../../../api/playlist';
 import StatusSnackbar from '../../../components/StatusSnackbar';
-import FormikSwitch from '../../../components/formikFields/FormikSwitch';
-import FormikTextField from '../../../components/formikFields/FormikTextField';
 import FormDialog from '../../../components/layout/FormDialog';
-import { PostPlaylist, PlaylistVisibility } from '../../../types/PlaylistTypes';
+import { formFields } from '../../../formData/playlist';
+import { PlaylistVisibility, PostPlaylist } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
-
-export const formFields = (
-  <>
-    <FormikTextField name='name' label='Nazwa' />
-    <FormikSwitch
-      name='visibility'
-      labels={['Prywatna', 'Publiczna']}
-      options={[PlaylistVisibility.Private, PlaylistVisibility.Public]}
-    />
-  </>
-);
 
 const initialValues = {
   name: '',

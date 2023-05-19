@@ -1,16 +1,16 @@
 import { HowToReg } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
-import * as Yup from 'yup';
 import { useRegister } from '../../api/user';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { registerValidationSchema } from '../../formData/user';
 import { AccountType, PostUserDetails } from '../../types/UserTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 
-export type RegisterFormValues = Pick<
+type RegisterFormValues = Pick<
   PostUserDetails,
   'email' | 'nickname' | 'name' | 'surname' | 'userType' | 'password'
 > & { avatarImage: File | null; repeatPassword?: string };
@@ -25,24 +25,6 @@ const formikInitialValues = {
   userType: AccountType.Simple,
   avatarImage: null,
 };
-
-export const registerValidationSchema = Yup.object({
-  email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
-  nickname: Yup.string()
-    .required('Pole wymagane')
-    .matches(/([A-Za-z0-9])$/, 'Dozwolone jedynie litery i cyfry'),
-  name: Yup.string().required('Pole wymagane').max(32, 'Imię zbyt długie'),
-  surname: Yup.string().required('Pole wymagane').max(32, 'Nazwisko zbyt długie'),
-  password: Yup.string()
-    .required('Pole wymagane')
-    .matches(
-      /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/,
-      'Hasło za słabe (minimum 8 znaków, mała litera, wielka litera, cyfra i znak specjalny)'
-    ),
-  repeatPassword: Yup.string()
-    .required('Pole wymagane')
-    .oneOf([Yup.ref('password')], 'Hasła się nie zgadzają'),
-});
 
 const formFields = (
   <>

@@ -5,16 +5,16 @@ import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import { registerValidationSchema } from '../../formData/user';
 import { AccountType } from '../../types/UserTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, shallowComparison, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { registerValidationSchema } from '../Register/RegisterForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 
-export interface UserDetailsEditFormValues {
+interface UserDetailsEditFormValues {
   nickname: string;
   name: string;
   surname: string;
