@@ -67,7 +67,9 @@ function UserDetails({ userDetails }: UserDetailsProps) {
             >
               Edytuj profil
             </Button>
-            <WithdrawButton creator={userDetails} />
+            {userDetails.userType === AccountType.Creator && (
+              <WithdrawButton creator={userDetails} />
+            )}
           </Stack>
         )}
         {userDetails.id !== loggedUserDetails?.id &&
