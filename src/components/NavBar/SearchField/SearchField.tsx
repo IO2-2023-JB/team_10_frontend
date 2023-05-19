@@ -1,9 +1,14 @@
 import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
-import { SyntheticEvent, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useEffect, SyntheticEvent, useMemo, useState } from 'react';
+import {
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
-import { ROUTES } from '../../../const';
+import { ROUTES, SEARCH_PARAMS } from '../../../const';
 import {
   PreparedSearchResult,
   SearchResultType,
@@ -51,16 +56,18 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
 }
 
 function SearchField() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
-  const { data: searchResults } = useSearch(queryDebounced);
+  const { data: searchResults } = useSearch({ query: queryDebounced });
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
     return prepareSearchResults(searchResults);
   }, [searchResults]);
-
-  const navigate = useNavigate();
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
@@ -78,7 +85,23 @@ function SearchField() {
     reason: AutocompleteInputChangeReason
   ) => {
     if (reason === 'input') setQuery(value);
-    else setQuery('');
+    else setQuery(defaultQuery);
+  };
+
+  const defaultQuery = location.pathname.startsWith(ROUTES.SEARCH)
+    ? searchParams.get(SEARCH_PARAMS.QUERY) ?? ''
+    : '';
+
+  useEffect(() => setQuery(defaultQuery), [defaultQuery, location, searchParams]);
+
+  const handleRedirect = () => {
+    if (query)
+      navigate({
+        pathname: ROUTES.SEARCH,
+        search: createSearchParams({
+          query: query,
+        }).toString(),
+      });
   };
 
   return (
@@ -91,6 +114,9 @@ function SearchField() {
       value={query}
       onChange={handleChange}
       onInputChange={handleInputChange}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') handleRedirect();
+      }}
       renderOption={(props, option) => (
         <SearchSuggestion props={props} option={option} key={option.result.id} />
       )}
@@ -98,9 +124,7 @@ function SearchField() {
         <SearchInput
           params={params}
           showButton={query.length > 0}
-          onSubmit={() => {
-            // redirect to search results
-          }}
+          onSubmit={() => handleRedirect()}
         />
       )}
       ListboxProps={{

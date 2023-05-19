@@ -17,6 +17,7 @@ import axios from 'axios';
 import { BACKEND_URL, ROUTES } from './const';
 import Upload from './pages/Upload/index';
 import Playlist from './pages/Playlist';
+import SearchPage from './pages/Search/SearchPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -49,6 +50,7 @@ function App() {
                       path={`${ROUTES.PLAYLIST}/:playlistId`}
                       element={<Playlist />}
                     />
+                    <Route path={`${ROUTES.SEARCH}/*`} element={<SearchPage />} />
                   </Routes>
                 </AppLayout>
               </AuthGate>

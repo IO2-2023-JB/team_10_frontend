@@ -1,7 +1,8 @@
-import { Alert, AlertTitle, Box, CircularProgress } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 import { getErrorMessage } from '../../utils/utils';
+import Spinner from '../Spinner';
 
 interface ContentSectionProps {
   isLoading: boolean;
@@ -11,11 +12,7 @@ interface ContentSectionProps {
 
 function ContentSection({ isLoading, error, children }: ContentSectionProps) {
   if (isLoading) {
-    return (
-      <Box sx={{ display: 'grid', placeItems: 'center', padding: 5 }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <Spinner />;
   }
 
   if (error !== null) {

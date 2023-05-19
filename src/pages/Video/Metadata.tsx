@@ -4,12 +4,12 @@ import { useUserDetails } from '../../api/user';
 import { userDetailsState } from '../../data/UserData';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import AddToPlaylist from './AddToPlaylist';
-import CreatorInfo from './CreatorInfo';
 import MetadataForm from './MetadataForm';
 import Reaction from './Reaction';
 import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
+import UserInfo from '../User/UserInfo';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -46,7 +46,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
         </Stack>
       </Stack>
       <Stack direction='row' alignItems='center'>
-        <CreatorInfo userDetails={userDetails} isSelf={isAuthor} />
+        <UserInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
           {isAuthor && (
             <>

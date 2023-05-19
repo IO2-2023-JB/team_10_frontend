@@ -16,9 +16,10 @@ interface SubrouteHandlerProps {
   rootPath: string;
   defaultTab: string;
   tabs: SubrouteData[];
+  query?: string;
 }
 
-function TabRouter({ rootPath, defaultTab, tabs }: SubrouteHandlerProps) {
+function TabRouter({ rootPath, defaultTab, tabs, query = '' }: SubrouteHandlerProps) {
   const location = useLocation();
 
   let hasIndex = false;
@@ -50,16 +51,19 @@ function TabRouter({ rootPath, defaultTab, tabs }: SubrouteHandlerProps) {
 
   return (
     <Box>
-      <Tabs value={currentTab} sx={{ marginBottom: 2 }}>
+      <Tabs value={currentTab + query} sx={{ marginBottom: 2 }}>
         {tabs
           .filter((tab) => tab.show !== false)
           .map((tab) => (
             <Tab
               key={tab.path}
-              value={tab.path}
+              value={`${tab.path}${query}`}
               label={tab.label}
               component={Link}
-              to={tab.path ?? rootPath}
+              to={{
+                pathname: tab.path ?? rootPath,
+                search: query,
+              }}
             />
           ))}
       </Tabs>

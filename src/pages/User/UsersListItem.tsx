@@ -1,20 +1,20 @@
 import { ListItem } from '@mui/material';
-import CreatorInfo from '../../Video/CreatorInfo';
-import { useUserDetails } from '../../../api/user';
+import { useUserDetails } from '../../api/user';
 import { useRecoilValue } from 'recoil';
-import { userDetailsState } from '../../../data/UserData';
+import { userDetailsState } from '../../data/UserData';
+import UserInfo from './UserInfo';
 
-interface SubscriptionsListItemProps {
+interface UsersListItemProps {
   userId: string;
 }
 
-function SubscriptionsListItem({ userId }: SubscriptionsListItemProps) {
+function UsersListItem({ userId }: UsersListItemProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
   const { data: userDetails } = useUserDetails(userId);
 
   return (
     <ListItem>
-      <CreatorInfo
+      <UserInfo
         isSelf={loggedUserDetails?.id === userId}
         userDetails={userDetails}
         width='100%'
@@ -23,4 +23,4 @@ function SubscriptionsListItem({ userId }: SubscriptionsListItemProps) {
   );
 }
 
-export default SubscriptionsListItem;
+export default UsersListItem;

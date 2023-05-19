@@ -34,3 +34,11 @@ export function getErrorMessage(error: AxiosError | null): string | null {
   if (typeof error.response?.data === 'string') return error.response?.data;
   return error.message;
 }
+
+export function removeEmptySearchParams(searchParams: URLSearchParams): URLSearchParams {
+  const params = new URLSearchParams();
+  for (const [key, value] of Array.from(searchParams.entries())) {
+    if (value) params.append(key, value);
+  }
+  return params;
+}
