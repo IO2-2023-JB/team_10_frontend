@@ -12,6 +12,8 @@ import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import SubscribeButton from '../../components/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import DonateButton from '../../components/donate/DonateButton';
+import WithdrawButton from '../../components/donate/WithdrawButton';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -57,17 +59,23 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           </Stack>
         </Stack>
         {userDetails.id === loggedUserDetails?.id && (
-          <Button
-            onClick={handleDialogOpen}
-            sx={{ marginInlineStart: 'auto' }}
-            variant='contained'
-          >
-            Edytuj profil
-          </Button>
+          <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
+            <Button
+              onClick={handleDialogOpen}
+              sx={{ marginInlineStart: 'auto' }}
+              variant='contained'
+            >
+              Edytuj profil
+            </Button>
+            <WithdrawButton creator={userDetails} />
+          </Stack>
         )}
         {userDetails.id !== loggedUserDetails?.id &&
           userDetails.userType === AccountType.Creator && (
-            <SubscribeButton creatorId={userDetails.id} />
+            <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
+              <SubscribeButton creatorId={userDetails.id} />
+              <DonateButton creator={userDetails} />
+            </Stack>
           )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>

@@ -42,3 +42,10 @@ export function removeEmptySearchParams(searchParams: URLSearchParams): URLSearc
   }
   return params;
 }
+
+export const valueAsNumber = (value: string): number | null => {
+  if (value === '') return 0;
+  const number = parseFloat(value.replace(',', '.'));
+  if (isNaN(number)) return null;
+  return number;
+};
