@@ -16,6 +16,7 @@ const theme = createTheme({
       lighter: '#272727',
       light: '#0E0E0E',
       default: '#000000',
+      semiTransparent: 'rgb(255 255 255 / 9%)',
     },
   },
   components: {
@@ -37,6 +38,7 @@ declare module '@mui/material/styles' {
   interface TypeBackground {
     lighter: string;
     light: string;
+    semiTransparent: string;
   }
 }
 

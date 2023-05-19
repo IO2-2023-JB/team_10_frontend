@@ -1,7 +1,9 @@
-import { Autocomplete } from '@mui/material';
-import { useMemo, useState } from 'react';
+import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
+import { SyntheticEvent, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
+import { ROUTES } from '../../../const';
 import {
   PreparedSearchResult,
   SearchResultType,
@@ -30,6 +32,24 @@ function prepareSearchResults(searchResults: SearchResults): PreparedSearchResul
   return [...topVideos, ...topUsers, ...topPlaylists];
 }
 
+function getResultUrl(searchResult: PreparedSearchResult): string {
+  let urlPrefix: string | undefined;
+
+  switch (searchResult.type) {
+    case SearchResultType.Video:
+      urlPrefix = ROUTES.VIDEO;
+      break;
+    case SearchResultType.User:
+      urlPrefix = ROUTES.USER;
+      break;
+    case SearchResultType.Playlist:
+      urlPrefix = ROUTES.PLAYLIST;
+      break;
+  }
+
+  return `${urlPrefix}/${searchResult.result.id}`;
+}
+
 function SearchField() {
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
@@ -40,6 +60,27 @@ function SearchField() {
     return prepareSearchResults(searchResults);
   }, [searchResults]);
 
+  const navigate = useNavigate();
+
+  const handleChange = (
+    _: SyntheticEvent<Element, Event>,
+    value: NonNullable<string | PreparedSearchResult>
+  ) => {
+    if (typeof value !== 'string') {
+      const url = getResultUrl(value);
+      navigate(url);
+    }
+  };
+
+  const handleInputChange = (
+    _: SyntheticEvent<Element, Event>,
+    value: string,
+    reason: AutocompleteInputChangeReason
+  ) => {
+    if (reason === 'input') setQuery(value);
+    else setQuery('');
+  };
+
   return (
     <Autocomplete
       freeSolo
@@ -48,10 +89,8 @@ function SearchField() {
       blurOnSelect
       filterOptions={(x) => x}
       value={query}
-      onInputChange={(_, value, reason) => {
-        if (reason === 'input') setQuery(value);
-        else setQuery('');
-      }}
+      onChange={handleChange}
+      onInputChange={handleInputChange}
       renderOption={(props, option) => (
         <SearchSuggestion props={props} option={option} key={option.result.id} />
       )}

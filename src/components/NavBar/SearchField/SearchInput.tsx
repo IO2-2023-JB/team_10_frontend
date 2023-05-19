@@ -21,7 +21,7 @@ function SearchInput({ params, showButton, onSubmit }: SearchInputProps) {
       InputProps={{
         ...params.InputProps,
         sx: {
-          backgroundColor: 'rgba(255, 255, 255, 0.09)',
+          backgroundColor: 'background.semiTransparent',
           '&:not(.Mui-focused)': {
             borderColor: 'transparent',
             '& fieldset': { borderColor: 'transparent' },

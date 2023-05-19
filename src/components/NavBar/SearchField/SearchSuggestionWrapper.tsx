@@ -1,5 +1,10 @@
 import { Box } from '@mui/material';
-import { HTMLAttributes, ReactNode } from 'react';
+import {
+  HTMLAttributes,
+  ReactNode,
+  MouseEvent as ReactMouseEvent,
+  KeyboardEvent,
+} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface SearchSuggestionWrapperProps {
@@ -15,14 +20,24 @@ function SearchSuggestionWrapper({
 }: SearchSuggestionWrapperProps) {
   const navigate = useNavigate();
 
+  const handleClick = (event: ReactMouseEvent<HTMLLIElement, MouseEvent>) => {
+    navigate(url);
+    componentProps.onClick?.(event);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>) => {
+    console.log('aaa', event);
+    if (event.key === 'Enter') {
+      navigate(url);
+    }
+  };
+
   return (
     <Box
       component='li'
       {...componentProps}
-      onClick={(event) => {
-        navigate(url);
-        componentProps.onClick?.(event);
-      }}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       <Box
         component={Link}
