@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { GetUserDetailsResponse } from '../../types/UserTypes';
+import { GetUserDetailsResponse, getBalanceString } from '../../types/UserTypes';
 import { useWithdraw } from '../../api/donate';
 import { useEffect, useState } from 'react';
 import SpinningButton from '../../components/SpinningButton';
@@ -54,7 +54,9 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
   return (
     <Stack spacing={4} alignItems='center'>
       <Typography variant='h4'>Wypłacanie środków</Typography>
-      <Typography variant='h5'>Dostępne środki: {creator.accountBalance} zł</Typography>
+      <Typography variant='h5'>
+        Dostępne środki: {getBalanceString(creator.accountBalance!)} zł
+      </Typography>
       <TextField
         fullWidth
         value={value}

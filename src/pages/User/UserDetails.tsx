@@ -6,6 +6,7 @@ import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclin
 import {
   AccountType,
   GetUserDetailsResponse,
+  getBalanceString,
   getUserTypeString,
 } from '../../types/UserTypes';
 import Avatar from './../../components/Avatar';
@@ -33,7 +34,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
       NumberDeclinedNoun.Subscription
     )}`;
   if (userDetails.accountBalance !== null)
-    textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;
+    textBottom += ` · stan konta: ${getBalanceString(userDetails.accountBalance)} zł`;
 
   const handleDialogOpen = () => setDialogOpen(true);
 
