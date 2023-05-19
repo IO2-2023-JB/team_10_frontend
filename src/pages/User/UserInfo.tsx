@@ -62,7 +62,7 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
         </Stack>
       </Stack>
       {!isAuthor && userDetails && isCreator && (
-        <Stack direction='row' spacing={2} sx={{ marginInlineStart: 'auto' }}>
+        <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
           <SubscribeButton creatorId={userDetails.id} />
           <DonateButton creator={userDetails} />
         </Stack>

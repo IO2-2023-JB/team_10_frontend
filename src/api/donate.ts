@@ -9,13 +9,9 @@ const donateSendKey = `${donateKey}/send`;
 const donateWithdrawKey = `${donateKey}/withdraw`;
 
 export function useDonate(creatorId: string) {
-  const queryClient = useQueryClient();
   return useMutation<void, AxiosError, number>({
     mutationFn: (amount) =>
       axios.post(donateSendKey, undefined, { params: { id: creatorId, amount } }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [donateKey, creatorId] });
-    },
   });
 }
 

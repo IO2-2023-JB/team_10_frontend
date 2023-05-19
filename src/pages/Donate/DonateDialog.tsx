@@ -1,9 +1,17 @@
-import { Alert, AlertTitle, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useDonate } from '../../api/donate';
 import React, { useEffect, useState } from 'react';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
 import SpinningButton from '../../components/SpinningButton';
 import Avatar from '../../components/Avatar';
+import { getErrorMessage, valueAsNumber } from '../../utils/utils';
 
 interface DonateDialogProps {
   creator: GetUserDetailsResponse;
@@ -11,25 +19,35 @@ interface DonateDialogProps {
 }
 
 const minValue = 0.0;
-const regex = /^(\d*\.?\d{0,2}|\d+)$/;
+const regex = /^(\d*,?\d{0,2}|\d+)$/;
 
 function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
   const { mutate, error, isLoading, isSuccess } = useDonate(creator.id);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string>('');
+  const [touched, setTouched] = useState<boolean>(false);
+
   useEffect(() => {
     if (isSuccess) closeDialog();
   }, [isSuccess, closeDialog]);
 
+  const numberValue = valueAsNumber(value);
+  const isValueValid = numberValue === null ? false : numberValue > minValue;
+  const isError = touched && !isValueValid;
+
   const handleConfirm = () => {
-    mutate(+value);
+    if (!touched) {
+      setTouched(true);
+      return;
+    }
+    if (isError) return;
+    mutate(valueAsNumber(value) ?? 0);
   };
 
   const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    setTouched(true);
+    const value = event.currentTarget.value;
     if (regex.test(value) || value === '') setValue(value);
   };
-
-  const isValueValid = (value: number) => value > minValue;
 
   return (
     <Stack spacing={4} alignItems='center'>
@@ -42,30 +60,22 @@ function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
         <TextField
           fullWidth
           value={value}
-          error={!isValueValid(+value)}
-          helperText={!isValueValid(+value) ? 'Niepoprawna wartość' : undefined}
+          error={isError}
+          helperText={isError ? 'Niepoprawna wartość' : undefined}
           label='Podaj kwotę'
-          type='number'
-          inputProps={{
-            min: minValue,
-            step: 0.5,
-          }}
           onChange={onValueChange}
+          InputProps={{
+            endAdornment: <InputAdornment position='end'>zł</InputAdornment>,
+          }}
         />
-        <Typography>zł</Typography>
       </Stack>
       {error && (
         <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
           <AlertTitle>Wystąpił błąd!</AlertTitle>
-          {error?.message}
+          {getErrorMessage(error)}
         </Alert>
       )}
-      <SpinningButton
-        disabled={!isValueValid(+value)}
-        variant='contained'
-        isLoading={isLoading}
-        onClick={handleConfirm}
-      >
+      <SpinningButton variant='contained' isLoading={isLoading} onClick={handleConfirm}>
         Potwierdź
       </SpinningButton>
     </Stack>

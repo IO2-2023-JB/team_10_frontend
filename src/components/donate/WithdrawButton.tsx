@@ -9,7 +9,7 @@ interface WithdrawButtonProps {
 }
 
 function WithdrawButton({ creator }: WithdrawButtonProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);

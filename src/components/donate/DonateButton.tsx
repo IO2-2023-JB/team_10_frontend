@@ -9,7 +9,7 @@ interface DonateButtonProps {
 }
 
 function DonateButton({ creator }: DonateButtonProps) {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
