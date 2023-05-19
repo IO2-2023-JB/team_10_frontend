@@ -35,18 +35,21 @@ export interface PreparedSearchResult {
 
 export interface SearchParams {
   query?: string | null;
-  sortBy?: string | null;
-  sortDirection?: string | null;
+  sortBy?: SortingTypes;
+  sortDirection?: SortingDirections;
   startDate?: string | null;
   endDate?: string | null;
 }
 
-export function GetSearchParams(params: URLSearchParams): SearchParams {
+export function getSearchParams(params: URLSearchParams): SearchParams {
   params = removeEmptySearchParams(params);
   return {
     query: params.get(SEARCH_PARAMS.QUERY),
-    sortBy: params.get(SEARCH_PARAMS.SORT_BY),
-    sortDirection: params.get(SEARCH_PARAMS.SORT_DIRECTION),
+    sortBy: SortingTypes[params.get(SEARCH_PARAMS.SORT_BY) as keyof typeof SortingTypes],
+    sortDirection:
+      SortingDirections[
+        params.get(SEARCH_PARAMS.SORT_DIRECTION) as keyof typeof SortingDirections
+      ],
     startDate: params.get(SEARCH_PARAMS.START_DATE),
     endDate: params.get(SEARCH_PARAMS.END_DATE),
   };

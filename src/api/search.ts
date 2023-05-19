@@ -10,13 +10,9 @@ import {
 const searchKey = 'search';
 
 export function useSearch(searchParams: SearchParams) {
-  const sortBy = searchParams.sortBy
-    ? SortingTypes[searchParams.sortBy as keyof typeof SortingTypes]
-    : SortingTypes.Popularity;
+  const sortBy = searchParams.sortBy ?? SortingTypes.Popularity;
 
-  const sortDirection = searchParams.sortDirection
-    ? SortingDirections[searchParams.sortDirection as keyof typeof SortingDirections]
-    : SortingDirections.Descending;
+  const sortDirection = searchParams.sortDirection ?? SortingDirections.Descending;
   const startDate = searchParams.startDate ?? null;
   const endDate = searchParams.endDate ?? null;
 
@@ -35,6 +31,9 @@ export function useSearch(searchParams: SearchParams) {
       });
       return data;
     },
-    enabled: searchParams.query != null && searchParams.query.length > 0,
+    enabled:
+      searchParams.query !== undefined &&
+      searchParams.query !== null &&
+      searchParams.query.length > 0,
   });
 }

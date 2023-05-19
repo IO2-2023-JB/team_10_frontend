@@ -19,7 +19,7 @@ interface SubrouteHandlerProps {
   query?: string;
 }
 
-function TabRouter({ rootPath, defaultTab, tabs, query }: SubrouteHandlerProps) {
+function TabRouter({ rootPath, defaultTab, tabs, query = '' }: SubrouteHandlerProps) {
   const location = useLocation();
 
   let hasIndex = false;

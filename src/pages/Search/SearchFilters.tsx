@@ -18,10 +18,13 @@ function SearchFilters() {
     if (!value) searchParams.delete(key);
     else {
       searchParams.set(key, value);
-      navigate({
-        pathname: ROUTES.SEARCH,
-        search: removeEmptySearchParams(searchParams).toString(),
-      });
+      navigate(
+        {
+          pathname: ROUTES.SEARCH,
+          search: removeEmptySearchParams(searchParams).toString(),
+        },
+        { replace: true }
+      );
     }
   };
 
@@ -41,13 +44,13 @@ function SearchFilters() {
         <SortingDirectionField minWidth={minWidth} search={search} />
         <DatePickerFilter
           width={minWidth}
-          label='Od'
+          label='Dodano po'
           queryKey={SEARCH_PARAMS.START_DATE}
           search={search}
         />
         <DatePickerFilter
           width={minWidth}
-          label='Do'
+          label='Dodano przed'
           queryKey={SEARCH_PARAMS.END_DATE}
           search={search}
         />

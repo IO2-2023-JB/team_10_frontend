@@ -1,9 +1,14 @@
 import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
-import { SyntheticEvent, useMemo, useState } from 'react';
-import { createSearchParams, useNavigate } from 'react-router-dom';
+import { useEffect, SyntheticEvent, useMemo, useState } from 'react';
+import {
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from 'react-router-dom';
 import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
-import { ROUTES } from '../../../const';
+import { ROUTES, SEARCH_PARAMS } from '../../../const';
 import {
   PreparedSearchResult,
   SearchResultType,
@@ -11,10 +16,6 @@ import {
 } from '../../../types/SearchTypes';
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
-
-interface SearchFieldProps {
-  query: string;
-}
 
 function prepareSearchResults(searchResults: SearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
@@ -54,10 +55,12 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
   return `${urlPrefix}/${searchResult.result.id}`;
 }
 
-function SearchField({ query: queryFromUrl }: SearchFieldProps) {
+function SearchField() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
 
-  const [query, setQuery] = useState<string>(queryFromUrl);
+  const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
   const { data: searchResults } = useSearch({ query: queryDebounced });
 
@@ -82,16 +85,23 @@ function SearchField({ query: queryFromUrl }: SearchFieldProps) {
     reason: AutocompleteInputChangeReason
   ) => {
     if (reason === 'input') setQuery(value);
-    else setQuery('');
+    else setQuery(defaultQuery);
   };
 
+  const defaultQuery = location.pathname.startsWith(ROUTES.SEARCH)
+    ? searchParams.get(SEARCH_PARAMS.QUERY) ?? ''
+    : '';
+
+  useEffect(() => setQuery(defaultQuery), [defaultQuery, location, searchParams]);
+
   const handleRedirect = () => {
-    navigate({
-      pathname: ROUTES.SEARCH,
-      search: createSearchParams({
-        query: query,
-      }).toString(),
-    });
+    if (query)
+      navigate({
+        pathname: ROUTES.SEARCH,
+        search: createSearchParams({
+          query: query,
+        }).toString(),
+      });
   };
 
   return (

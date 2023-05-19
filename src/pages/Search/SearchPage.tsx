@@ -8,7 +8,8 @@ import UsersList from '../User/UsersList';
 import PlaylistList from '../User/Playlists/PlaylistList';
 import { Stack, Typography } from '@mui/material';
 import VideoFiltersList from '../../components/video/VideoFiltersList';
-import { GetSearchParams } from '../../types/SearchTypes';
+import { getSearchParams } from '../../types/SearchTypes';
+import { Box } from '@mui/system';
 
 enum SearchResultsTabs {
   Videos = '',
@@ -19,44 +20,46 @@ enum SearchResultsTabs {
 function SearchPage() {
   const location = useLocation();
   const [params] = useSearchParams();
-  const { data: searchResults, isLoading, error } = useSearch(GetSearchParams(params));
-
-  const header = `Wyniki wyszukiwania "${params.get(SEARCH_PARAMS.QUERY)}":`;
+  const { data: searchResults, isLoading, error } = useSearch(getSearchParams(params));
 
   return (
     <PageLayout>
       <Stack spacing={2}>
         <Typography width='100%' variant='h5'>
-          {header}
+          Wyniki wyszukiwania{' '}
+          <Box fontWeight={600} component='span'>
+            {params.get(SEARCH_PARAMS.QUERY)}
+          </Box>
         </Typography>
         <ContentSection isLoading={isLoading} error={error}>
-          {searchResults && (
-            <TabRouter
-              rootPath={ROUTES.SEARCH}
-              query={location.search}
-              defaultTab={SearchResultsTabs.Videos}
-              tabs={[
-                {
-                  index: true,
-                  path: SearchResultsTabs.Videos,
-                  label: 'Filmy',
-                  element: <VideoFiltersList videos={searchResults?.videos} />,
-                },
-                {
-                  path: SearchResultsTabs.Users,
-                  label: 'Użytkownicy',
-                  element: <UsersList users={searchResults.users} />,
-                },
-                {
-                  path: SearchResultsTabs.Playlists,
-                  label: 'Playlisty',
-                  element: (
-                    <PlaylistList playlists={searchResults.playlists} isOwn={false} />
-                  ),
-                },
-              ]}
-            />
-          )}
+          <TabRouter
+            rootPath={ROUTES.SEARCH}
+            query={location.search}
+            defaultTab={SearchResultsTabs.Videos}
+            tabs={[
+              {
+                index: true,
+                path: SearchResultsTabs.Videos,
+                label: 'Filmy',
+                element: <VideoFiltersList videos={searchResults?.videos ?? []} />,
+              },
+              {
+                path: SearchResultsTabs.Users,
+                label: 'Użytkownicy',
+                element: <UsersList users={searchResults?.users ?? []} />,
+              },
+              {
+                path: SearchResultsTabs.Playlists,
+                label: 'Playlisty',
+                element: (
+                  <PlaylistList
+                    playlists={searchResults?.playlists ?? []}
+                    isOwn={false}
+                  />
+                ),
+              },
+            ]}
+          />
         </ContentSection>
       </Stack>
     </PageLayout>
