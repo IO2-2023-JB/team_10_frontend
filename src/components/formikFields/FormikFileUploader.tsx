@@ -87,6 +87,7 @@ function FormikFileUploader({
           direction='row'
           sx={{
             flex: 1,
+            minWidth: 0,
             borderRadius: '4.5px',
             borderWidth: dragged ? 2 : 1,
             borderStyle:
@@ -105,18 +106,17 @@ function FormikFileUploader({
           }}
         >
           {meta.value !== null ? (
-            <Stack sx={{ width: '97%' }} direction='row'>
-              <Typography
-                noWrap
-                sx={{
-                  marginX: '15px',
-                  marginY: '16.5px',
-                  maxWidth: '80%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginInlineEnd: 'auto',
-                }}
-              >
+            <Stack
+              direction='row'
+              sx={{
+                minWidth: 0,
+                alignItems: 'center',
+                paddingLeft: 2,
+                paddingRight: 1,
+                flex: 1,
+              }}
+            >
+              <Typography noWrap flex={1}>
                 {preview && !meta.touched && meta.initialValue !== null
                   ? `${genderDeclension(
                       Adjective.Current,
