@@ -1,4 +1,4 @@
-import { Button, IconButton, Stack } from '@mui/material';
+import { Button, IconButton, Stack, LinearProgress } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
@@ -26,47 +26,56 @@ function NavBar() {
   };
 
   return (
-    <Stack
-      component='header'
-      direction='row'
-      spacing={2}
-      justifyContent='space-between'
-      alignItems='center'
-      sx={{
-        paddingY: 2,
-        paddingX: 4,
-        color: 'primary.main',
-        backgroundColor: 'background.light',
-      }}
-    >
-      <Stack spacing={5} direction='row' sx={{ alignItems: 'center' }}>
-        <Logo />
-        <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3}>
-          {userDetailsFull?.userType === AccountType.Creator && (
-            <Button disabled={notif.open} onClick={handleClickUpload}>
-              Publikuj
-            </Button>
-          )}
-        </Stack>
-      </Stack>
-      {userDetails !== null && (
-        <>
-          <SearchField />
-          <Stack direction='row' spacing={2} alignItems='center'>
-            <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
-              Wyloguj się
-            </Button>
-            <IconButton
-              color='inherit'
-              component={Link}
-              to={`${ROUTES.USER}/${userDetails.id}`}
-              aria-label='twój profil'
-            >
-              <Avatar userDetails={userDetailsFull} size={40} />
-            </IconButton>
+    <Stack>
+      <Stack
+        component='header'
+        direction='row'
+        spacing={2}
+        justifyContent='space-between'
+        alignItems='center'
+        sx={{
+          paddingY: 2,
+          paddingX: 4,
+          color: 'primary.main',
+          backgroundColor: 'background.light',
+        }}
+      >
+        <Stack spacing={5} direction='row' sx={{ alignItems: 'center' }}>
+          <Logo />
+          <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3}>
+            {userDetailsFull?.userType === AccountType.Creator && (
+              <Button disabled={notif.open} onClick={handleClickUpload}>
+                Publikuj
+              </Button>
+            )}
           </Stack>
-        </>
-      )}
+        </Stack>
+        {userDetails !== null && (
+          <>
+            <SearchField />
+            <Stack direction='row' spacing={2} alignItems='center'>
+              <Button sx={{ flexShrink: 0 }} onClick={handleLogout}>
+                Wyloguj się
+              </Button>
+              <IconButton
+                color='inherit'
+                component={Link}
+                to={`${ROUTES.USER}/${userDetails.id}`}
+                aria-label='twój profil'
+              >
+                <Avatar userDetails={userDetailsFull} size={40} />
+              </IconButton>
+            </Stack>
+          </>
+        )}
+      </Stack>
+      <LinearProgress
+        sx={{
+          height: 1.2,
+          visibility: notif.open ? 'visible' : 'hidden',
+          color: 'primary.main',
+        }}
+      />
     </Stack>
   );
 }

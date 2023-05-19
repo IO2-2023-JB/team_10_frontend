@@ -1,4 +1,4 @@
-import { Alert, LinearProgress, Snackbar, Stack } from '@mui/material';
+import { Alert, Snackbar, Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
 import { videoNotificationState } from '../../data/VideoData';
@@ -15,13 +15,6 @@ function AppLayout({ children }: AppLayoutProps) {
   return (
     <Stack sx={{ height: '100%' }}>
       <NavBar />
-      <LinearProgress
-        sx={{
-          height: 1.2,
-          visibility: notif.open ? 'visible' : 'hidden',
-          color: 'primary.main',
-        }}
-      />
       <Snackbar
         open={notif.open}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
