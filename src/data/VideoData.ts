@@ -5,3 +5,8 @@ export const uploadingVideoState = atom<UploadingVideo | null>({
   key: 'uploadingVideoState',
   default: null,
 });
+
+export const uploadProgressState = atom<number | null>({
+  key: 'uploadProgressState',
+  default: null,
+});

@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { useSetRecoilState } from 'recoil';
 import { METADATA_REFETCH_INTERVAL } from '../const';
-import { uploadingVideoState } from '../data/VideoData';
+import { uploadProgressState, uploadingVideoState } from '../data/VideoData';
 import {
   GetReactionCounts,
   GetUserVideosResponse,
@@ -65,6 +65,7 @@ export function useReaction(id: string) {
 
 export function useVideoUpload() {
   const setUploadingVideo = useSetRecoilState(uploadingVideoState);
+  const setUploadProgress = useSetRecoilState(uploadProgressState);
   const queryClient = useQueryClient();
 
   return useMutation<string, AxiosError, PostVideo>({
@@ -78,8 +79,13 @@ export function useVideoUpload() {
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
 
       setUploadingVideo({ id, state: VideoUploadState.UploadingVideo });
-      await axios.post(`video/${id}`, videoFile);
+      await axios.post(`video/${id}`, videoFile, {
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.progress) setUploadProgress(progressEvent.progress);
+        },
+      });
 
+      setUploadProgress(null);
       setUploadingVideo({ id, state: VideoUploadState.Processing });
       return id;
     },

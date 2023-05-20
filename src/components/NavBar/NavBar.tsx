@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
-import { uploadingVideoState } from '../../data/VideoData';
+import { uploadProgressState, uploadingVideoState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
 import LinearProgress from '../layout/LinearProgress';
@@ -15,7 +15,10 @@ function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
   const uploadingVideo = useRecoilValue(uploadingVideoState);
+  const uploadProgress = useRecoilValue(uploadProgressState);
   const navigate = useNavigate();
+
+  console.log(uploadProgress);
 
   const isUploading = uploadingVideo !== null;
 
@@ -73,6 +76,8 @@ function NavBar() {
         )}
       </Stack>
       <LinearProgress
+        variant={uploadProgress ? 'determinate' : 'indeterminate'}
+        value={uploadProgress ? uploadProgress * 100 : undefined}
         sx={{
           visibility: isUploading ? 'visible' : 'hidden',
         }}
