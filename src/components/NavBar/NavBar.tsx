@@ -1,4 +1,4 @@
-import { Button, IconButton, Stack, LinearProgress } from '@mui/material';
+import { Button, IconButton, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
@@ -7,6 +7,7 @@ import { userDetailsState } from '../../data/UserData';
 import { videoNotificationState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
+import LinearProgress from '../layout/LinearProgress';
 import Logo from './Logo';
 import SearchField from './SearchField/SearchField';
 
@@ -71,9 +72,7 @@ function NavBar() {
       </Stack>
       <LinearProgress
         sx={{
-          height: 1.2,
           visibility: notif.open ? 'visible' : 'hidden',
-          color: 'primary.main',
         }}
       />
     </Stack>

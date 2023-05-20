@@ -8,6 +8,7 @@ import { RecoilRoot } from 'recoil';
 import AppLayout from './components/layout/AppLayout';
 import AppLoader from './components/layout/AppLoader';
 import AuthGate from './components/layout/AuthGate';
+import LinearProgress from './components/layout/LinearProgress';
 import { BACKEND_URL, ROUTES } from './const';
 import theme from './theme';
 
@@ -40,11 +41,7 @@ function App() {
             <AppLoader>
               <AuthGate>
                 <AppLayout>
-                  <Suspense
-                    fallback={
-                      <div style={{ height: '100%', width: '100%', background: 'red' }} />
-                    }
-                  >
+                  <Suspense fallback={<LinearProgress />}>
                     <Routes>
                       <Route path={ROUTES.NOT_FOUND} element={<PageNotFound />} />
                       <Route path={`${ROUTES.HOMEPAGE}/*`} element={<Homepage />} />
