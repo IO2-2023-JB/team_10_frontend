@@ -1,6 +1,6 @@
 import { Alert, Stack } from '@mui/material';
-import { Subscription } from '../../data/Subscription';
-import SubscriptionsListItem from './SubscriptionsListItem';
+import { Subscription } from '../../../data/Subscription';
+import UsersListItem from '../UsersListItem';
 
 interface SubscriptionsListProps {
   subscriptions: Subscription[];
@@ -14,7 +14,7 @@ function SubscriptionsList({ subscriptions }: SubscriptionsListProps) {
   return (
     <Stack>
       {subscriptions.map((sub) => (
-        <SubscriptionsListItem key={sub.id} userId={sub.id} />
+        <UsersListItem key={sub.id} userId={sub.id} />
       ))}
     </Stack>
   );

@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import { useSubscribe } from '../../api/subscription';
+import { useSubscribe } from '../api/subscription';
 import { useState } from 'react';
 
 interface SubscribeButtonProps {

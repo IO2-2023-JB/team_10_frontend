@@ -1,29 +1,29 @@
-interface WordData {
+interface NumberDeclinedNounData {
   nominativeSingular: string;
   nominativePlural: string;
   genitivePlural: string;
 }
 
-export enum Word {
+export enum NumberDeclinedNoun {
   View,
   Subscription,
 }
 
-const words: Record<Word, WordData> = {
-  [Word.View]: {
+const numerals: Record<NumberDeclinedNoun, NumberDeclinedNounData> = {
+  [NumberDeclinedNoun.View]: {
     nominativeSingular: 'wyświetlenie',
     nominativePlural: 'wyświetlenia',
     genitivePlural: 'wyświetleń',
   },
-  [Word.Subscription]: {
+  [NumberDeclinedNoun.Subscription]: {
     nominativeSingular: 'subskrypcja',
     nominativePlural: 'subskrypcje',
     genitivePlural: 'subskrypcji',
   },
 };
 
-export function getNumberWithLabel(value: number, word: Word) {
-  const wordData = words[word];
+export function getNumberWithLabel(value: number, noun: NumberDeclinedNoun) {
+  const wordData = numerals[noun];
   let label = '';
 
   if (value === 0) label = wordData.genitivePlural;

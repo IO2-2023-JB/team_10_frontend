@@ -2,13 +2,14 @@ import { Box, Stack, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { userDetailsState } from '../../data/UserData';
-import CreatorInfo from './CreatorInfo';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
+import AddToPlaylist from './AddToPlaylist';
 import MetadataForm from './MetadataForm';
 import Reaction from './Reaction';
 import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import { GetVideoMetadataResponse } from '../../types/VideoTypes';
+import UserInfo from '../User/UserInfo';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -39,12 +40,13 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
           </Typography>
           <VideoTags tags={videoMetadata.tags} />
         </Stack>
-        <Box sx={{ marginRight: 2, flexShrink: 0 }}>
+        <Stack direction='row' alignItems='start' sx={{ marginRight: 2, flexShrink: 0 }}>
+          <AddToPlaylist videoId={videoMetadata.id} />
           <Reaction videoId={videoMetadata.id} />
-        </Box>
+        </Stack>
       </Stack>
       <Stack direction='row' alignItems='center'>
-        <CreatorInfo userDetails={userDetails} isSelf={isAuthor} />
+        <UserInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
           {isAuthor && (
             <>

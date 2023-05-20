@@ -1,26 +1,32 @@
 import { MoreVert } from '@mui/icons-material';
-import { Box, IconButton, Menu, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, IconButton, Menu, Stack, Typography } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
 import MetadataForm from '../../pages/Video/MetadataForm';
 import VideoDelete from '../../pages/Video/VideoDelete';
+import { transitionShort } from '../../theme';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useMaxLines } from '../../utils/hooks';
-import { Word, getNumberWithLabel } from '../../utils/words';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
+import OneLineTypography from '../OneLineTypography';
+import RemoveVideoFromPlaylist from './RemoveVideoFromPlaylist';
+import TypographyLink from '../TypographyLink';
 import VideoThumbnail from './VideoThumbnail';
-import { ROUTES } from '../../const';
 
 interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
   disableAuthorLink: boolean;
+  playlistId?: string;
 }
 
-function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps) {
-  const titleRef = useRef<HTMLAnchorElement>(null);
-  const { isEllipsisActive, style: titleMaxLinesStyle } = useMaxLines(1, titleRef);
-
+function VideoListItem({
+  videoMetadata,
+  disableAuthorLink,
+  playlistId,
+}: VideoListItemProps) {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const { style: descriptionMaxLinesStyle } = useMaxLines(2, descriptionRef);
 
@@ -34,6 +40,8 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
   const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
   const isMenuOpen = menuAnchorElement !== null;
 
+  const showMenu = Boolean(isAuthor || playlistId);
+
   return (
     <Stack
       direction='row'
@@ -44,7 +52,7 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
         color: 'inherit',
         textDecoration: 'none',
         borderRadius: 2,
-        transition: 'background-color ease-in-out 100ms',
+        transition: transitionShort('background-color'),
         '&:hover': {
           backgroundColor: 'background.light',
         },
@@ -52,49 +60,36 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
     >
       <VideoThumbnail videoMetadata={videoMetadata} />
       <Stack spacing={1} padding={1}>
-        <Tooltip title={isEllipsisActive ? videoMetadata.title : null}>
-          <Typography
-            ref={titleRef}
-            variant='h5'
-            sx={{
-              fontWeight: 600,
-              color: 'inherit',
-              textDecoration: 'none',
-              ...titleMaxLinesStyle,
-            }}
-            component={Link}
-            to={videoUrl}
-          >
-            {videoMetadata.title}
-          </Typography>
-        </Tooltip>
+        <OneLineTypography
+          variant='h5'
+          sx={{
+            fontWeight: 600,
+            color: 'inherit',
+            textDecoration: 'none',
+          }}
+          component={Link}
+          to={videoUrl}
+        >
+          {videoMetadata.title}
+        </OneLineTypography>
         <Stack direction='row' spacing={0.5}>
-          {disableAuthorLink ? (
-            <Typography>{videoMetadata.authorNickname}</Typography>
-          ) : (
-            <Typography
-              onClick={(event) => event.stopPropagation()}
-              component={Link}
-              to={`${ROUTES.USER}/${videoMetadata.authorId}`}
-              sx={{
-                color: 'inherit',
-                textDecoration: 'none',
-                '&:hover': { color: 'primary.main' },
-              }}
-            >
-              {videoMetadata.authorNickname}
-            </Typography>
-          )}
+          <TypographyLink
+            to={
+              disableAuthorLink ? undefined : `${ROUTES.USER}/${videoMetadata.authorId}`
+            }
+          >
+            {videoMetadata.authorNickname}
+          </TypographyLink>
           <Typography>·</Typography>
           <Typography>
-            {getNumberWithLabel(videoMetadata.viewCount, Word.View)}
+            {getNumberWithLabel(videoMetadata.viewCount, NumberDeclinedNoun.View)}
           </Typography>
         </Stack>
         <Typography ref={descriptionRef} sx={descriptionMaxLinesStyle}>
           {videoMetadata.description}
         </Typography>
       </Stack>
-      {isAuthor && (
+      {showMenu && (
         <>
           <Box
             sx={{
@@ -118,8 +113,20 @@ function VideoListItem({ videoMetadata, disableAuthorLink }: VideoListItemProps)
             onClick={(event) => event.stopPropagation()}
             onClose={() => setMenuAnchorElement(null)}
           >
-            <MetadataForm videoMetadata={videoMetadata} asMenuItem />
-            <VideoDelete videoId={videoMetadata.id} asMenuItem />
+            {playlistId && (
+              <RemoveVideoFromPlaylist
+                videoId={videoMetadata.id}
+                playlistId={playlistId}
+              />
+            )}
+            {isAuthor && [
+              <MetadataForm
+                key='MetadataForm'
+                videoMetadata={videoMetadata}
+                asMenuItem
+              />,
+              <VideoDelete key='VideoDelete' videoId={videoMetadata.id} asMenuItem />,
+            ]}
           </Menu>
         </>
       )}

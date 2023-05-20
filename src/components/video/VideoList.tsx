@@ -5,9 +5,10 @@ import VideoListItem from './VideoListItem';
 interface VideoListProps {
   videos: GetVideoMetadataResponse[];
   disableAuthorLink?: boolean;
+  playlistId?: string;
 }
 
-function VideoList({ videos, disableAuthorLink = false }: VideoListProps) {
+function VideoList({ videos, disableAuthorLink = false, playlistId }: VideoListProps) {
   if (videos.length === 0) {
     return <Alert severity='info'>Brak filmów do wyświetlenia</Alert>;
   }
@@ -19,6 +20,7 @@ function VideoList({ videos, disableAuthorLink = false }: VideoListProps) {
           key={videoData.id}
           videoMetadata={videoData}
           disableAuthorLink={disableAuthorLink}
+          playlistId={playlistId}
         />
       ))}
     </Stack>

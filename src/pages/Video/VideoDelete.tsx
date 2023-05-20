@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router';
 import { useDeleteVideo } from '../../api/video';
 import FormDialog from '../../components/layout/FormDialog';
 import SpinningButton from '../../components/SpinningButton';
+import { useQueryClient } from '@tanstack/react-query';
+import { videoMetadataKey } from './../../api/video';
+import { getErrorMessage } from '../../utils/utils';
 
 interface VideoDeleteProps {
   videoId: string;
@@ -12,7 +15,7 @@ interface VideoDeleteProps {
 
 function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const { mutate, error, isSuccess, isLoading } = useDeleteVideo(videoId);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
@@ -21,8 +24,12 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   };
 
   useEffect(() => {
-    if (isSuccess) navigate('/');
-  }, [isSuccess, navigate]);
+    if (isSuccess) {
+      setIsDeleteDialogOpen(false);
+      if (!asMenuItem) navigate('/');
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
+    }
+  }, [isSuccess, navigate, queryClient, asMenuItem]);
 
   return (
     <>
@@ -36,7 +43,7 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
           {error && (
             <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
               <AlertTitle>Wystąpił błąd!</AlertTitle>
-              {error?.message}
+              {getErrorMessage(error)}
             </Alert>
           )}
           <Typography variant='h5'>Czy na pewno chcesz usunąć film?</Typography>

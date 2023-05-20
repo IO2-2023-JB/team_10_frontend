@@ -1,19 +1,19 @@
-import { Stack, Snackbar, Alert } from '@mui/material';
+import { Alert, Snackbar, Stack } from '@mui/material';
 import { ReactNode } from 'react';
-import { pageNotificationState } from '../../data/VideoData';
-import NavBar from './NavBar';
 import { useRecoilValue } from 'recoil';
+import { videoNotificationState } from '../../data/VideoData';
 import { ProcessingProgress } from '../../types/VideoTypes';
+import NavBar from '../NavBar/NavBar';
 
 interface AppLayoutProps {
   children: ReactNode;
 }
 
 function AppLayout({ children }: AppLayoutProps) {
-  const notif = useRecoilValue(pageNotificationState);
+  const notif = useRecoilValue(videoNotificationState);
 
   return (
-    <Stack>
+    <Stack sx={{ height: '100%' }}>
       <NavBar />
       <Snackbar
         open={notif.open}

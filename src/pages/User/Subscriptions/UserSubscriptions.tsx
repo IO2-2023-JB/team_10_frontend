@@ -1,5 +1,5 @@
-import { useSubscriptions } from '../../api/subscription';
-import ContentSection from '../../components/layout/ContentSection';
+import { useSubscriptions } from '../../../api/subscription';
+import ContentSection from '../../../components/layout/ContentSection';
 import SubscriptionsList from './SubscriptionsList';
 
 interface UserSubscriptionsProps {

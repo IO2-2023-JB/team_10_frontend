@@ -13,8 +13,10 @@ const theme = createTheme({
       main: '#FF9000',
     },
     background: {
+      lighter: '#272727',
       light: '#0E0E0E',
       default: '#000000',
+      semiTransparent: 'rgb(255 255 255 / 9%)',
     },
   },
   components: {
@@ -26,9 +28,17 @@ const theme = createTheme({
   },
 });
 
+export const transitionShort = (property: string): string =>
+  `${property} ease-in-out 100ms`;
+
+export const transitionLong = (property: string): string =>
+  `${property} ease-in-out 200ms`;
+
 declare module '@mui/material/styles' {
   interface TypeBackground {
+    lighter: string;
     light: string;
+    semiTransparent: string;
   }
 }
 

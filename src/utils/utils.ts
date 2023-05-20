@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { GetUserDetailsResponse } from '../types/UserTypes';
 
 export const shallowComparison = (obj1: object, obj2: object) => {
@@ -9,7 +10,7 @@ export const shallowComparison = (obj1: object, obj2: object) => {
   );
 };
 
-export const toBase64 = (file: File) =>
+export const toBase64 = (file: Blob) =>
   new Promise<string | null>((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
@@ -27,3 +28,24 @@ export function getCurrentSubroute(path: string, root: string): string {
   const rootIndex = pathParts.indexOf(root);
   return pathParts[rootIndex + 1] ?? '';
 }
+
+export function getErrorMessage(error: AxiosError | null): string | null {
+  if (error === null) return null;
+  if (typeof error.response?.data === 'string') return error.response?.data;
+  return error.message;
+}
+
+export function removeEmptySearchParams(searchParams: URLSearchParams): URLSearchParams {
+  const params = new URLSearchParams();
+  for (const [key, value] of Array.from(searchParams.entries())) {
+    if (value) params.append(key, value);
+  }
+  return params;
+}
+
+export const valueAsNumber = (value: string): number | null => {
+  if (value === '') return 0;
+  const number = parseFloat(value.replace(',', '.'));
+  if (isNaN(number)) return null;
+  return number;
+};

@@ -2,16 +2,19 @@ import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import FormDialog from '../../components/layout/FormDialog';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import {
   AccountType,
   GetUserDetailsResponse,
+  getBalanceString,
   getUserTypeString,
 } from '../../types/UserTypes';
-import { Word, getNumberWithLabel } from '../../utils/words';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import SubscribeButton from '../Subscription/SubscribeButton';
+import SubscribeButton from '../../components/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import DonateButton from '../../components/donate/DonateButton';
+import WithdrawButton from '../../components/donate/WithdrawButton';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -28,10 +31,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
   if (userDetails.subscriptionsCount !== null)
     textBottom += ` · ${getNumberWithLabel(
       userDetails.subscriptionsCount,
-      Word.Subscription
+      NumberDeclinedNoun.Subscription
     )}`;
   if (userDetails.accountBalance !== null)
-    textBottom += ` · stan konta: ${userDetails.accountBalance} zł`;
+    textBottom += ` · stan konta: ${getBalanceString(userDetails.accountBalance)} zł`;
 
   const handleDialogOpen = () => setDialogOpen(true);
 
@@ -57,17 +60,25 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           </Stack>
         </Stack>
         {userDetails.id === loggedUserDetails?.id && (
-          <Button
-            onClick={handleDialogOpen}
-            sx={{ marginInlineStart: 'auto' }}
-            variant='contained'
-          >
-            Edytuj profil
-          </Button>
+          <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
+            <Button
+              onClick={handleDialogOpen}
+              sx={{ marginInlineStart: 'auto' }}
+              variant='contained'
+            >
+              Edytuj profil
+            </Button>
+            {userDetails.userType === AccountType.Creator && (
+              <WithdrawButton creator={userDetails} />
+            )}
+          </Stack>
         )}
         {userDetails.id !== loggedUserDetails?.id &&
           userDetails.userType === AccountType.Creator && (
-            <SubscribeButton creatorId={userDetails.id} />
+            <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
+              <SubscribeButton creatorId={userDetails.id} />
+              <DonateButton creator={userDetails} />
+            </Stack>
           )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>

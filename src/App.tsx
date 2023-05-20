@@ -16,6 +16,8 @@ import theme from './theme';
 import axios from 'axios';
 import { BACKEND_URL, ROUTES } from './const';
 import Upload from './pages/Upload/index';
+import Playlist from './pages/Playlist';
+import SearchPage from './pages/Search/SearchPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,7 +34,7 @@ function App() {
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
+            <CssBaseline enableColorScheme />
             <AppLoader>
               <AuthGate>
                 <AppLayout>
@@ -44,6 +46,11 @@ function App() {
                     <Route path={ROUTES.UPLOAD} element={<Upload />} />
                     <Route path={`${ROUTES.USER}/:userId/*`} element={<User />} />
                     <Route path={`${ROUTES.VIDEO}/:videoId`} element={<Video />} />
+                    <Route
+                      path={`${ROUTES.PLAYLIST}/:playlistId`}
+                      element={<Playlist />}
+                    />
+                    <Route path={`${ROUTES.SEARCH}/*`} element={<SearchPage />} />
                   </Routes>
                 </AppLayout>
               </AuthGate>

@@ -5,9 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../pages/Login/LoginForm';
-import { RegisterFormValues } from '../pages/Register/RegisterForm';
-import { UserDetailsEditFormValues } from '../pages/User/UserDetailsEditForm';
-import { UserDetails } from '../types/UserTypes';
+import { PostUserDetails, PutUserDetails, UserDetails } from '../types/UserTypes';
 import { GetUserDetailsResponse } from './../types/UserTypes';
 
 export const userKey = 'user';
@@ -38,7 +36,7 @@ export function useLogin() {
 
 export function useRegister() {
   const navigate = useNavigate();
-  return useMutation<null, AxiosError, RegisterFormValues>({
+  return useMutation<null, AxiosError, PostUserDetails>({
     mutationFn: (body) => axios.post('register', body),
     onSuccess: () => {
       navigate('/login', { state: { successfulRegister: true } });
@@ -56,12 +54,12 @@ export function useUserDetails(id?: string) {
 
 export function useLoggedInUserDetails(): {
   isLoading: boolean;
-  error: string | null;
+  error: AxiosError | null;
   reload: () => void;
   logOut: () => void;
 } {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(
     localStorage.getItem('bearerToken') !== null && userDetails === null
   );
@@ -74,7 +72,7 @@ export function useLoggedInUserDetails(): {
       });
       setUserDetails({ ...data, token });
     } catch (error) {
-      setError((error as AxiosError).message);
+      setError(error as AxiosError);
       setIsLoading(false);
     }
   }, [setUserDetails]);
@@ -103,7 +101,7 @@ export function useLoggedInUserDetails(): {
 export function useUserDetailsEdit() {
   const userDetails = useRecoilValue(userDetailsState);
   const queryClient = useQueryClient();
-  return useMutation<UserDetails, AxiosError, UserDetailsEditFormValues>({
+  return useMutation<UserDetails, AxiosError, PutUserDetails>({
     mutationFn: async (body) => {
       return await (
         await axios.put(`user?id=${userDetails?.id}`, body)
