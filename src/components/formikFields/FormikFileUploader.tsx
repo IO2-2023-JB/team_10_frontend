@@ -111,7 +111,7 @@ function FormikFileUploader({
               sx={{
                 minWidth: 0,
                 alignItems: 'center',
-                paddingLeft: 2,
+                paddingLeft: '14px',
                 paddingRight: 1,
                 flex: 1,
               }}
