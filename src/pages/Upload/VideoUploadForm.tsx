@@ -1,5 +1,6 @@
 import { Publish } from '@mui/icons-material';
 import { Skeleton, Stack } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { useVideoUpload } from '../../api/video';
 import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
@@ -34,6 +35,7 @@ const formikInitialValues = {
 };
 
 function VideoUploadForm() {
+  const navigate = useNavigate();
   const { mutate, error, isLoading } = useVideoUpload();
 
   const formFields = (
@@ -100,6 +102,7 @@ function VideoUploadForm() {
       thumbnail: values.thumbnail !== null ? await toBase64(values.thumbnail) : null,
     };
     mutate(parsedValues);
+    navigate('/');
   };
 
   return (

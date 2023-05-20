@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
-import { videoNotificationState } from '../../data/VideoData';
+import { uploadingVideoState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
 import LinearProgress from '../layout/LinearProgress';
@@ -14,8 +14,10 @@ import SearchField from './SearchField/SearchField';
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
-  const notif = useRecoilValue(videoNotificationState);
+  const uploadingVideo = useRecoilValue(uploadingVideoState);
   const navigate = useNavigate();
+
+  const isUploading = uploadingVideo !== null;
 
   const handleLogout = () => {
     setUserDetails(null);
@@ -45,7 +47,7 @@ function NavBar() {
           <Logo />
           <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3}>
             {userDetailsFull?.userType === AccountType.Creator && (
-              <Button disabled={notif.open} onClick={handleClickUpload}>
+              <Button disabled={isUploading} onClick={handleClickUpload}>
                 Publikuj
               </Button>
             )}
@@ -72,7 +74,7 @@ function NavBar() {
       </Stack>
       <LinearProgress
         sx={{
-          visibility: notif.open ? 'visible' : 'hidden',
+          visibility: isUploading ? 'visible' : 'hidden',
         }}
       />
     </Stack>

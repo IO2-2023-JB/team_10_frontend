@@ -56,12 +56,21 @@ export enum InputType {
   Image = 'Image',
 }
 
-export interface NotificationData {
-  open: boolean;
-  videoId: string;
-  message: string;
-  status: ProcessingProgress;
+export enum VideoUploadState {
+  UploadingMetadata,
+  UploadingVideo,
+  Processing,
 }
+
+export type UploadingVideo =
+  | {
+      id: string;
+      state: VideoUploadState.UploadingVideo | VideoUploadState.Processing;
+    }
+  | {
+      id: null;
+      state: VideoUploadState.UploadingMetadata;
+    };
 
 export interface GetUserVideosResponse {
   videos: GetVideoMetadataResponse[];
