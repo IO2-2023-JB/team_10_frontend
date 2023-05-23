@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { atom } from 'recoil';
 import { NOTIFICATION_TIMEOUT } from '../const';
-import { NOTIFICATION_INTERVAL } from './../const';
+import { NOTIFICATION_INTERVAL } from '../const';
 import {
   ProcessingProgress,
   GetVideoMetadataResponse,

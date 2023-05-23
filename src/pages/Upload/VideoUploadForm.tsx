@@ -11,10 +11,10 @@ import {
   ALLOWED_IMAGE_OBJECT,
   ALLOWED_VIDEO_FORMATS,
   ALLOWED_VIDEO_OBJECT,
-  EXAMPLE_TAGS,
   MAX_VIDEO_DESCRIPTION_LENGTH,
   MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
+import { EXAMPLE_TAGS } from '../../const/predefined_tags';
 import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';

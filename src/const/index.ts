@@ -35,19 +35,4 @@ export const SEARCH_PARAMS = {
   END_DATE: 'endDate',
 };
 
-export const EXAMPLE_TAGS = [
-  'sport',
-  'rozrywka',
-  'programowanie',
-  'styl życia',
-  'podróżowanie',
-  'edukacja',
-  'wiadomości',
-  'technologia',
-  'zdrowie',
-  'piękno',
-  'motoryzacja',
-  'zwierzęta domowe',
-];
-
 export const AUTO_HIDE_DURATION = 5000;
