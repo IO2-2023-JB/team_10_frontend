@@ -1,13 +1,13 @@
 import ContentSection from '../../components/layout/ContentSection';
-import { useAllVideos } from '../../api/video';
 import VideoList from '../../components/video/VideoList';
+import { useRecommendedPlaylist } from '../../api/playlist';
 
 function HomepageVideos() {
-  const { data: allVideos, error, isLoading } = useAllVideos();
+  const { data: recommended, error, isLoading } = useRecommendedPlaylist();
 
   return (
     <ContentSection error={error} isLoading={isLoading}>
-      {allVideos !== undefined && <VideoList videos={allVideos} />}
+      {recommended !== undefined && <VideoList videos={recommended.videos} />}
     </ContentSection>
   );
 }

@@ -83,3 +83,10 @@ export function useRemoveVideoFromPlaylist(videoId: string, playlistId: string) 
       queryClient.invalidateQueries({ queryKey: [playlistVideoKey, playlistId] }),
   });
 }
+
+export function useRecommendedPlaylist() {
+  return useQuery<Playlist, AxiosError>({
+    queryKey: [playlistKey, 'recommended'],
+    queryFn: async () => (await axios.get(`${playlistKey}/recommended`)).data,
+  });
+}
