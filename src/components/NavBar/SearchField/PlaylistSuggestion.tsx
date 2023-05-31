@@ -1,13 +1,13 @@
 import { Stack, Typography } from '@mui/material';
 import { HTMLAttributes } from 'react';
 import { ROUTES } from '../../../const';
-import { PlaylistBase } from '../../../types/PlaylistTypes';
+import { GetPlaylistBase } from '../../../types/PlaylistTypes';
 import OneLineTypography from '../../OneLineTypography';
 import SearchSuggestionWrapper from './SearchSuggestionWrapper';
 
 interface PlaylistSuggestionProps {
   componentProps: HTMLAttributes<HTMLLIElement>;
-  playlist: PlaylistBase;
+  playlist: GetPlaylistBase;
 }
 
 function PlaylistSuggestion({ componentProps, playlist }: PlaylistSuggestionProps) {

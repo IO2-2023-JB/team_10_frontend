@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { Subscription, SubscriptionsList } from '../data/Subscription';
+import { Subscription, GetSubscriptionsList } from '../data/Subscription';
 import { userKey } from './user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
@@ -17,7 +17,7 @@ export function isUserSubscribed(
 }
 
 export function useSubscriptions(userId?: string) {
-  return useQuery<SubscriptionsList, AxiosError>({
+  return useQuery<GetSubscriptionsList, AxiosError>({
     queryKey: [subscriptionsKey, userId],
     queryFn: async () =>
       (await axios.get(subscriptionsKey, { params: { id: userId } })).data,

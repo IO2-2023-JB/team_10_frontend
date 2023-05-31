@@ -6,7 +6,7 @@ import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormikSwitch from '../../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../../components/formikFields/FormikTextField';
 import FormDialog from '../../../components/layout/FormDialog';
-import { CreatePlaylist, PlaylistVisibility } from '../../../types/PlaylistTypes';
+import { PostPlaylist, PlaylistVisibility } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
 
@@ -32,7 +32,7 @@ function NewPlaylistButton() {
 
   const { mutate: createPlaylist, isLoading, isSuccess, error } = useCreatePlaylist();
 
-  const handleSubmit = (values: CreatePlaylist) => {
+  const handleSubmit = (values: PostPlaylist) => {
     setNewPlaylistName(values.name);
     setIsDialogOpen(false);
     createPlaylist(values);
@@ -54,7 +54,7 @@ function NewPlaylistButton() {
         Utwórz nową
       </Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-        <BaseForm<CreatePlaylist>
+        <BaseForm<PostPlaylist>
           title='Utwórz playlistę'
           buttonText='Utwórz'
           icon={<Add />}

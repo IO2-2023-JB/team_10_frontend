@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import OneLineTypography from '../../../components/OneLineTypography';
 import { ROUTES } from '../../../const';
 import { transitionShort } from '../../../theme';
-import { PlaylistBase } from '../../../types/PlaylistTypes';
+import { GetPlaylistBase } from '../../../types/PlaylistTypes';
 import PlaylistVisibilityLabel from '../../Playlist/PlaylistVisibilityLabel';
 
 interface PlaylistTileProps {
-  playlist: PlaylistBase;
+  playlist: GetPlaylistBase;
   showVisibility: boolean;
 }
 

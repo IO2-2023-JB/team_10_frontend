@@ -1,10 +1,10 @@
 import { Alert, Grid } from '@mui/material';
-import { PlaylistBase } from '../../../types/PlaylistTypes';
+import { GetPlaylistBase } from '../../../types/PlaylistTypes';
 import NewPlaylistButton from './NewPlaylistButton';
 import PlaylistTile from './PlaylistTile';
 
 interface PlaylistListProps {
-  playlists: PlaylistBase[];
+  playlists: GetPlaylistBase[];
   isOwn: boolean;
 }
 
