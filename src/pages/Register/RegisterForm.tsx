@@ -4,7 +4,7 @@ import { useRegister } from '../../api/user';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { registerValidationSchema } from '../../formData/user';
+import { registerValidationSchema } from '../../data/formData/user';
 import { AccountType, PostUserDetails } from '../../types/UserTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';

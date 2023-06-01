@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useEditPlaylist } from '../../api/playlist';
 import FormDialog from '../../components/layout/FormDialog';
-import { formFields } from '../../formData/playlist';
+import { formFields } from '../../data/formData/playlist';
 import { GetPlaylist, PutPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';

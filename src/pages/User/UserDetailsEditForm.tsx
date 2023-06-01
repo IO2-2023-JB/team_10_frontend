@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useUserDetailsEdit } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { registerValidationSchema } from '../../formData/user';
+import { registerValidationSchema } from '../../data/formData/user';
 import { AccountType } from '../../types/UserTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, shallowComparison, toBase64 } from '../../utils/utils';

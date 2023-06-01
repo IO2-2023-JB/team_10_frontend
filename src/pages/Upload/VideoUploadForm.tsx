@@ -11,7 +11,10 @@ import {
   ALLOWED_VIDEO_FORMATS,
   ALLOWED_VIDEO_OBJECT,
 } from '../../const';
-import { MetadataFormValues, videoUploadValidationSchema } from '../../formData/video';
+import {
+  MetadataFormValues,
+  videoUploadValidationSchema,
+} from '../../data/formData/video';
 import { PostVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';

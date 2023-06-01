@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useCreatePlaylist } from '../../../api/playlist';
 import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormDialog from '../../../components/layout/FormDialog';
-import { formFields } from '../../../formData/playlist';
+import { formFields } from '../../../data/formData/playlist';
 import { PlaylistVisibility, PostPlaylist } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';

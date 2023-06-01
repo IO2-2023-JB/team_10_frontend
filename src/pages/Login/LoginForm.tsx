@@ -1,7 +1,7 @@
 import { LoginOutlined } from '@mui/icons-material';
 import { useLogin } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
-import { LoginFormValues, loginValidationSchema } from '../../formData/user';
+import { LoginFormValues, loginValidationSchema } from '../../data/formData/user';
 import { getErrorMessage } from '../../utils/utils';
 import BaseForm from './BaseForm';
 

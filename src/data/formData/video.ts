@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
-import { MAX_VIDEO_DESCRIPTION_LENGTH, MAX_VIDEO_TITLE_LENGTH } from '../const';
-import { VideoVisibility } from '../types/VideoTypes';
+import { MAX_VIDEO_DESCRIPTION_LENGTH, MAX_VIDEO_TITLE_LENGTH } from '../../const';
+import { VideoVisibility } from '../../types/VideoTypes';
 
 export interface MetadataFormValues {
   title: string;

@@ -1,6 +1,6 @@
-import FormikSwitch from '../components/formikFields/FormikSwitch';
-import FormikTextField from '../components/formikFields/FormikTextField';
-import { PlaylistVisibility } from '../types/PlaylistTypes';
+import FormikSwitch from '../../components/formikFields/FormikSwitch';
+import FormikTextField from '../../components/formikFields/FormikTextField';
+import { PlaylistVisibility } from '../../types/PlaylistTypes';
 
 export const formFields = (
   <>
