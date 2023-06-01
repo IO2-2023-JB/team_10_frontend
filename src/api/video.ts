@@ -7,10 +7,10 @@ import {
   GetUserVideosResponse,
   GetVideoMetadataResponse,
   ProcessingProgress,
-  ReactionCounts,
-  UploadVideo,
+  GetReactionCounts,
+  PostVideo,
 } from '../types/VideoTypes';
-import { PostReaction, UploadVideoMetadata } from '../types/VideoTypes';
+import { PostReaction, PutVideoMetadata } from '../types/VideoTypes';
 
 export const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
@@ -24,7 +24,7 @@ export function useVideoMetadata(id: string) {
 
 export function useEditVideoMetadata(id: string) {
   const queryClient = useQueryClient();
-  return useMutation<void, AxiosError, UploadVideoMetadata>({
+  return useMutation<void, AxiosError, PutVideoMetadata>({
     mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
@@ -50,7 +50,7 @@ export function usePostReaction(id: string) {
 }
 
 export function useReaction(id: string) {
-  return useQuery<ReactionCounts, AxiosError>({
+  return useQuery<GetReactionCounts, AxiosError>({
     queryKey: [reactionKey, id],
     queryFn: async () => (await axios.get('video-reaction', { params: { id } })).data,
   });
@@ -60,7 +60,7 @@ export function useVideoUpload() {
   const navigate = useNavigate();
   const setNotif = useSetRecoilState(videoNotificationState);
 
-  return useMutation<void, AxiosError, UploadVideo>({
+  return useMutation<void, AxiosError, PostVideo>({
     mutationFn: async (body) => {
       const { videoFile, ...others } = body;
       const metadata = (

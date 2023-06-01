@@ -4,14 +4,14 @@ import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { useEditPlaylist } from '../../api/playlist';
 import FormDialog from '../../components/layout/FormDialog';
-import { EditPlaylist, Playlist } from '../../types/PlaylistTypes';
+import { PutPlaylist, GetPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { formFields } from '../User/Playlists/NewPlaylistButton';
 
 interface PlaylistEditForm {
   id: string;
-  playlist: Playlist;
+  playlist: GetPlaylist;
 }
 
 function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
@@ -23,7 +23,7 @@ function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
     isSuccess,
   } = useEditPlaylist(id, playlist.authorId);
 
-  const handleSubmit = (values: EditPlaylist) => {
+  const handleSubmit = (values: PutPlaylist) => {
     editPlaylist(values);
   };
 
@@ -40,7 +40,7 @@ function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
     <>
       <Button onClick={() => setIsDialogOpen(true)}>Edytuj</Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-        <BaseForm<EditPlaylist>
+        <BaseForm<PutPlaylist>
           title='Edycja playlisty'
           buttonText='Zapisz zmiany'
           icon={<Mode />}

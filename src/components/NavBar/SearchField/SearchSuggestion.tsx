@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'react';
-import { PlaylistBase } from '../../../types/PlaylistTypes';
+import { GetPlaylistBase } from '../../../types/PlaylistTypes';
 import { GetUserDetailsResponse } from '../../../types/UserTypes';
 import { GetVideoMetadataResponse } from '../../../types/VideoTypes';
 import PlaylistSuggestion from './PlaylistSuggestion';
@@ -32,7 +32,7 @@ function SearchSuggestion({ props, option }: SearchSuggestionProps) {
       return (
         <PlaylistSuggestion
           componentProps={props}
-          playlist={option.result as PlaylistBase}
+          playlist={option.result as GetPlaylistBase}
         />
       );
   }

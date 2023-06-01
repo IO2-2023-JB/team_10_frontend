@@ -3,18 +3,18 @@ import axios, { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
 import {
-  CreatePlaylist,
-  CreatePlaylistResponse,
-  EditPlaylist,
-  Playlist,
-  PlaylistBase,
+  PostPlaylist,
+  PostPlaylistResponse,
+  PutPlaylist,
+  GetPlaylist,
+  GetPlaylistBase,
 } from '../types/PlaylistTypes';
 
 const playlistKey = 'playlist';
 const playlistVideoKey = 'playlist-content';
 
 export function useUserPlaylists(userId?: string) {
-  return useQuery<PlaylistBase[], AxiosError>({
+  return useQuery<GetPlaylistBase[], AxiosError>({
     queryKey: [playlistKey, userId],
     queryFn: async () =>
       (await axios.get('playlist/user', { params: { id: userId } })).data,
@@ -23,7 +23,7 @@ export function useUserPlaylists(userId?: string) {
 }
 
 export function usePlaylistVideos(playlistId: string) {
-  return useQuery<Playlist, AxiosError>({
+  return useQuery<GetPlaylist, AxiosError>({
     queryKey: [playlistVideoKey, playlistId],
     queryFn: async () =>
       (await axios.get('playlist/video', { params: { id: playlistId } })).data,
@@ -36,7 +36,7 @@ export function useCreatePlaylist() {
 
   const userId = loggedInUser?.id;
 
-  return useMutation<CreatePlaylistResponse, AxiosError, CreatePlaylist>({
+  return useMutation<PostPlaylistResponse, AxiosError, PostPlaylist>({
     mutationFn: async (body) => (await axios.post('playlist/details', body)).data,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [playlistKey, userId] });
@@ -46,7 +46,7 @@ export function useCreatePlaylist() {
 
 export function useEditPlaylist(playlistId: string, ownerId: string) {
   const queryClient = useQueryClient();
-  return useMutation<void, AxiosError, EditPlaylist>({
+  return useMutation<void, AxiosError, PutPlaylist>({
     mutationFn: async (body) =>
       await axios.put('playlist/details', body, { params: { id: playlistId } }),
     onSuccess: () => {
@@ -85,7 +85,7 @@ export function useRemoveVideoFromPlaylist(videoId: string, playlistId: string) 
 }
 
 export function useRecommendedPlaylist() {
-  return useQuery<Playlist, AxiosError>({
+  return useQuery<GetPlaylist, AxiosError>({
     queryKey: [playlistKey, 'recommended'],
     queryFn: async () => (await axios.get(`${playlistKey}/recommended`)).data,
   });

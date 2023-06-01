@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 import TypographyLink from '../../components/TypographyLink';
 import { ROUTES } from '../../const';
-import { Playlist } from '../../types/PlaylistTypes';
+import { GetPlaylist } from '../../types/PlaylistTypes';
 import PlaylistVisibilityLabel from './PlaylistVisibilityLabel';
 
 interface PlaylistInfoProps {
-  playlist: Playlist;
+  playlist: GetPlaylist;
   showVisibility: boolean;
 }
 

@@ -17,7 +17,7 @@ import StatusSnackbar from '../../components/StatusSnackbar';
 import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
 import { userDetailsState } from '../../data/UserData';
-import { PlaylistBase } from '../../types/PlaylistTypes';
+import { GetPlaylistBase } from '../../types/PlaylistTypes';
 import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
 import NewPlaylistButton from '../User/Playlists/NewPlaylistButton';
 
@@ -37,7 +37,7 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
     isLoading: isAddLoading,
   } = useAddVideoToPlaylist(videoId);
 
-  const handleAdd = (playlist: PlaylistBase) => {
+  const handleAdd = (playlist: GetPlaylistBase) => {
     setPlaylistName(playlist.name);
     setIsDialogOpen(false);
     addToPlaylist(playlist.id);

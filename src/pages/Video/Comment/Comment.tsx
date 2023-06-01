@@ -1,6 +1,6 @@
 import { Paper, Typography, IconButton, Collapse, Skeleton } from '@mui/material';
 import { Stack } from '@mui/system';
-import { CommentValues } from '../../../types/CommentTypes';
+import { GetComment } from '../../../types/CommentTypes';
 import { Link } from 'react-router-dom';
 import { useUserDetails } from '../../../api/user';
 import Avatar from '../../../components/Avatar';
@@ -12,7 +12,7 @@ import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
 
 interface CommentProps {
-  comment: CommentValues;
+  comment: GetComment;
   originId: string | undefined;
   open: (id: string | null) => void;
   isResponse: boolean;

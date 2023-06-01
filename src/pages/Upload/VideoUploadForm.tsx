@@ -14,7 +14,7 @@ import {
   MAX_VIDEO_DESCRIPTION_LENGTH,
   MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
-import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
+import { PostVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 import { MetadataFormValues } from './../Video/MetadataForm';
@@ -106,7 +106,7 @@ function VideoUploadForm() {
   const handleSubmit = async (values: VideoUploadFormValues) => {
     const formData = new FormData();
     formData.append('videoFile', values.videoFile as File, values.videoFile?.name);
-    const parsedValues: UploadVideo = {
+    const parsedValues: PostVideo = {
       ...values,
       videoFile: formData,
       thumbnail: values.thumbnail !== null ? await toBase64(values.thumbnail) : null,
