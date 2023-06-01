@@ -7,7 +7,6 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { EXAMPLE_TAGS } from '../../const/predefined_tags';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
@@ -34,7 +33,10 @@ const formFields = (
       multiple
       freeSolo
       autoSelect
-      options={EXAMPLE_TAGS}
+      optionsPromiseFn={() =>
+        import('../../const/predefined_tags').then((module) => module.default)
+      }
+      loadingText='Pobieranie sugestii...'
       onInputChange={(event, value) => {
         if (value.endsWith(',')) {
           const target = event.currentTarget as HTMLInputElement;

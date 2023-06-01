@@ -1,4 +1,4 @@
-export const EXAMPLE_TAGS: string[] = [
+export default [
   'nauka',
   'biology',
   'chemia',
