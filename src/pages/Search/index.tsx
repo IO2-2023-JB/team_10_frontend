@@ -4,10 +4,12 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { useSearch } from '../../api/search';
 import Spinner from '../../components/Spinner';
 import TabRouter from '../../components/TabRouter';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoFiltersList from '../../components/video/VideoFiltersList';
 import { ROUTES, SEARCH_PARAMS } from '../../const';
+import { baseTitle } from '../../const/tab_titles';
 import { getSearchParams } from '../../types/SearchTypes';
 import PlaylistList from '../User/Playlists/PlaylistList';
 import UsersList from '../User/UsersList';
@@ -23,13 +25,16 @@ function Search() {
   const [params] = useSearchParams();
   const { data: searchResults, isLoading, error } = useSearch(getSearchParams(params));
 
+  const query = params.get(SEARCH_PARAMS.QUERY);
+
   return (
     <PageLayout>
+      <TabTitle title={`${query}${baseTitle}`} />
       <Stack spacing={2}>
         <Typography width='100%' variant='h5'>
           Wyniki wyszukiwania{' '}
           <Box fontWeight={600} component='span'>
-            {params.get(SEARCH_PARAMS.QUERY)}
+            {query}
           </Box>
         </Typography>
         <ContentSection isLoading={false} error={error}>

@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useVideoMetadata } from '../../api/video';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
+import { baseTitle } from '../../const/tab_titles';
 import { videoMetadataKey } from './../../api/video';
 import PageLayout from './../../components/layout/PageLayout';
 import { videoNotificationState } from './../../data/VideoData';
@@ -26,6 +28,7 @@ function Video() {
       <ContentSection error={error} isLoading={isLoading}>
         {videoMetadata && (
           <>
+            <TabTitle title={`${videoMetadata.title}${baseTitle}`} />
             <Player
               videoId={videoId!}
               processingState={videoMetadata.processingProgress}

@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useUserDetails } from '../../api/user';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
-import UserDetails from './UserDetails';
+import { baseTitle } from '../../const/tab_titles';
 import UserContent from './UserContent';
+import UserDetails from './UserDetails';
 
 function User() {
   const { userId } = useParams();
@@ -14,6 +16,7 @@ function User() {
       <ContentSection error={error} isLoading={isLoading}>
         {userDetails && (
           <>
+            <TabTitle title={`${userDetails.nickname}${baseTitle}`} />
             <UserDetails userDetails={userDetails} />
             <UserContent userDetails={userDetails} />
           </>
