@@ -43,7 +43,7 @@ function NewPlaylistButton() {
       </Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<PostPlaylist>
-          title='Utwórz playlistę'
+          title='Utwórz grajlistę'
           buttonText='Utwórz'
           icon={<Add />}
           formFields={formFields}
@@ -55,9 +55,9 @@ function NewPlaylistButton() {
         />
       </FormDialog>
       <StatusSnackbar
-        loadingMessage={`Tworzenie playlisty ${newPlaylistName}…`}
-        successMessage={`Pomyślnie utworzono playlistę ${newPlaylistName}!`}
-        errorMessage='Nie udało się utworzyć playlisty'
+        loadingMessage={`Tworzenie grajlisty ${newPlaylistName}…`}
+        successMessage={`Pomyślnie utworzono grajlistę ${newPlaylistName}!`}
+        errorMessage='Nie udało się utworzyć grajlisty'
         error={error}
         isLoading={isLoading}
         isSuccess={isSuccess}

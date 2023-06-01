@@ -38,7 +38,7 @@ function UserContent({ userDetails }: UserDetailsProps) {
         },
         {
           path: UserProfileTabs.Playlists,
-          label: 'Playlisty',
+          label: 'Grajlisty',
           element: <UserPlaylists userId={userDetails.id} />,
         },
       ]}

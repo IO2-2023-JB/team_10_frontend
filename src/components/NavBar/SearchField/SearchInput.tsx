@@ -17,7 +17,7 @@ function SearchInput({ params, showButton, onSubmit }: SearchInputProps) {
     <TextField
       {...params}
       variant='outlined'
-      placeholder='Szukaj filmów, użytkowników, playlist…'
+      placeholder='Szukaj filmów, użytkowników, grajlist…'
       InputProps={{
         ...params.InputProps,
         sx: {

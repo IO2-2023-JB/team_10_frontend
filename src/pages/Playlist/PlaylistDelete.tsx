@@ -45,7 +45,7 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
             </Alert>
           )}
           <Typography variant='h5'>
-            Czy na pewno chcesz usunąć playlistę {playlist.name}?
+            Czy na pewno chcesz usunąć grajlistę {playlist.name}?
           </Typography>
           <SpinningButton
             variant='contained'
