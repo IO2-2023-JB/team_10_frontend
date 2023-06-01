@@ -13,8 +13,20 @@ interface UploadStatusSnackbarContent {
   severity?: AlertColor;
 }
 
-function getMessage(processingProgress: ProcessingProgress): UploadStatusSnackbarContent {
-  switch (processingProgress) {
+function getMessage(
+  uploadState: VideoUploadState | ProcessingProgress
+): UploadStatusSnackbarContent {
+  switch (uploadState) {
+    case VideoUploadState.UploadingMetadata:
+      return {
+        message: 'Przesyłanie metadanych filmu...',
+        title: 'Nie opuszczaj MojeWideło!',
+      };
+    case VideoUploadState.UploadingVideo:
+      return {
+        message: 'Przesyłanie filmu...',
+        title: 'Nie opuszczaj MojeWideło!',
+      };
     case ProcessingProgress.MetadataRecordCreated:
       return { message: 'Przesłano metadane filmu' };
     case ProcessingProgress.Uploading:
@@ -27,6 +39,8 @@ function getMessage(processingProgress: ProcessingProgress): UploadStatusSnackba
       return { message: 'Pomyślnie przetworzono!', severity: 'success' };
     case ProcessingProgress.FailedToUpload:
       return { message: 'Nie udało się przesłać filmu', severity: 'error' };
+    default:
+      return { message: 'Status przesyłania nieznany', severity: 'error' };
   }
 }
 
@@ -59,17 +73,8 @@ function UploadStatusSnackbar() {
 
     switch (uploadingVideo?.state) {
       case VideoUploadState.UploadingMetadata:
-        setContent({
-          message: 'Przesyłanie metadanych filmu...',
-          title: 'Nie opuszczaj MojeWideło!',
-        });
-        break;
-
       case VideoUploadState.UploadingVideo:
-        setContent({
-          message: 'Przesyłanie filmu...',
-          title: 'Nie opuszczaj MojeWideło!',
-        });
+        setContent(getMessage(uploadingVideo.state));
         break;
 
       case VideoUploadState.Processing:
