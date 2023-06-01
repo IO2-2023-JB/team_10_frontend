@@ -6,7 +6,7 @@ function LinearProgress(props: LinearProgressProps) {
       {...props}
       sx={{
         ...props.sx,
-        height: 1.2,
+        height: 2,
         color: 'primary.main',
       }}
     />

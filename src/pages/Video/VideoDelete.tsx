@@ -1,11 +1,9 @@
 import { Alert, AlertTitle, Button, MenuItem, Stack, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDeleteVideo } from '../../api/video';
-import FormDialog from '../../components/layout/FormDialog';
 import SpinningButton from '../../components/SpinningButton';
-import { useQueryClient } from '@tanstack/react-query';
-import { videoMetadataKey } from './../../api/video';
+import FormDialog from '../../components/layout/FormDialog';
 import { getErrorMessage } from '../../utils/utils';
 
 interface VideoDeleteProps {
@@ -15,21 +13,17 @@ interface VideoDeleteProps {
 
 function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { mutate, error, isSuccess, isLoading } = useDeleteVideo(videoId);
+  const { mutate, error, isLoading } = useDeleteVideo(videoId);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
   const handleDelete = () => {
-    mutate();
+    mutate(undefined, {
+      onSuccess: () => {
+        setIsDeleteDialogOpen(false);
+        if (!asMenuItem) navigate('/');
+      },
+    });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      setIsDeleteDialogOpen(false);
-      if (!asMenuItem) navigate('/');
-      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
-    }
-  }, [isSuccess, navigate, queryClient, asMenuItem]);
 
   return (
     <>

@@ -1,24 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
-import { videoNotificationState } from '../data/VideoData';
+import { METADATA_REFETCH_INTERVAL } from '../const';
+import { uploadProgressState, uploadingVideoState } from '../data/VideoData';
 import {
+  GetReactionCounts,
   GetUserVideosResponse,
   GetVideoMetadataResponse,
-  ProcessingProgress,
-  GetReactionCounts,
+  PostReaction,
   PostVideo,
+  PutVideoMetadata,
+  VideoUploadState,
 } from '../types/VideoTypes';
-import { PostReaction, PutVideoMetadata } from '../types/VideoTypes';
 
 export const videoMetadataKey = 'video-metadata';
 const reactionKey = 'video-reaction';
 
-export function useVideoMetadata(id: string) {
+export function useVideoMetadata(id?: string, interval?: boolean) {
   return useQuery<GetVideoMetadataResponse, AxiosError>({
     queryKey: [videoMetadataKey, id],
     queryFn: async () => (await axios.get('video-metadata', { params: { id } })).data,
+    enabled: id !== undefined,
+    refetchInterval: interval ? METADATA_REFETCH_INTERVAL : undefined,
   });
 }
 
@@ -27,14 +30,18 @@ export function useEditVideoMetadata(id: string) {
   return useMutation<void, AxiosError, PutVideoMetadata>({
     mutationFn: (body) => axios.put('video-metadata', body, { params: { id } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
     },
   });
 }
 
 export function useDeleteVideo(id: string) {
+  const queryClient = useQueryClient();
   return useMutation<void, AxiosError, void>({
     mutationFn: () => axios.delete('video', { params: { id } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
+    },
   });
 }
 
@@ -57,25 +64,33 @@ export function useReaction(id: string) {
 }
 
 export function useVideoUpload() {
-  const navigate = useNavigate();
-  const setNotif = useSetRecoilState(videoNotificationState);
+  const setUploadingVideo = useSetRecoilState(uploadingVideoState);
+  const setUploadProgress = useSetRecoilState(uploadProgressState);
+  const queryClient = useQueryClient();
 
-  return useMutation<void, AxiosError, PostVideo>({
+  return useMutation<string, AxiosError, PostVideo>({
     mutationFn: async (body) => {
       const { videoFile, ...others } = body;
-      const metadata = (
+
+      setUploadingVideo({ id: null, state: VideoUploadState.UploadingMetadata });
+      const { id } = (
         await axios.post<GetVideoMetadataResponse>('video-metadata', others)
       ).data;
-      setNotif({
-        open: true,
-        message: 'Dane filmu wysłane.',
-        status: ProcessingProgress.MetadataRecordCreated,
-        videoId: metadata.id,
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
+
+      setUploadingVideo({ id, state: VideoUploadState.UploadingVideo });
+      await axios.post(`video/${id}`, videoFile, {
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.progress) setUploadProgress(progressEvent.progress);
+        },
       });
-      await axios.post(`video/${metadata.id}`, videoFile);
+
+      setUploadProgress(null);
+      setUploadingVideo({ id, state: VideoUploadState.Processing });
+      return id;
     },
-    onSuccess: () => {
-      navigate('/');
+    onSuccess: (id) => {
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
     },
   });
 }
