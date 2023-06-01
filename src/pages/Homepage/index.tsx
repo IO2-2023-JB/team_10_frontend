@@ -18,7 +18,7 @@ function Homepage() {
         tabs={[
           {
             index: true,
-            label: 'Wszystkie wideło',
+            label: 'Rekomendacje',
             element: <HomepageVideos />,
           },
           {
