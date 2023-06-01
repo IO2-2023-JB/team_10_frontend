@@ -7,6 +7,7 @@ interface NumberDeclinedNounData {
 export enum NumberDeclinedNoun {
   View,
   Subscription,
+  Eurogombka,
 }
 
 const numerals: Record<NumberDeclinedNoun, NumberDeclinedNounData> = {
@@ -19,6 +20,11 @@ const numerals: Record<NumberDeclinedNoun, NumberDeclinedNounData> = {
     nominativeSingular: 'subskrypcja',
     nominativePlural: 'subskrypcje',
     genitivePlural: 'subskrypcji',
+  },
+  [NumberDeclinedNoun.Eurogombka]: {
+    nominativeSingular: 'eurogombka',
+    nominativePlural: 'eurogombki',
+    genitivePlural: 'eurogombek',
   },
 };
 

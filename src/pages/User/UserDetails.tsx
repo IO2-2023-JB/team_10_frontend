@@ -34,7 +34,8 @@ function UserDetails({ userDetails }: UserDetailsProps) {
       NumberDeclinedNoun.Subscription
     )}`;
   if (userDetails.accountBalance !== null)
-    textBottom += ` · stan konta: ${getBalanceString(userDetails.accountBalance)} zł`;
+    textBottom += ` · stan konta: ${getBalanceString(userDetails.accountBalance)} 
+    ${getNumberWithLabel(userDetails.accountBalance, NumberDeclinedNoun.Eurogombka)}`;
 
   const handleDialogOpen = () => setDialogOpen(true);
 
