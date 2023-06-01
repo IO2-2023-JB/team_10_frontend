@@ -4,6 +4,6 @@ export interface Subscription {
   avatarImage: string | null;
 }
 
-export interface SubscriptionsList {
+export interface GetSubscriptionsList {
   subscriptions: Subscription[];
 }

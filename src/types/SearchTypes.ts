@@ -1,6 +1,6 @@
 import { SEARCH_PARAMS } from '../const';
 import { removeEmptySearchParams } from '../utils/utils';
-import { PlaylistBase } from './PlaylistTypes';
+import { GetPlaylistBase } from './PlaylistTypes';
 import { GetUserDetailsResponse } from './UserTypes';
 import { GetVideoMetadataResponse } from './VideoTypes';
 
@@ -15,10 +15,10 @@ export enum SortingTypes {
   Popularity = 'Popularity',
 }
 
-export interface SearchResults {
+export interface GetSearchResults {
   videos: GetVideoMetadataResponse[];
   users: GetUserDetailsResponse[];
-  playlists: PlaylistBase[];
+  playlists: GetPlaylistBase[];
 }
 
 export enum SearchResultType {
@@ -30,7 +30,7 @@ export enum SearchResultType {
 export interface PreparedSearchResult {
   type: SearchResultType;
   label: string;
-  result: GetVideoMetadataResponse | GetUserDetailsResponse | PlaylistBase;
+  result: GetVideoMetadataResponse | GetUserDetailsResponse | GetPlaylistBase;
 }
 
 export interface SearchParams {

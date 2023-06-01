@@ -1,4 +1,4 @@
-export interface UploadVideoMetadata {
+export interface PutVideoMetadata {
   title: string;
   description: string;
   thumbnail: string | null;
@@ -6,11 +6,11 @@ export interface UploadVideoMetadata {
   visibility: VideoVisibility;
 }
 
-export type UploadVideo = UploadVideoMetadata & {
+export type PostVideo = PutVideoMetadata & {
   videoFile: FormData | null;
 };
 
-export interface GetVideoMetadataResponse extends UploadVideoMetadata {
+export interface GetVideoMetadataResponse extends PutVideoMetadata {
   id: string;
   authorId: string;
   authorNickname: string;
@@ -41,7 +41,7 @@ export enum ReactionType {
   None = 'None',
 }
 
-export interface ReactionCounts {
+export interface GetReactionCounts {
   positiveCount: number;
   negativeCount: number;
   currentUserReaction: ReactionType;

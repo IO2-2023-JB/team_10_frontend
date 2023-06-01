@@ -5,12 +5,12 @@ import { useDeletePlaylist } from '../../api/playlist';
 import SpinningButton from '../../components/SpinningButton';
 import FormDialog from '../../components/layout/FormDialog';
 import { ROUTES } from '../../const';
-import { Playlist } from '../../types/PlaylistTypes';
+import { GetPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 
 interface PlaylistDeleteProps {
   id: string;
-  playlist: Playlist;
+  playlist: GetPlaylist;
 }
 
 function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {

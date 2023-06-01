@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import {
   SearchParams,
-  SearchResults,
+  GetSearchResults,
   SortingDirections,
   SortingTypes,
 } from '../types/SearchTypes';
@@ -16,7 +16,7 @@ export function useSearch(searchParams: SearchParams) {
   const startDate = searchParams.startDate ?? null;
   const endDate = searchParams.endDate ?? null;
 
-  return useQuery<SearchResults, AxiosError>({
+  return useQuery<GetSearchResults, AxiosError>({
     queryKey: [searchKey, searchParams.query, sortBy, sortDirection, startDate, endDate],
     queryFn: async () => {
       const params = {

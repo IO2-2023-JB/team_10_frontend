@@ -7,7 +7,7 @@ import Avatar from '../../../components/Avatar';
 import { useUserDetails } from '../../../api/user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../../data/UserData';
-import { CommentValues } from '../../../types/CommentTypes';
+import { GetComment } from '../../../types/CommentTypes';
 
 interface CommentSectionProps {
   videoId?: string;
@@ -59,7 +59,7 @@ function CommentSection({ videoId, commentId, isResponse = false }: CommentSecti
           </Typography>
         )}
         {commentData &&
-          commentData.map((comment: CommentValues) => (
+          commentData.map((comment: GetComment) => (
             <Comment
               key={comment.id}
               comment={comment}
