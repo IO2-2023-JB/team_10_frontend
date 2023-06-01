@@ -41,7 +41,7 @@ function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
       <Button onClick={() => setIsDialogOpen(true)}>Edytuj</Button>
       <FormDialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
         <BaseForm<PutPlaylist>
-          title='Edycja playlisty'
+          title='Edycja grajlisty'
           buttonText='Zapisz zmiany'
           icon={<Mode />}
           formFields={formFields}

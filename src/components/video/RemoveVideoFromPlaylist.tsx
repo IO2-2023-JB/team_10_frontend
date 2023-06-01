@@ -9,7 +9,7 @@ interface RemoveVideoFromPlaylistProps {
 function RemoveVideoFromPlaylist({ videoId, playlistId }: RemoveVideoFromPlaylistProps) {
   const { mutate: removeVideo } = useRemoveVideoFromPlaylist(videoId, playlistId);
 
-  return <MenuItem onClick={() => removeVideo()}>Usuń z playlisty</MenuItem>;
+  return <MenuItem onClick={() => removeVideo()}>Usuń z grajlisty</MenuItem>;
 }
 
 export default RemoveVideoFromPlaylist;

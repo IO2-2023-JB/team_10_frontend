@@ -17,7 +17,7 @@ function PlaylistSuggestion({ componentProps, playlist }: PlaylistSuggestionProp
     <SearchSuggestionWrapper componentProps={componentProps} url={url}>
       <Stack justifyContent='center'>
         <OneLineTypography fontWeight={600}>{playlist.name}</OneLineTypography>
-        <Typography variant='body2'>Playlista</Typography>
+        <Typography variant='body2'>Grajlista</Typography>
       </Stack>
     </SearchSuggestionWrapper>
   );
