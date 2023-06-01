@@ -1,23 +1,14 @@
 import { LoginOutlined } from '@mui/icons-material';
-import * as Yup from 'yup';
-import FormikTextField from '../../components/formikFields/FormikTextField';
-import BaseForm from './BaseForm';
 import { useLogin } from '../../api/user';
+import FormikTextField from '../../components/formikFields/FormikTextField';
+import { LoginFormValues, loginValidationSchema } from '../../data/formData/user';
 import { getErrorMessage } from '../../utils/utils';
-export interface LoginFormValues {
-  email: string;
-  password: string;
-}
+import BaseForm from './BaseForm';
 
 const formikInitialValues = {
   email: '',
   password: '',
 };
-
-export const loginValidationSchema = Yup.object({
-  email: Yup.string().required('Pole wymagane').email('Niepoprawny format adresu e-mail'),
-  password: Yup.string().required('Pole wymagane'),
-});
 
 const formFields = (
   <>

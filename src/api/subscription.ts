@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { Subscription, GetSubscriptionsList } from '../data/Subscription';
-import { userKey } from './user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
+import { GetSubscriptionsList, Subscription } from '../types/SubscriptionTypes';
 import { GetSubscribedVideosResponse } from '../types/VideoTypes';
+import { userKey } from './user';
 
 const subscriptionsKey = 'subscriptions';
 const subscribedVideosKey = 'user/videos/subscribed';

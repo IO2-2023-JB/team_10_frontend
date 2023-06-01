@@ -7,20 +7,15 @@ import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import {
+  MetadataFormValues,
+  videoUploadValidationSchema,
+} from '../../data/formData/video';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-
-export interface MetadataFormValues {
-  title: string;
-  description: string;
-  tags: string[];
-  visibility: VideoVisibility;
-  thumbnail: Blob | null;
-}
 
 const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
 
