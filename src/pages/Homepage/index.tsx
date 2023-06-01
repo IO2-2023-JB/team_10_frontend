@@ -14,7 +14,7 @@ enum HomepageTabs {
 function Homepage() {
   return (
     <PageLayout>
-      <TabTitle title={TabTitles.Homepage} />
+      <TabTitle title={TabTitles.Homepage} skipBaseTitle />
       <TabRouter
         rootPath={ROUTES.HOMEPAGE}
         defaultTab={HomepageTabs.AllVideos}

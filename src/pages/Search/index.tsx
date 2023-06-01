@@ -9,7 +9,6 @@ import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoFiltersList from '../../components/video/VideoFiltersList';
 import { ROUTES, SEARCH_PARAMS } from '../../const';
-import { baseTitle } from '../../const/tab_titles';
 import { getSearchParams } from '../../types/SearchTypes';
 import PlaylistList from '../User/Playlists/PlaylistList';
 import UsersList from '../User/UsersList';
@@ -29,7 +28,7 @@ function Search() {
 
   return (
     <PageLayout>
-      <TabTitle title={`${query}${baseTitle}`} />
+      {query && <TabTitle title={query} />}
       <Stack spacing={2}>
         <Typography width='100%' variant='h5'>
           Wyniki wyszukiwania{' '}

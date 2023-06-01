@@ -3,7 +3,6 @@ import { useUserDetails } from '../../api/user';
 import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
-import { baseTitle } from '../../const/tab_titles';
 import UserContent from './UserContent';
 import UserDetails from './UserDetails';
 
@@ -16,7 +15,7 @@ function User() {
       <ContentSection error={error} isLoading={isLoading}>
         {userDetails && (
           <>
-            <TabTitle title={`${userDetails.nickname}${baseTitle}`} />
+            <TabTitle title={userDetails.nickname} />
             <UserDetails userDetails={userDetails} />
             <UserContent userDetails={userDetails} />
           </>

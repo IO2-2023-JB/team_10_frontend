@@ -6,7 +6,6 @@ import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoList from '../../components/video/VideoList';
-import { baseTitle } from '../../const/tab_titles';
 import { userDetailsState } from '../../data/UserData';
 import PlaylistDelete from './PlaylistDelete';
 import PlaylistEditForm from './PlaylistEditForm';
@@ -24,7 +23,7 @@ function Playlist() {
       <ContentSection error={error} isLoading={isLoading}>
         {playlist && (
           <>
-            <TabTitle title={`${playlist.name}${baseTitle}`} />
+            <TabTitle title={playlist.name} />
             <Stack spacing={2}>
               <Stack direction='row' alignItems='center' justifyContent='space-between'>
                 <PlaylistInfo playlist={playlist} showVisibility={isOwn} />
