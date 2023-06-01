@@ -11,7 +11,6 @@ import {
   ALLOWED_IMAGE_OBJECT,
   ALLOWED_VIDEO_FORMATS,
   ALLOWED_VIDEO_OBJECT,
-  EXAMPLE_TAGS,
   MAX_VIDEO_DESCRIPTION_LENGTH,
   MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
@@ -58,7 +57,10 @@ function VideoUploadForm() {
         multiple
         freeSolo
         autoSelect
-        options={EXAMPLE_TAGS}
+        optionsPromiseFn={() =>
+          import('../../const/predefined_tags').then((module) => module.default)
+        }
+        loadingText='Pobieranie sugestii...'
         onInputChange={(event, value) => {
           if (value.endsWith(',')) {
             const target = event.currentTarget as HTMLInputElement;
