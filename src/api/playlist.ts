@@ -85,7 +85,7 @@ export function useRemoveVideoFromPlaylist(videoId: string, playlistId: string) 
 }
 
 export function useRecommendedPlaylist() {
-  return useQuery<Playlist, AxiosError>({
+  return useQuery<GetPlaylist, AxiosError>({
     queryKey: [playlistKey, 'recommended'],
     queryFn: async () => (await axios.get(`${playlistKey}/recommended`)).data,
   });
