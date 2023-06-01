@@ -4,6 +4,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { useSearch } from '../../api/search';
 import Spinner from '../../components/Spinner';
 import TabRouter from '../../components/TabRouter';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoFiltersList from '../../components/video/VideoFiltersList';
@@ -23,13 +24,16 @@ function Search() {
   const [params] = useSearchParams();
   const { data: searchResults, isLoading, error } = useSearch(getSearchParams(params));
 
+  const query = params.get(SEARCH_PARAMS.QUERY);
+
   return (
     <PageLayout>
+      {query && <TabTitle title={query} />}
       <Stack spacing={2}>
         <Typography width='100%' variant='h5'>
           Wyniki wyszukiwania{' '}
           <Box fontWeight={600} component='span'>
-            {params.get(SEARCH_PARAMS.QUERY)}
+            {query}
           </Box>
         </Typography>
         <ContentSection isLoading={false} error={error}>

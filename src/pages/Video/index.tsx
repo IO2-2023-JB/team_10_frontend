@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useVideoMetadata } from '../../api/video';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
 import { ProcessingProgress } from '../../types/VideoTypes';
 import PageLayout from './../../components/layout/PageLayout';
@@ -25,6 +26,7 @@ function Video() {
       <ContentSection error={error} isLoading={isLoading}>
         {videoMetadata && (
           <>
+            <TabTitle title={videoMetadata.title} />
             <Player
               videoId={videoId!}
               processingState={videoMetadata.processingProgress}
