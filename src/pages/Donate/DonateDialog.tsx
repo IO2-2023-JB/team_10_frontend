@@ -65,7 +65,7 @@ function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
           label='Podaj kwotę'
           onChange={onValueChange}
           InputProps={{
-            endAdornment: <InputAdornment position='end'>zł</InputAdornment>,
+            endAdornment: <InputAdornment position='end'>€🧽</InputAdornment>,
           }}
         />
       </Stack>

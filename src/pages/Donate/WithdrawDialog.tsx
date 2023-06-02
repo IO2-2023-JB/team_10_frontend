@@ -6,11 +6,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { GetUserDetailsResponse, getBalanceString } from '../../types/UserTypes';
+import { GetUserDetailsResponse } from '../../types/UserTypes';
 import { useWithdraw } from '../../api/donate';
 import { useEffect, useState } from 'react';
 import SpinningButton from '../../components/SpinningButton';
 import { getErrorMessage, valueAsNumber } from '../../utils/utils';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 
 interface WithdrawDialogProps {
   creator: GetUserDetailsResponse;
@@ -55,7 +56,8 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
     <Stack spacing={4} alignItems='center'>
       <Typography variant='h4'>Wypłacanie środków</Typography>
       <Typography variant='h5'>
-        Dostępne środki: {getBalanceString(creator.accountBalance!)} zł
+        Dostępne środki:{' '}
+        {getNumberWithLabel(creator.accountBalance!, NumberDeclinedNoun.Eurogombka, true)}
       </Typography>
       <TextField
         fullWidth
@@ -64,7 +66,7 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
         helperText={isError ? 'Niepoprawna wartość' : undefined}
         label='Podaj kwotę'
         InputProps={{
-          endAdornment: <InputAdornment position='end'>zł</InputAdornment>,
+          endAdornment: <InputAdornment position='end'>€🧽</InputAdornment>,
         }}
         onChange={onValueChange}
       />
