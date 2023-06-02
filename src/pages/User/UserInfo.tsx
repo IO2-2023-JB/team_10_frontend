@@ -21,7 +21,7 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
   const { isMobile } = useMobileLayout();
 
   return (
-    <Stack direction='row' alignItems='center' width={width}>
+    <Stack direction='row' alignItems='center' width={width} flex={1}>
       <Stack
         direction='row'
         color='inherit'

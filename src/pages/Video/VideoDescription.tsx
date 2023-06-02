@@ -1,8 +1,8 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
+import { transitionLong } from '../../theme';
 import { useMaxLines } from '../../utils/hooks';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
-import { transitionLong } from '../../theme';
 
 interface VideoDescriptionProps {
   viewCount: number;
@@ -56,7 +56,7 @@ function VideoDescription({
       </Stack>
       <Stack marginTop={1} spacing={1}>
         <Typography ref={descriptionRef} sx={!expanded ? descriptionMaxLinesStyle : null}>
-          {videoDescription}
+          {videoDescription === '' ? 'Brak opisu' : videoDescription}
         </Typography>
         {(isEllipsisActive || expanded) && (
           <Typography

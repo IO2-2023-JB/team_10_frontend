@@ -1,15 +1,15 @@
-import { Paper, Typography, IconButton, Collapse, Skeleton } from '@mui/material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { Box, Collapse, IconButton, Paper, Skeleton, Typography } from '@mui/material';
 import { Stack } from '@mui/system';
-import { CommentValues } from '../../../types/CommentTypes';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { useDeleteComment } from '../../../api/comment';
 import { useUserDetails } from '../../../api/user';
 import Avatar from '../../../components/Avatar';
-import { useDeleteComment } from '../../../api/comment';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import CommentSection from './CommentSection';
-import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
+import { CommentValues } from '../../../types/CommentTypes';
+import CommentSection from './CommentSection';
 
 interface CommentProps {
   comment: CommentValues;
@@ -122,7 +122,11 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
         </Stack>
       </Paper>
       <Collapse in={isOpen} timeout='auto'>
-        {isOpen && <CommentSection commentId={comment.id} isResponse />}
+        {isOpen && (
+          <Box marginX={2}>
+            <CommentSection commentId={comment.id} isResponse />
+          </Box>
+        )}
       </Collapse>
     </Stack>
   );

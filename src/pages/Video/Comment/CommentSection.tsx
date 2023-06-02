@@ -1,13 +1,13 @@
-import { Stack, TextField, Button, Typography } from '@mui/material';
-import { useComment, usePostComment, usePostCommentResponse } from '../../../api/comment';
-import Comment from './Comment';
-import { useState, KeyboardEvent, ChangeEvent } from 'react';
-import ContentSection from '../../../components/layout/ContentSection';
-import Avatar from '../../../components/Avatar';
-import { useUserDetails } from '../../../api/user';
+import { Button, Stack, TextField, Typography } from '@mui/material';
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useComment, usePostComment, usePostCommentResponse } from '../../../api/comment';
+import { useUserDetails } from '../../../api/user';
+import Avatar from '../../../components/Avatar';
+import ContentSection from '../../../components/layout/ContentSection';
 import { userDetailsState } from '../../../data/UserData';
 import { CommentValues } from '../../../types/CommentTypes';
+import Comment from './Comment';
 
 interface CommentSectionProps {
   videoId?: string;
@@ -52,7 +52,7 @@ function CommentSection({ videoId, commentId, isResponse = false }: CommentSecti
       error={commentError || userError}
       isLoading={isCommentLoading || isUserLoading}
     >
-      <Stack sx={{ margin: 3 }} spacing={2}>
+      <Stack sx={{ marginY: 3 }} spacing={2}>
         {commentData && commentData.comments.length === 0 && !isResponse && (
           <Typography variant='h5'>
             Jeszcze nikt nie dodał komentarza, dodaj pierwszy!

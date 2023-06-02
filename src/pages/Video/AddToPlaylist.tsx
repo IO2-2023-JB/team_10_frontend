@@ -17,6 +17,7 @@ import StatusSnackbar from '../../components/StatusSnackbar';
 import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
 import { userDetailsState } from '../../data/UserData';
+import { useMobileLayout } from '../../theme';
 import { GetPlaylistBase } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
@@ -37,6 +38,8 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
     error: addToPlaylistError,
     reset,
   } = useAddVideoToPlaylist(videoId);
+
+  const { isMobile } = useMobileLayout();
 
   const handleAdd = (playlist: GetPlaylistBase) => {
     setPlaylistName(playlist.name);
@@ -71,8 +74,12 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   return (
     <>
       <Tooltip title='Dodaj do grajlisty'>
-        <IconButton sx={{ color: 'primary.main' }} onClick={() => setIsDialogOpen(true)}>
-          <PlaylistAdd fontSize='large' />
+        <IconButton
+          sx={{ color: 'primary.main' }}
+          onClick={() => setIsDialogOpen(true)}
+          size={isMobile ? 'small' : 'medium'}
+        >
+          <PlaylistAdd fontSize={isMobile ? 'medium' : 'large'} />
         </IconButton>
       </Tooltip>
       <FormDialog
