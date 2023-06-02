@@ -33,7 +33,7 @@ const numerals: Record<NumberDeclinedNoun, NumberDeclinedNounData> = {
 export function getNumberWithLabel(
   value: number,
   noun: NumberDeclinedNoun,
-  isFloat?: boolean
+  isFloat: boolean = false
 ) {
   const wordData = numerals[noun];
   let label = '';
@@ -48,6 +48,6 @@ export function getNumberWithLabel(
     else label = wordData.genitivePlural;
   }
 
-  if (typeof isFloat !== 'undefined') return `${getBalanceString(value)} ${label}`;
+  if (isFloat) return `${getBalanceString(value)} ${label}`;
   else return `${value} ${label}`;
 }
