@@ -7,6 +7,7 @@ import SubscribeButton from '../../components/SubscribeButton';
 import DonateButton from '../../components/donate/DonateButton';
 import WithdrawButton from '../../components/donate/WithdrawButton';
 import FormDialog from '../../components/layout/FormDialog';
+import { useMobileLayout } from '../../theme';
 import {
   AccountType,
   GetUserDetailsResponse,
@@ -27,20 +28,17 @@ function UserDetails({ userDetails }: UserDetailsProps) {
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const textTop = `${userDetails.name} ${userDetails.surname} (@${userDetails.nickname})`;
+  const { mobileQuery, desktopQuery, isMobile, isDesktop } = useMobileLayout();
+
+  const textTop = `${userDetails.name} ${userDetails.surname}`;
 
   let textBottom = getUserTypeString(userDetails);
-  if (userDetails.subscriptionsCount !== null)
+  if (userDetails.subscriptionsCount !== null) {
     textBottom += ` · ${getNumberWithLabel(
       userDetails.subscriptionsCount,
       NumberDeclinedNoun.Subscription
     )}`;
-  if (userDetails.accountBalance !== null)
-    textBottom += ` · stan konta: ${getNumberWithLabel(
-      userDetails.accountBalance,
-      NumberDeclinedNoun.Eurogombka,
-      true
-    )}`;
+  }
 
   const handleDialogOpen = () => setDialogOpen(true);
 
@@ -50,42 +48,76 @@ function UserDetails({ userDetails }: UserDetailsProps) {
 
   return (
     <>
-      <Stack direction='row' alignItems='center'>
+      <Stack
+        sx={{
+          flexDirection: 'row',
+          [mobileQuery]: {
+            flexDirection: 'column',
+            gap: 2,
+          },
+          marginY: 2,
+        }}
+      >
         <Stack
-          direction='row'
-          spacing={4}
           sx={{
-            alignItems: 'center',
-            marginY: 5,
+            flexDirection: 'row',
+            gap: 4,
+            [mobileQuery]: {
+              flexDirection: 'column',
+              gap: 2,
+            },
           }}
         >
-          <Avatar userDetails={userDetails} size={120} />
-          <Stack>
-            <Typography variant='h3'>{textTop}</Typography>
-            <Typography variant='h5'>{textBottom}</Typography>
+          <Stack
+            direction='row'
+            spacing={3}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Avatar userDetails={userDetails} size={isMobile ? 100 : 120} />
+            {isMobile && <Typography variant='h3'>{userDetails.nickname}</Typography>}
           </Stack>
-        </Stack>
-        {userDetails.id === loggedUserDetails?.id && (
-          <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
-            <Button
-              onClick={handleDialogOpen}
-              sx={{ marginInlineStart: 'auto' }}
-              variant='contained'
-            >
-              Edytuj profil
-            </Button>
-            {userDetails.userType === AccountType.Creator && (
-              <WithdrawButton creator={userDetails} />
+          <Stack spacing={1}>
+            {isDesktop && <Typography variant='h3'>{userDetails.nickname}</Typography>}
+            <Typography variant='h4'>{textTop}</Typography>
+            <Typography variant='h5'>{textBottom}</Typography>
+            {userDetails.accountBalance !== null && (
+              <Typography variant='h5'>
+                Stan konta:{' '}
+                {getNumberWithLabel(
+                  userDetails.accountBalance,
+                  NumberDeclinedNoun.Eurogombka,
+                  true
+                )}
+              </Typography>
             )}
           </Stack>
-        )}
-        {userDetails.id !== loggedUserDetails?.id &&
-          userDetails.userType === AccountType.Creator && (
-            <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
-              <SubscribeButton creatorId={userDetails.id} />
-              <DonateButton creator={userDetails} />
-            </Stack>
+        </Stack>
+        <Stack
+          alignItems='center'
+          direction='row'
+          spacing={1}
+          sx={{ [desktopQuery]: { marginInlineStart: 'auto' } }}
+        >
+          {userDetails.id === loggedUserDetails?.id && (
+            <>
+              <Button onClick={handleDialogOpen} variant='contained'>
+                Edytuj profil
+              </Button>
+              {userDetails.userType === AccountType.Creator && (
+                <WithdrawButton creator={userDetails} />
+              )}
+            </>
           )}
+          {userDetails.id !== loggedUserDetails?.id &&
+            userDetails.userType === AccountType.Creator && (
+              <>
+                <DonateButton creator={userDetails} />
+                <SubscribeButton creatorId={userDetails.id} />
+              </>
+            )}
+        </Stack>
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <UserDetailsEditForm
