@@ -6,7 +6,6 @@ import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclin
 import {
   AccountType,
   GetUserDetailsResponse,
-  getBalanceString,
   getUserTypeString,
 } from '../../types/UserTypes';
 import Avatar from './../../components/Avatar';
@@ -34,8 +33,11 @@ function UserDetails({ userDetails }: UserDetailsProps) {
       NumberDeclinedNoun.Subscription
     )}`;
   if (userDetails.accountBalance !== null)
-    textBottom += ` · stan konta: ${getBalanceString(userDetails.accountBalance)} 
-    ${getNumberWithLabel(userDetails.accountBalance, NumberDeclinedNoun.Eurogombka)}`;
+    textBottom += ` · stan konta: ${getNumberWithLabel(
+      userDetails.accountBalance,
+      NumberDeclinedNoun.Eurogombka,
+      true
+    )}`;
 
   const handleDialogOpen = () => setDialogOpen(true);
 

@@ -1,3 +1,5 @@
+import { getBalanceString } from '../types/UserTypes';
+
 interface NumberDeclinedNounData {
   nominativeSingular: string;
   nominativePlural: string;
@@ -28,7 +30,11 @@ const numerals: Record<NumberDeclinedNoun, NumberDeclinedNounData> = {
   },
 };
 
-export function getNumberWithLabel(value: number, noun: NumberDeclinedNoun) {
+export function getNumberWithLabel(
+  value: number,
+  noun: NumberDeclinedNoun,
+  isFloat?: boolean
+) {
   const wordData = numerals[noun];
   let label = '';
 
@@ -42,5 +48,6 @@ export function getNumberWithLabel(value: number, noun: NumberDeclinedNoun) {
     else label = wordData.genitivePlural;
   }
 
-  return `${value} ${label}`;
+  if (typeof isFloat !== 'undefined') return `${getBalanceString(value)} ${label}`;
+  else return `${value} ${label}`;
 }
