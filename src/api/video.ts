@@ -1,16 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { useSetRecoilState } from 'recoil';
-import { METADATA_REFETCH_INTERVAL } from '../const';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { METADATA_REFETCH_INTERVAL, ROUTES } from '../const';
+import { userDetailsState } from '../data/UserData';
 import { uploadProgressState, uploadingVideoState } from '../data/VideoData';
 import {
   GetReactionCounts,
   GetUserVideosResponse,
   GetVideoMetadataResponse,
-  PostReaction,
   PostVideo,
-  PutVideoMetadata,
-  VideoUploadState,
 } from '../types/VideoTypes';
 
 export const videoMetadataKey = 'video-metadata';
@@ -65,6 +63,7 @@ export function useReaction(id: string) {
 
 export function useVideoUpload() {
   const setUploadingVideo = useSetRecoilState(uploadingVideoState);
+  const loggedUserDetails = useRecoilValue(userDetailsState);
   const setUploadProgress = useSetRecoilState(uploadProgressState);
   const queryClient = useQueryClient();
 
@@ -89,7 +88,8 @@ export function useVideoUpload() {
       setUploadingVideo({ id, state: VideoUploadState.Processing });
       return id;
     },
-    onSuccess: (id) => {
+    onSuccess: () => {
+      navigate(`${ROUTES.USER}/${loggedUserDetails?.id}`);
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey, id] });
     },
   });

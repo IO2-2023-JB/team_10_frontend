@@ -1,6 +1,7 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as Yup from 'yup';
 import { useCreatePlaylist } from '../../../api/playlist';
 import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormDialog from '../../../components/layout/FormDialog';
@@ -8,6 +9,21 @@ import { formFields } from '../../../data/formData/playlist';
 import { PlaylistVisibility, PostPlaylist } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
+
+export const formFields = (
+  <>
+    <FormikTextField name='name' label='Nazwa' />
+    <FormikSwitch
+      name='visibility'
+      labels={['Prywatna', 'Publiczna']}
+      options={[PlaylistVisibility.Private, PlaylistVisibility.Public]}
+    />
+  </>
+);
+
+const validationSchema = new Yup.ObjectSchema({
+  name: Yup.string().required('Pole wymagane'),
+});
 
 const initialValues = {
   name: '',
@@ -18,13 +34,22 @@ function NewPlaylistButton() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [newPlaylistName, setNewPlaylistName] = useState<string | null>(null);
 
-  const { mutate: createPlaylist, isLoading, isSuccess, error } = useCreatePlaylist();
+  const {
+    mutate: createPlaylist,
+    isLoading,
+    isSuccess,
+    error,
+    reset,
+  } = useCreatePlaylist();
 
   const handleSubmit = (values: PostPlaylist) => {
     setNewPlaylistName(values.name);
-    setIsDialogOpen(false);
     createPlaylist(values);
   };
+
+  useEffect(() => {
+    if (isSuccess) setIsDialogOpen(false);
+  }, [isSuccess]);
 
   return (
     <>
@@ -48,6 +73,7 @@ function NewPlaylistButton() {
           icon={<Add />}
           formFields={formFields}
           errorMessage={getErrorMessage(error)}
+          validationSchema={validationSchema}
           isLoading={isLoading}
           alertCollapse={true}
           initialValues={initialValues}
@@ -55,12 +81,9 @@ function NewPlaylistButton() {
         />
       </FormDialog>
       <StatusSnackbar
-        loadingMessage={`Tworzenie grajlisty ${newPlaylistName}…`}
         successMessage={`Pomyślnie utworzono grajlistę ${newPlaylistName}!`}
-        errorMessage='Nie udało się utworzyć grajlisty'
-        error={error}
-        isLoading={isLoading}
         isSuccess={isSuccess}
+        reset={reset}
       />
     </>
   );

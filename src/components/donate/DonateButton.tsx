@@ -1,15 +1,19 @@
 import { Button } from '@mui/material';
-import FormDialog from '../layout/FormDialog';
-import DonateDialog from '../../pages/Donate/DonateDialog';
 import { useState } from 'react';
+import { useDonate } from '../../api/donate';
+import DonateDialog from '../../pages/Donate/DonateDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
+import StatusSnackbar from '../StatusSnackbar';
+import FormDialog from '../layout/FormDialog';
 
 interface DonateButtonProps {
   creator: GetUserDetailsResponse;
 }
 
 function DonateButton({ creator }: DonateButtonProps) {
+  const mutation = useDonate(creator.id);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number>(0);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -24,8 +28,18 @@ function DonateButton({ creator }: DonateButtonProps) {
         Wesprzyj
       </Button>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <DonateDialog creator={creator} closeDialog={handleDialogClose} />
+        <DonateDialog
+          creator={creator}
+          closeDialog={handleDialogClose}
+          mutation={mutation}
+          setAmount={setAmount}
+        />
       </FormDialog>
+      <StatusSnackbar
+        successMessage={`Pomyślnie przesłano ${amount} €🧽 do ${creator.nickname}`}
+        isSuccess={mutation.isSuccess}
+        reset={mutation.reset}
+      />
     </>
   );
 }

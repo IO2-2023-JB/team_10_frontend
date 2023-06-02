@@ -1,19 +1,21 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useUserDetailsEdit } from '../../api/user';
+import StatusSnackbar from '../../components/StatusSnackbar';
+import SubscribeButton from '../../components/SubscribeButton';
+import DonateButton from '../../components/donate/DonateButton';
+import WithdrawButton from '../../components/donate/WithdrawButton';
 import FormDialog from '../../components/layout/FormDialog';
-import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import {
   AccountType,
   GetUserDetailsResponse,
   getUserTypeString,
 } from '../../types/UserTypes';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
-import SubscribeButton from '../../components/SubscribeButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
-import DonateButton from '../../components/donate/DonateButton';
-import WithdrawButton from '../../components/donate/WithdrawButton';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -21,6 +23,7 @@ interface UserDetailsProps {
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
+  const mutationResult = useUserDetailsEdit();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -85,8 +88,17 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           )}
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />
+        <UserDetailsEditForm
+          closeDialog={handleDialogClose}
+          userDetails={userDetails}
+          mutation={mutationResult}
+        />
       </FormDialog>
+      <StatusSnackbar
+        successMessage={`Pomyślnie edytowano dane użytkownika ${userDetails.nickname}!`}
+        isSuccess={mutationResult.isSuccess}
+        reset={mutationResult.reset}
+      />
     </>
   );
 }

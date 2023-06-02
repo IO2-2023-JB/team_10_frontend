@@ -2,6 +2,7 @@ import { Mode } from '@mui/icons-material';
 import { Button, MenuItem, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
+import StatusSnackbar from '../../components/StatusSnackbar';
 import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
@@ -74,7 +75,9 @@ interface MetadataFormProps {
 }
 
 function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) {
-  const { mutate, error, isLoading, isSuccess } = useEditVideoMetadata(videoMetadata.id);
+  const { mutate, error, isLoading, isSuccess, reset } = useEditVideoMetadata(
+    videoMetadata.id
+  );
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [thumbnailImage, setThumbnailImage] = useState<Blob | null>(null);
 
@@ -127,6 +130,11 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           alertCollapse
         />
       </FormDialog>
+      <StatusSnackbar
+        successMessage={`Pomyślnie edytowano dane filmu!`}
+        isSuccess={isSuccess}
+        reset={reset}
+      />
     </>
   );
 }

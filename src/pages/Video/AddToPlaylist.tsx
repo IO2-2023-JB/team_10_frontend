@@ -1,6 +1,7 @@
 import { PlaylistAdd } from '@mui/icons-material';
 import {
   Alert,
+  AlertTitle,
   Box,
   IconButton,
   List,
@@ -10,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useAddVideoToPlaylist, useUserPlaylists } from '../../api/playlist';
 import StatusSnackbar from '../../components/StatusSnackbar';
@@ -18,6 +19,7 @@ import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
 import { userDetailsState } from '../../data/UserData';
 import { GetPlaylistBase } from '../../types/PlaylistTypes';
+import { getErrorMessage } from '../../utils/utils';
 import PlaylistVisibilityLabel from '../Playlist/PlaylistVisibilityLabel';
 import NewPlaylistButton from '../User/Playlists/NewPlaylistButton';
 
@@ -32,16 +34,19 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   const { data: playlists, error, isLoading } = useUserPlaylists(loggedInUser?.id);
   const {
     mutate: addToPlaylist,
-    error: addError,
     isSuccess: isAddSuccess,
-    isLoading: isAddLoading,
+    error: addToPlaylistError,
+    reset,
   } = useAddVideoToPlaylist(videoId);
 
   const handleAdd = (playlist: GetPlaylistBase) => {
     setPlaylistName(playlist.name);
-    setIsDialogOpen(false);
     addToPlaylist(playlist.id);
   };
+
+  useEffect(() => {
+    if (isAddSuccess) setIsDialogOpen(false);
+  }, [isAddSuccess]);
 
   const playlistList =
     playlists !== undefined && playlists.length > 0 ? (
@@ -76,6 +81,12 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
         onClose={() => setIsDialogOpen(false)}
         disablePadding
       >
+        {addToPlaylistError && (
+          <Alert severity='info' variant='filled' sx={{ marginBottom: 1 }}>
+            <AlertTitle>Wystąpił błąd!</AlertTitle>
+            {getErrorMessage(addToPlaylistError)}
+          </Alert>
+        )}
         <Typography variant='h5' sx={{ paddingX: 3, paddingY: 1 }}>
           Wybierz grajlistę
         </Typography>
@@ -91,12 +102,9 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
         </ContentSection>
       </FormDialog>
       <StatusSnackbar
-        loadingMessage={`Dodawanie do grajlisty ${playlistName}…`}
         successMessage={`Pomyślnie dodano do grajlisty ${playlistName}!`}
-        errorMessage={`Nie udało się dodać do grajlisty`}
-        isLoading={isAddLoading}
         isSuccess={isAddSuccess}
-        error={addError}
+        reset={reset}
       />
     </>
   );
