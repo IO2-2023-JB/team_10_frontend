@@ -10,17 +10,6 @@ import { PlaylistVisibility, PostPlaylist } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
 
-export const formFields = (
-  <>
-    <FormikTextField name='name' label='Nazwa' />
-    <FormikSwitch
-      name='visibility'
-      labels={['Prywatna', 'Publiczna']}
-      options={[PlaylistVisibility.Private, PlaylistVisibility.Public]}
-    />
-  </>
-);
-
 const validationSchema = new Yup.ObjectSchema({
   name: Yup.string().required('Pole wymagane'),
 });

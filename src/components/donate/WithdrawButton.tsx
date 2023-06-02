@@ -20,7 +20,6 @@ function WithdrawButton({ creator }: WithdrawButtonProps) {
   };
 
   const handleDialogClose = () => {
-    mutation.reset();
     setDialogOpen(false);
   };
 
