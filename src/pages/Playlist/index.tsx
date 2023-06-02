@@ -7,6 +7,7 @@ import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoList from '../../components/video/VideoList';
 import { userDetailsState } from '../../data/UserData';
+import { useMobileLayout } from '../../theme';
 import PlaylistDelete from './PlaylistDelete';
 import PlaylistEditForm from './PlaylistEditForm';
 import PlaylistInfo from './PlaylistInfo';
@@ -14,6 +15,8 @@ import PlaylistInfo from './PlaylistInfo';
 function Playlist() {
   const { playlistId } = useParams();
   const { data: playlist, error, isLoading } = usePlaylistVideos(playlistId!);
+
+  const { mobileQuery } = useMobileLayout();
 
   const loggedInUser = useRecoilValue(userDetailsState);
   const isOwn = playlist?.authorId === loggedInUser?.id;
@@ -25,7 +28,19 @@ function Playlist() {
           <>
             <TabTitle title={playlist.name} />
             <Stack spacing={2}>
-              <Stack direction='row' alignItems='center' justifyContent='space-between'>
+              <Stack
+                justifyContent='space-between'
+                sx={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+
+                  [mobileQuery]: {
+                    flexDirection: 'column',
+                    alignItems: 'flex-start',
+                    gap: 1,
+                  },
+                }}
+              >
                 <PlaylistInfo playlist={playlist} showVisibility={isOwn} />
                 <Stack direction='row'>
                   {isOwn && (
