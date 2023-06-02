@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { useDonate } from '../../api/donate';
 import DonateDialog from '../../pages/Donate/DonateDialog';
@@ -8,9 +8,10 @@ import FormDialog from '../layout/FormDialog';
 
 interface DonateButtonProps {
   creator: GetUserDetailsResponse;
+  asMenuItem?: boolean;
 }
 
-function DonateButton({ creator }: DonateButtonProps) {
+function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
   const mutation = useDonate(creator.id);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(0);
@@ -22,11 +23,18 @@ function DonateButton({ creator }: DonateButtonProps) {
   const handleDialogClose = () => {
     setDialogOpen(false);
   };
+
+  const button = asMenuItem ? (
+    <MenuItem onClick={handleDialogOpen}>Wesprzyj</MenuItem>
+  ) : (
+    <Button variant='outlined' size='large' onClick={handleDialogOpen}>
+      Wesprzyj
+    </Button>
+  );
+
   return (
     <>
-      <Button variant='outlined' size='large' onClick={handleDialogOpen}>
-        Wesprzyj
-      </Button>
+      {button}
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
         <DonateDialog
           creator={creator}

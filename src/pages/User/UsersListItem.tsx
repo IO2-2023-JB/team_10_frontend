@@ -1,6 +1,6 @@
 import { ListItem } from '@mui/material';
-import { useUserDetails } from '../../api/user';
 import { useRecoilValue } from 'recoil';
+import { useUserDetails } from '../../api/user';
 import { userDetailsState } from '../../data/UserData';
 import UserInfo from './UserInfo';
 
@@ -13,7 +13,7 @@ function UsersListItem({ userId }: UsersListItemProps) {
   const { data: userDetails } = useUserDetails(userId);
 
   return (
-    <ListItem>
+    <ListItem disablePadding>
       <UserInfo
         isSelf={loggedUserDetails?.id === userId}
         userDetails={userDetails}
