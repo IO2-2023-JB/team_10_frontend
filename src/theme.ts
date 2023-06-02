@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme, useMediaQuery, useTheme } from '@mui/material';
 
 const theme = createTheme({
   typography: {
@@ -27,6 +27,28 @@ const theme = createTheme({
     },
   },
 });
+
+export function useMobileLayout(): {
+  mobileQuery: string;
+  desktopQuery: string;
+  isMobile: boolean;
+  isDesktop: boolean;
+} {
+  const theme = useTheme();
+
+  const mobileQuery = theme.breakpoints.down('md');
+  const isMobile = useMediaQuery(mobileQuery);
+
+  const desktopQuery = theme.breakpoints.up('md');
+  const isDesktop = useMediaQuery(desktopQuery);
+
+  return {
+    mobileQuery,
+    desktopQuery,
+    isMobile,
+    isDesktop,
+  };
+}
 
 export const transitionShort = (property: string): string =>
   `${property} ease-in-out 100ms`;

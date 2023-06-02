@@ -1,5 +1,5 @@
-import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
-import { useEffect, SyntheticEvent, useMemo, useState } from 'react';
+import { Autocomplete, AutocompleteInputChangeReason, SxProps } from '@mui/material';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import {
   createSearchParams,
   useLocation,
@@ -10,9 +10,9 @@ import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
 import { ROUTES, SEARCH_PARAMS } from '../../../const';
 import {
+  GetSearchResults,
   PreparedSearchResult,
   SearchResultType,
-  GetSearchResults,
 } from '../../../types/SearchTypes';
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
@@ -55,7 +55,12 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
   return `${urlPrefix}/${searchResult.result.id}`;
 }
 
-function SearchField() {
+interface SearchFieldProps {
+  sx?: SxProps;
+  onClick?: () => void;
+}
+
+function SearchField({ sx, onClick }: SearchFieldProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
@@ -95,13 +100,15 @@ function SearchField() {
   useEffect(() => setQuery(defaultQuery), [defaultQuery, location, searchParams]);
 
   const handleRedirect = () => {
-    if (query)
+    if (query) {
+      onClick?.();
       navigate({
         pathname: ROUTES.SEARCH,
         search: createSearchParams({
           query: query,
         }).toString(),
       });
+    }
   };
 
   return (
@@ -118,7 +125,11 @@ function SearchField() {
         if (event.key === 'Enter') handleRedirect();
       }}
       renderOption={(props, option) => (
-        <SearchSuggestion props={props} option={option} key={option.result.id} />
+        <SearchSuggestion
+          props={{ ...props, onClick }}
+          option={option}
+          key={option.result.id}
+        />
       )}
       renderInput={(params) => (
         <SearchInput
@@ -132,6 +143,7 @@ function SearchField() {
       }}
       sx={{
         flex: '0 1 500px',
+        ...sx,
       }}
     />
   );
