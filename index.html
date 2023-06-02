@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>MojeWideło – strona z twojim wideło</title>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" sizes="16x16" href="/mw_favicon_16.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/mw_favicon_32.png" />
@@ -12,10 +13,28 @@
       href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700;1,900&display=swap"
       rel="stylesheet"
     />
-    <title>MojeWideło – strona z twojim wideło</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div id="loading">
+        <svg
+          class="spinner"
+          width="65px"
+          height="65px"
+          viewBox="0 0 66 66"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="path"
+            fill="none"
+            stroke-width="6"
+            cx="33"
+            cy="33"
+            r="30"
+          ></circle>
+        </svg>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

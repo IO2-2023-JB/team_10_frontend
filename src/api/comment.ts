@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { CommentValues } from './../types/CommentTypes';
+import { GetComment } from './../types/CommentTypes';
 
 const commentKey = 'comment';
 const commentResponseKey = 'commentResponse';
@@ -8,7 +8,7 @@ const commentResponseKey = 'commentResponse';
 export function useComment(id: string | undefined, isResponse: boolean) {
   const key = isResponse ? commentResponseKey : commentKey;
   const address = isResponse ? 'comment/response' : 'comment';
-  return useQuery<CommentValues[], AxiosError>({
+  return useQuery<GetComment[], AxiosError>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [key, id],
     enabled: id !== undefined,

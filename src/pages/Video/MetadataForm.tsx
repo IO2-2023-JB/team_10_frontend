@@ -2,25 +2,21 @@ import { Mode } from '@mui/icons-material';
 import { Button, MenuItem, Skeleton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
+import StatusSnackbar from '../../components/StatusSnackbar';
 import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT, EXAMPLE_TAGS } from '../../const';
+import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
+import {
+  MetadataFormValues,
+  videoUploadValidationSchema,
+} from '../../data/formData/video';
 import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { videoUploadValidationSchema } from '../Upload/VideoUploadForm';
 import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-
-export interface MetadataFormValues {
-  title: string;
-  description: string;
-  tags: string[];
-  visibility: VideoVisibility;
-  thumbnail: Blob | null;
-}
 
 const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
 
@@ -33,7 +29,10 @@ const formFields = (
       multiple
       freeSolo
       autoSelect
-      options={EXAMPLE_TAGS}
+      optionsPromiseFn={() =>
+        import('../../const/predefined_tags').then((module) => module.default)
+      }
+      loadingText='Pobieranie sugestii...'
       onInputChange={(event, value) => {
         if (value.endsWith(',')) {
           const target = event.currentTarget as HTMLInputElement;
@@ -76,7 +75,9 @@ interface MetadataFormProps {
 }
 
 function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) {
-  const { mutate, error, isLoading, isSuccess } = useEditVideoMetadata(videoMetadata.id);
+  const { mutate, error, isLoading, isSuccess, reset } = useEditVideoMetadata(
+    videoMetadata.id
+  );
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [thumbnailImage, setThumbnailImage] = useState<Blob | null>(null);
 
@@ -129,6 +130,11 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           alertCollapse
         />
       </FormDialog>
+      <StatusSnackbar
+        successMessage={`Pomyślnie edytowano dane filmu!`}
+        isSuccess={isSuccess}
+        reset={reset}
+      />
     </>
   );
 }

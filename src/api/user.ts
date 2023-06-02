@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
-import { LoginFormValues } from '../pages/Login/LoginForm';
+import { LoginFormValues } from '../data/formData/user';
 import { PostUserDetails, PutUserDetails, UserDetails } from '../types/UserTypes';
 import { GetUserDetailsResponse } from './../types/UserTypes';
 

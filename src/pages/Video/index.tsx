@@ -1,31 +1,32 @@
-import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import { useVideoMetadata } from '../../api/video';
+import TabTitle from '../../components/TabTitle';
 import ContentSection from '../../components/layout/ContentSection';
-import { videoMetadataKey } from './../../api/video';
+import { ProcessingProgress } from '../../types/VideoTypes';
 import PageLayout from './../../components/layout/PageLayout';
-import { videoNotificationState } from './../../data/VideoData';
 import CommentSection from './Comment/CommentSection';
 import Metadata from './Metadata';
 import Player from './Player';
 
 function Video() {
   const { videoId } = useParams();
-  const { data: videoMetadata, error, isLoading } = useVideoMetadata(videoId!);
-  const queryClient = useQueryClient();
-  const processingNotification = useRecoilValue(videoNotificationState);
+  const [refetch, setRefetch] = useState<boolean>(false);
+  const { data: videoMetadata, error, isLoading } = useVideoMetadata(videoId!, refetch);
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: [videoMetadataKey, videoId] });
-  }, [processingNotification.status, queryClient, videoId]);
+    if (videoMetadata !== undefined) {
+      if (videoMetadata.processingProgress !== ProcessingProgress.Ready) setRefetch(true);
+      else setRefetch(false);
+    }
+  }, [videoMetadata]);
 
   return (
     <PageLayout>
       <ContentSection error={error} isLoading={isLoading}>
         {videoMetadata && (
           <>
+            <TabTitle title={videoMetadata.title} />
             <Player
               videoId={videoId!}
               processingState={videoMetadata.processingProgress}

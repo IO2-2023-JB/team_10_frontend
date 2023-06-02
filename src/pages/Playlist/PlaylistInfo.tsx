@@ -1,11 +1,11 @@
 import { Box, Stack, Typography } from '@mui/material';
 import TypographyLink from '../../components/TypographyLink';
 import { ROUTES } from '../../const';
-import { Playlist } from '../../types/PlaylistTypes';
+import { GetPlaylist } from '../../types/PlaylistTypes';
 import PlaylistVisibilityLabel from './PlaylistVisibilityLabel';
 
 interface PlaylistInfoProps {
-  playlist: Playlist;
+  playlist: GetPlaylist;
   showVisibility: boolean;
 }
 
@@ -15,7 +15,7 @@ function PlaylistInfo({ playlist, showVisibility }: PlaylistInfoProps) {
       <Typography variant='h3'>{playlist.name}</Typography>
       <Stack direction='row' spacing={1} alignItems='center'>
         <Typography variant='h6'>
-          Playlista użytkownika{' '}
+          Grajlista użytkownika{' '}
           <TypographyLink to={`${ROUTES.USER}/${playlist.authorId}`}>
             {playlist.authorNickname}
           </TypographyLink>

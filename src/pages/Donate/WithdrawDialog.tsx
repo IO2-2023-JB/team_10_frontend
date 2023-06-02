@@ -6,28 +6,40 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { GetUserDetailsResponse, getBalanceString } from '../../types/UserTypes';
-import { useWithdraw } from '../../api/donate';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import SpinningButton from '../../components/SpinningButton';
+import { GetUserDetailsResponse } from '../../types/UserTypes';
+import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import { getErrorMessage, valueAsNumber } from '../../utils/utils';
 
 interface WithdrawDialogProps {
   creator: GetUserDetailsResponse;
   closeDialog: () => void;
+  mutation: UseMutationResult<void, AxiosError, number>;
+  setAmount: (amount: number) => void;
 }
 
 const minValue = 0.0;
 const regex = /^(\d*,?\d{0,2}|\d+)$/;
 
-function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
-  const { mutate, error, isLoading, isSuccess } = useWithdraw();
+function WithdrawDialog({
+  creator,
+  closeDialog,
+  mutation,
+  setAmount,
+}: WithdrawDialogProps) {
   const [value, setValue] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
+  const { mutate, isSuccess, isLoading, error } = mutation;
 
   useEffect(() => {
-    if (isSuccess) closeDialog();
-  }, [isSuccess, closeDialog]);
+    if (isSuccess) {
+      setAmount(valueAsNumber(value) ?? 0);
+      closeDialog();
+    }
+  }, [isSuccess, closeDialog, setAmount, value]);
 
   const numberValue = valueAsNumber(value);
   const isValueValid =
@@ -53,9 +65,16 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
 
   return (
     <Stack spacing={4} alignItems='center'>
+      {error && (
+        <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
+          <AlertTitle>Wystąpił błąd!</AlertTitle>
+          {getErrorMessage(error)}
+        </Alert>
+      )}
       <Typography variant='h4'>Wypłacanie środków</Typography>
       <Typography variant='h5'>
-        Dostępne środki: {getBalanceString(creator.accountBalance!)} zł
+        Dostępne środki:{' '}
+        {getNumberWithLabel(creator.accountBalance!, NumberDeclinedNoun.Eurogombka, true)}
       </Typography>
       <TextField
         fullWidth
@@ -64,16 +83,10 @@ function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
         helperText={isError ? 'Niepoprawna wartość' : undefined}
         label='Podaj kwotę'
         InputProps={{
-          endAdornment: <InputAdornment position='end'>zł</InputAdornment>,
+          endAdornment: <InputAdornment position='end'>€🧽</InputAdornment>,
         }}
         onChange={onValueChange}
       />
-      {error && (
-        <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
-          <AlertTitle>Wystąpił błąd!</AlertTitle>
-          {getErrorMessage(error)}
-        </Alert>
-      )}
       <SpinningButton variant='contained' isLoading={isLoading} onClick={handleConfirm}>
         Potwierdź
       </SpinningButton>

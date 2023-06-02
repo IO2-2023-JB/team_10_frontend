@@ -1,4 +1,4 @@
-export interface UploadVideoMetadata {
+export interface PutVideoMetadata {
   title: string;
   description: string;
   thumbnail: string | null;
@@ -6,11 +6,11 @@ export interface UploadVideoMetadata {
   visibility: VideoVisibility;
 }
 
-export type UploadVideo = UploadVideoMetadata & {
+export type PostVideo = PutVideoMetadata & {
   videoFile: FormData | null;
 };
 
-export interface GetVideoMetadataResponse extends UploadVideoMetadata {
+export interface GetVideoMetadataResponse extends PutVideoMetadata {
   id: string;
   authorId: string;
   authorNickname: string;
@@ -31,6 +31,7 @@ export enum ProcessingProgress {
   Uploading = 'Uploading',
   Uploaded = 'Uploaded',
   FailedToUpload = 'FailedToUpload',
+  FailedToProcess = 'FailedToProcess',
   Processing = 'Processing',
   Ready = 'Ready',
 }
@@ -41,7 +42,7 @@ export enum ReactionType {
   None = 'None',
 }
 
-export interface ReactionCounts {
+export interface GetReactionCounts {
   positiveCount: number;
   negativeCount: number;
   currentUserReaction: ReactionType;
@@ -56,12 +57,21 @@ export enum InputType {
   Image = 'Image',
 }
 
-export interface NotificationData {
-  open: boolean;
-  videoId: string;
-  message: string;
-  status: ProcessingProgress;
+export enum VideoUploadState {
+  UploadingMetadata,
+  UploadingVideo,
+  Processing,
 }
+
+export type UploadingVideo =
+  | {
+      id: string;
+      state: VideoUploadState.UploadingVideo | VideoUploadState.Processing;
+    }
+  | {
+      id: null;
+      state: VideoUploadState.UploadingMetadata;
+    };
 
 export interface GetUserVideosResponse {
   videos: GetVideoMetadataResponse[];

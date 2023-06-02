@@ -12,12 +12,12 @@ import { ROUTES, SEARCH_PARAMS } from '../../../const';
 import {
   PreparedSearchResult,
   SearchResultType,
-  SearchResults,
+  GetSearchResults,
 } from '../../../types/SearchTypes';
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
 
-function prepareSearchResults(searchResults: SearchResults): PreparedSearchResult[] {
+function prepareSearchResults(searchResults: GetSearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
     type: SearchResultType.Video,
     label: result.title,

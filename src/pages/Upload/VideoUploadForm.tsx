@@ -1,6 +1,6 @@
 import { Publish } from '@mui/icons-material';
 import { Skeleton, Stack } from '@mui/material';
-import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import { useVideoUpload } from '../../api/video';
 import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
@@ -11,31 +11,19 @@ import {
   ALLOWED_IMAGE_OBJECT,
   ALLOWED_VIDEO_FORMATS,
   ALLOWED_VIDEO_OBJECT,
-  EXAMPLE_TAGS,
-  MAX_VIDEO_DESCRIPTION_LENGTH,
-  MAX_VIDEO_TITLE_LENGTH,
 } from '../../const';
-import { UploadVideo, VideoVisibility } from '../../types/VideoTypes';
+import {
+  MetadataFormValues,
+  videoUploadValidationSchema,
+} from '../../data/formData/video';
+import { PostVideo, VideoVisibility } from '../../types/VideoTypes';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import { MetadataFormValues } from './../Video/MetadataForm';
 
-export type VideoUploadFormValues = {
+type VideoUploadFormValues = {
   videoFile: File | null;
   thumbnail: File | null;
 } & MetadataFormValues;
-
-export const videoUploadValidationSchema = Yup.object({
-  title: Yup.string()
-    .max(MAX_VIDEO_TITLE_LENGTH, `Maksymalnie ${MAX_VIDEO_TITLE_LENGTH} znaków`)
-    .required('Pole wymagane'),
-  description: Yup.string().max(
-    MAX_VIDEO_DESCRIPTION_LENGTH,
-    `Maksymalnie ${MAX_VIDEO_DESCRIPTION_LENGTH} znaków`
-  ),
-  tags: Yup.array(Yup.string()),
-  videoFile: Yup.string().required('Pole wymagane'),
-});
 
 const formikInitialValues = {
   title: '',
@@ -47,6 +35,7 @@ const formikInitialValues = {
 };
 
 function VideoUploadForm() {
+  const navigate = useNavigate();
   const { mutate, error, isLoading } = useVideoUpload();
 
   const formFields = (
@@ -58,7 +47,10 @@ function VideoUploadForm() {
         multiple
         freeSolo
         autoSelect
-        options={EXAMPLE_TAGS}
+        optionsPromiseFn={() =>
+          import('../../const/predefined_tags').then((module) => module.default)
+        }
+        loadingText='Pobieranie sugestii...'
         onInputChange={(event, value) => {
           if (value.endsWith(',')) {
             const target = event.currentTarget as HTMLInputElement;
@@ -104,12 +96,13 @@ function VideoUploadForm() {
   const handleSubmit = async (values: VideoUploadFormValues) => {
     const formData = new FormData();
     formData.append('videoFile', values.videoFile as File, values.videoFile?.name);
-    const parsedValues: UploadVideo = {
+    const parsedValues: PostVideo = {
       ...values,
       videoFile: formData,
       thumbnail: values.thumbnail !== null ? await toBase64(values.thumbnail) : null,
     };
     mutate(parsedValues);
+    navigate('/');
   };
 
   return (

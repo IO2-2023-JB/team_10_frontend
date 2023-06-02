@@ -5,19 +5,19 @@ export enum PlaylistVisibility {
   Public = 'Public',
 }
 
-export interface PlaylistBase {
+export interface GetPlaylistBase {
   name: string;
   id: string;
   visibility: PlaylistVisibility;
 }
 
-export type Playlist = Omit<PlaylistBase, 'id'> & {
+export type GetPlaylist = Omit<GetPlaylistBase, 'id'> & {
   authorId: string;
   authorNickname: string;
   videos: GetVideoMetadataResponse[];
 };
 
-export type CreatePlaylist = Omit<PlaylistBase, 'id'>;
-export type CreatePlaylistResponse = Pick<PlaylistBase, 'id'>;
+export type PostPlaylist = Omit<GetPlaylistBase, 'id'>;
+export type PostPlaylistResponse = Pick<GetPlaylistBase, 'id'>;
 
-export type EditPlaylist = CreatePlaylist;
+export type PutPlaylist = PostPlaylist;

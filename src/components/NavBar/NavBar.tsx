@@ -1,20 +1,26 @@
-import { Button, IconButton, Stack, LinearProgress } from '@mui/material';
+import { Button, IconButton, Stack } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { ROUTES } from '../../const';
 import { userDetailsState } from '../../data/UserData';
-import { videoNotificationState } from '../../data/VideoData';
+import { uploadProgressState, uploadingVideoState } from '../../data/VideoData';
 import { AccountType } from '../../types/UserTypes';
 import Avatar from '../Avatar';
+import LinearProgress from '../layout/LinearProgress';
 import Logo from './Logo';
 import SearchField from './SearchField/SearchField';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
-  const notif = useRecoilValue(videoNotificationState);
+  const uploadingVideo = useRecoilValue(uploadingVideoState);
+  const uploadProgress = useRecoilValue(uploadProgressState);
   const navigate = useNavigate();
+
+  console.log(uploadProgress);
+
+  const isUploading = uploadingVideo !== null;
 
   const handleLogout = () => {
     setUserDetails(null);
@@ -44,7 +50,7 @@ function NavBar() {
           <Logo />
           <Stack sx={{ flexShrink: 0 }} direction='row' spacing={3}>
             {userDetailsFull?.userType === AccountType.Creator && (
-              <Button disabled={notif.open} onClick={handleClickUpload}>
+              <Button disabled={isUploading} onClick={handleClickUpload}>
                 Publikuj
               </Button>
             )}
@@ -70,10 +76,10 @@ function NavBar() {
         )}
       </Stack>
       <LinearProgress
+        variant={uploadProgress ? 'determinate' : 'indeterminate'}
+        value={uploadProgress ? uploadProgress * 100 : undefined}
         sx={{
-          height: 1.2,
-          visibility: notif.open ? 'visible' : 'hidden',
-          color: 'primary.main',
+          visibility: isUploading ? 'visible' : 'hidden',
         }}
       />
     </Stack>
