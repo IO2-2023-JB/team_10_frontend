@@ -17,7 +17,7 @@ import { getErrorMessage, valueAsNumber } from '../../utils/utils';
 interface DonateDialogProps {
   creator: GetUserDetailsResponse;
   closeDialog: () => void;
-  mutation: UseMutationResult<void, AxiosError<unknown, any>, number, unknown>;
+  mutation: UseMutationResult<void, AxiosError, number>;
   setAmount: (amount: number) => void;
 }
 

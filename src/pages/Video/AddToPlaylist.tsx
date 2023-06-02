@@ -1,7 +1,6 @@
 import { PlaylistAdd } from '@mui/icons-material';
 import {
   Alert,
-  AlertTitle,
   Box,
   IconButton,
   List,
@@ -83,7 +82,6 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
       >
         {addToPlaylistError && (
           <Alert severity='info' variant='filled' sx={{ marginBottom: 1 }}>
-            <AlertTitle>Wystąpił błąd!</AlertTitle>
             {getErrorMessage(addToPlaylistError)}
           </Alert>
         )}

@@ -60,7 +60,7 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
         </Stack>
       </FormDialog>
       <StatusSnackbar
-        successMessage='Pomyślnie usunięto film.'
+        successMessage='Pomyślnie usunięto grajlistę.'
         isSuccess={isSuccess}
         reset={reset}
       />

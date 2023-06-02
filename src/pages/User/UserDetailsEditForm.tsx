@@ -74,7 +74,7 @@ function UserDetailsEditForm({
 
   useEffect(() => {
     if (isSuccess) closeDialog();
-    else setErrorMessage(getErrorMessage(error));
+    else if (error !== null) setErrorMessage(getErrorMessage(error));
   }, [isSuccess, closeDialog, error]);
 
   const handleSubmit = async (values: UserDetailsEditFormValues) => {
