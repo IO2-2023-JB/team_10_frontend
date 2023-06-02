@@ -21,7 +21,7 @@ function VideoSuggestion({ componentProps, video }: VideoSuggestionProps) {
   return (
     <SearchSuggestionWrapper componentProps={componentProps} url={url}>
       <Stack direction='row' spacing={2}>
-        <VideoThumbnail videoMetadata={video} height={50} hideDuration />
+        <VideoThumbnail videoMetadata={video} height={50} hideDuration forceHeight />
         <Stack justifyContent='center'>
           <OneLineTypography fontWeight={600}>{video.title}</OneLineTypography>
           <Typography variant='body2'>

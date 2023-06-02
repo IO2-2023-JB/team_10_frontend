@@ -26,6 +26,16 @@ const theme = createTheme({
       },
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      vs: 450,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
+    },
+  },
 });
 
 export function useMobileLayout(): {
@@ -61,6 +71,10 @@ declare module '@mui/material/styles' {
     lighter: string;
     light: string;
     semiTransparent: string;
+  }
+
+  interface BreakpointOverrides {
+    vs: true;
   }
 }
 

@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
+import { useMobileLayout } from '../../theme';
 
 interface PageLayoutProps {
   children: ReactNode;
@@ -7,6 +8,8 @@ interface PageLayoutProps {
 }
 
 function PageLayout({ children, maxWidth }: PageLayoutProps) {
+  const { mobileQuery } = useMobileLayout();
+
   return (
     <Box
       component='main'
@@ -17,6 +20,11 @@ function PageLayout({ children, maxWidth }: PageLayoutProps) {
         paddingX: 4,
         paddingY: 2,
         flex: 1,
+
+        [mobileQuery]: {
+          paddingX: 2,
+          paddingY: 1,
+        },
       }}
     >
       {children}
