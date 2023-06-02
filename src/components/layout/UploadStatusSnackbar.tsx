@@ -39,6 +39,8 @@ function getMessage(
       return { message: 'Pomyślnie przetworzono!', severity: 'success' };
     case ProcessingProgress.FailedToUpload:
       return { message: 'Nie udało się przesłać filmu', severity: 'error' };
+    case ProcessingProgress.FailedToProcess:
+      return { message: 'Nie udało się przetworzyć filmu', severity: 'error' };
     default:
       return { message: 'Status przesyłania nieznany', severity: 'error' };
   }
@@ -83,6 +85,7 @@ function UploadStatusSnackbar() {
           setContent(content);
 
           if (
+            videoMetadata.processingProgress === ProcessingProgress.FailedToProcess ||
             videoMetadata.processingProgress === ProcessingProgress.FailedToUpload ||
             videoMetadata.processingProgress === ProcessingProgress.Ready
           ) {

@@ -31,6 +31,7 @@ export enum ProcessingProgress {
   Uploading = 'Uploading',
   Uploaded = 'Uploaded',
   FailedToUpload = 'FailedToUpload',
+  FailedToProcess = 'FailedToProcess',
   Processing = 'Processing',
   Ready = 'Ready',
 }
