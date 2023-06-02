@@ -18,17 +18,15 @@ function NavBar() {
   const uploadProgress = useRecoilValue(uploadProgressState);
   const navigate = useNavigate();
 
-  console.log(uploadProgress);
-
   const isUploading = uploadingVideo !== null;
 
   const handleLogout = () => {
     setUserDetails(null);
-    navigate('/login');
+    navigate(ROUTES.LOGIN);
   };
 
   const handleClickUpload = () => {
-    navigate('/upload');
+    navigate(ROUTES.UPLOAD);
   };
 
   return (

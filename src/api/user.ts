@@ -57,12 +57,15 @@ export function useLoggedInUserDetails(): {
   error: AxiosError | null;
   reload: () => void;
   logOut: () => void;
+  showLoading: boolean;
 } {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
   const [error, setError] = useState<AxiosError | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(
-    localStorage.getItem('bearerToken') !== null && userDetails === null
-  );
+
+  const shouldLoadUser =
+    localStorage.getItem('bearerToken') !== null && userDetails === null;
+
+  const [isLoading, setIsLoading] = useState<boolean>(shouldLoadUser);
 
   const getLoggedInUserDetails = useCallback(async () => {
     const token = localStorage.getItem('bearerToken');
@@ -95,7 +98,7 @@ export function useLoggedInUserDetails(): {
     setUserDetails(null);
   };
 
-  return { isLoading, error, reload, logOut };
+  return { isLoading, error: error, reload, logOut, showLoading: shouldLoadUser };
 }
 
 export function useUserDetailsEdit() {

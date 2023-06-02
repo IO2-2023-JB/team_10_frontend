@@ -1,6 +1,6 @@
-import { Box, Typography, Stack } from '@mui/material';
-import { BACKEND_URL } from '../../const';
 import { HourglassFull } from '@mui/icons-material';
+import { Box, Stack, Typography } from '@mui/material';
+import { DEFAULT_BACKEND_URL } from '../../const';
 import { ProcessingProgress } from '../../types/VideoTypes';
 
 interface PlayerProps {
@@ -9,7 +9,7 @@ interface PlayerProps {
 }
 
 function Player({ videoId, processingState }: PlayerProps) {
-  const videoUrl = `${BACKEND_URL}/video/${videoId}?access_token=${localStorage.getItem(
+  const videoUrl = `${DEFAULT_BACKEND_URL}/video/${videoId}?access_token=${localStorage.getItem(
     'bearerToken'
   )}`;
 
