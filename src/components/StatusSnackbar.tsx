@@ -1,58 +1,27 @@
-import { Alert, AlertProps, AlertTitle, Snackbar } from '@mui/material';
-import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
-import { getErrorMessage } from '../utils/utils';
+import { Alert, Snackbar } from '@mui/material';
 import { AUTO_HIDE_DURATION } from '../const';
 
 interface StatusSnackbarProps {
-  loadingMessage: string;
-  errorMessage: string;
   successMessage: string;
-  isLoading: boolean;
   isSuccess: boolean;
-  error: AxiosError | null;
+  reset: () => void;
 }
 
-function StatusSnackbar({
-  loadingMessage,
-  errorMessage,
-  successMessage,
-  isLoading,
-  isSuccess,
-  error,
-}: StatusSnackbarProps) {
-  const [canOpen, setCanOpen] = useState<boolean>(true);
+function StatusSnackbar({ successMessage, isSuccess, reset }: StatusSnackbarProps) {
+  const severity = 'success';
 
-  let title: string | null = null;
-  let message: string = loadingMessage;
-  let severity: AlertProps['severity'] = 'info';
-
-  if (isSuccess) {
-    message = successMessage;
-    severity = 'success';
-  } else if (error) {
-    title = errorMessage;
-    message = getErrorMessage(error)!;
-    severity = 'error';
-  }
-
-  const isOpen = Boolean(isLoading || error || isSuccess) && canOpen;
-  const autoHideDuration = isLoading ? null : AUTO_HIDE_DURATION;
-
-  useEffect(() => {
-    if (isLoading) setCanOpen(true);
-  }, [isLoading]);
+  const isOpen = isSuccess;
+  const autoHideDuration = AUTO_HIDE_DURATION;
 
   return (
     <Snackbar
       open={isOpen}
       autoHideDuration={autoHideDuration}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      onClose={() => setCanOpen(false)}
+      onClose={reset}
     >
       <Alert severity={severity} variant='filled'>
-        {title && <AlertTitle>{title}</AlertTitle>}
-        {message}
+        {successMessage}
       </Alert>
     </Snackbar>
   );

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDeletePlaylist } from '../../api/playlist';
 import SpinningButton from '../../components/SpinningButton';
+import StatusSnackbar from '../../components/StatusSnackbar';
 import FormDialog from '../../components/layout/FormDialog';
 import { ROUTES } from '../../const';
 import { GetPlaylist } from '../../types/PlaylistTypes';
@@ -21,6 +22,7 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
     error,
     isSuccess,
     isLoading,
+    reset,
   } = useDeletePlaylist(id, playlist.authorId);
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -57,6 +59,11 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
           </SpinningButton>
         </Stack>
       </FormDialog>
+      <StatusSnackbar
+        successMessage='Pomyślnie usunięto grajlistę.'
+        isSuccess={isSuccess}
+        reset={reset}
+      />
     </>
   );
 }

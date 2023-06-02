@@ -1,10 +1,16 @@
 import { Alert, AlertTitle, Button, MenuItem, Stack, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useRecoilValue } from 'recoil';
 import { useDeleteVideo } from '../../api/video';
 import SpinningButton from '../../components/SpinningButton';
+import StatusSnackbar from '../../components/StatusSnackbar';
 import FormDialog from '../../components/layout/FormDialog';
+import { ROUTES } from '../../const';
+import { userDetailsState } from '../../data/UserData';
 import { getErrorMessage } from '../../utils/utils';
+import { videoMetadataKey } from './../../api/video';
 
 interface VideoDeleteProps {
   videoId: string;
@@ -12,8 +18,10 @@ interface VideoDeleteProps {
 }
 
 function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
+  const loggedUserDetails = useRecoilValue(userDetailsState);
   const navigate = useNavigate();
-  const { mutate, error, isLoading } = useDeleteVideo(videoId);
+  const queryClient = useQueryClient();
+  const { mutate, error, isSuccess, isLoading, reset } = useDeleteVideo(videoId);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
 
   const handleDelete = () => {
@@ -24,6 +32,14 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
       },
     });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsDeleteDialogOpen(false);
+      if (!asMenuItem) navigate(`${ROUTES.USER}/${loggedUserDetails?.id}`);
+      queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
+    }
+  }, [isSuccess, navigate, queryClient, asMenuItem, loggedUserDetails?.id]);
 
   return (
     <>
@@ -51,6 +67,11 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
           </SpinningButton>
         </Stack>
       </FormDialog>
+      <StatusSnackbar
+        successMessage='Pomyślnie usunięto film.'
+        isSuccess={isSuccess}
+        reset={reset}
+      />
     </>
   );
 }

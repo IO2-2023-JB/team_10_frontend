@@ -1,12 +1,13 @@
 import { Mode } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
+import { UseMutationResult } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useUserDetailsEdit } from '../../api/user';
 import FormikTextField from '../../components/formikFields/FormikTextField';
 import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import { registerValidationSchema } from '../../data/formData/user';
-import { AccountType } from '../../types/UserTypes';
+import { AccountType, PutUserDetails, UserDetails } from '../../types/UserTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, shallowComparison, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
@@ -53,13 +54,19 @@ const formFields = (
 interface UserDetailsEditFormProps {
   userDetails: GetUserDetailsResponse;
   closeDialog: () => void;
+  mutation: UseMutationResult<UserDetails, AxiosError<unknown>, PutUserDetails, unknown>;
 }
 
-function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormProps) {
-  const { mutate, error, isLoading, isSuccess } = useUserDetailsEdit();
+function UserDetailsEditForm({
+  userDetails,
+  closeDialog,
+  mutation,
+}: UserDetailsEditFormProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [avatarImage, setAvatarImage] = useState<Blob | null>(null);
   const prepareInitialValues = useLoadImage(userDetails.avatarImage, setAvatarImage);
+
+  const { mutate, isLoading, isSuccess, error } = mutation;
 
   useEffect(() => {
     prepareInitialValues();
@@ -67,7 +74,8 @@ function UserDetailsEditForm({ userDetails, closeDialog }: UserDetailsEditFormPr
 
   useEffect(() => {
     if (isSuccess) closeDialog();
-  }, [isSuccess, closeDialog]);
+    else if (error !== null) setErrorMessage(getErrorMessage(error));
+  }, [isSuccess, closeDialog, error]);
 
   const handleSubmit = async (values: UserDetailsEditFormValues) => {
     setErrorMessage(getErrorMessage(error));
