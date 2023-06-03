@@ -1,73 +1,20 @@
 import { Mode } from '@mui/icons-material';
-import { Button, MenuItem, Skeleton } from '@mui/material';
+import { Button, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useEditVideoMetadata } from '../../api/video';
 import StatusSnackbar from '../../components/StatusSnackbar';
-import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
-import FormikSwitch from '../../components/formikFields/FormikSwitch';
-import FormikTextField from '../../components/formikFields/FormikTextField';
 import FormDialog from '../../components/layout/FormDialog';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
 import {
+  MetadataFormFields,
   MetadataFormValues,
   videoUploadValidationSchema,
 } from '../../data/formData/video';
-import { GetVideoMetadataResponse, VideoVisibility } from '../../types/VideoTypes';
+import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
 
 const validationSchema = videoUploadValidationSchema.omit(['videoFile']);
-
-const formFields = (
-  <>
-    <FormikTextField name='title' label='Tytuł' />
-    <FormikTextField name='description' label='Opis' />
-    <FormikAutocomplete
-      name='tags'
-      multiple
-      freeSolo
-      autoSelect
-      optionsPromiseFn={() =>
-        import('../../const/predefined_tags').then((module) => module.default)
-      }
-      loadingText='Pobieranie sugestii...'
-      onInputChange={(event, value) => {
-        if (value.endsWith(',')) {
-          const target = event.currentTarget as HTMLInputElement;
-          target.blur();
-          target.focus();
-        }
-      }}
-      TextFieldProps={{
-        label: 'Tagi',
-      }}
-    />
-    <FormikSwitch
-      name='visibility'
-      labels={['Prywatny', 'Publiczny']}
-      options={[VideoVisibility.Private, VideoVisibility.Public]}
-    />
-    <FormikFileUploader
-      name='thumbnail'
-      label='Miniaturka'
-      acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
-      acceptObject={ALLOWED_IMAGE_OBJECT}
-      preview
-      previewProps={{
-        sx: {
-          height: 70,
-          width: 124,
-        },
-        variant: 'rounded',
-      }}
-      previewSkeleton={
-        <Skeleton variant='rounded' sx={{ aspectRatio: '16 / 9', height: 70 }} />
-      }
-    />
-  </>
-);
 
 interface MetadataFormProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -121,7 +68,7 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
           title='Edycja filmu'
           buttonText='Zapisz zmiany'
           icon={<Mode />}
-          formFields={formFields}
+          formFields={<MetadataFormFields />}
           initialValues={formikInitialValues}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}

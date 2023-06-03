@@ -1,18 +1,16 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import * as Yup from 'yup';
 import { useCreatePlaylist } from '../../../api/playlist';
 import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormDialog from '../../../components/layout/FormDialog';
-import { formFields } from '../../../data/formData/playlist';
+import {
+  PlaylistFormFields,
+  playlistValidationSchema,
+} from '../../../data/formData/playlist';
 import { PlaylistVisibility, PostPlaylist } from '../../../types/PlaylistTypes';
 import { getErrorMessage } from '../../../utils/utils';
 import BaseForm from '../../Login/BaseForm';
-
-const validationSchema = new Yup.ObjectSchema({
-  name: Yup.string().required('Pole wymagane'),
-});
 
 const initialValues = {
   name: '',
@@ -60,9 +58,9 @@ function NewPlaylistButton() {
           title='Utwórz grajlistę'
           buttonText='Utwórz'
           icon={<Add />}
-          formFields={formFields}
+          formFields={<PlaylistFormFields />}
           errorMessage={getErrorMessage(error)}
-          validationSchema={validationSchema}
+          validationSchema={playlistValidationSchema}
           isLoading={isLoading}
           alertCollapse={true}
           initialValues={initialValues}
