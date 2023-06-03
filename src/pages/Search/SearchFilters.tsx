@@ -1,18 +1,21 @@
 import { Button, Stack } from '@mui/material';
-import SortingTypeField from './SortingTypeField';
-import SortingDirectionField from './SortingDirectionField';
-import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { ROUTES, SEARCH_PARAMS } from '../../const';
-import { removeEmptySearchParams } from '../../utils/utils';
-import DatePickerFilter from './DatePickerFilter';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { createSearchParams, useNavigate, useSearchParams } from 'react-router-dom';
+import { ROUTES, SEARCH_PARAMS } from '../../const';
+import { useMobileLayout } from '../../theme';
+import { removeEmptySearchParams } from '../../utils/utils';
+import DatePickerFilter from './DatePickerFilter';
+import SortingDirectionField from './SortingDirectionField';
+import SortingTypeField from './SortingTypeField';
 
 const minWidth = 150;
 
 function SearchFilters() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const { mobileQuery } = useMobileLayout();
 
   const search = (key: string, value?: string) => {
     if (!value) searchParams.delete(key);
@@ -39,7 +42,19 @@ function SearchFilters() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Stack alignSelf='end' direction='row' spacing={1}>
+      <Stack
+        sx={{
+          flexDirection: 'row',
+          gap: 1,
+          justifyContent: 'flex-end',
+
+          [mobileQuery]: {
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            gap: 2,
+          },
+        }}
+      >
         <SortingTypeField minWidth={minWidth} search={search} />
         <SortingDirectionField minWidth={minWidth} search={search} />
         <DatePickerFilter
