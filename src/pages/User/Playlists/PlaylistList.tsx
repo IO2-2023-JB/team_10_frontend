@@ -6,11 +6,12 @@ import PlaylistTile from './PlaylistTile';
 interface PlaylistListProps {
   playlists: GetPlaylistBase[];
   isOwn: boolean;
+  showAuthor?: boolean;
 }
 
 const GridProps = { xs: 12, sm: 6, md: 4 };
 
-function PlaylistList({ playlists, isOwn }: PlaylistListProps) {
+function PlaylistList({ playlists, isOwn, showAuthor = false }: PlaylistListProps) {
   if (!isOwn && playlists.length === 0) {
     return <Alert severity='info'>Brak playlist do wyświetlenia</Alert>;
   }
@@ -24,7 +25,11 @@ function PlaylistList({ playlists, isOwn }: PlaylistListProps) {
       )}
       {playlists.map((playlist) => (
         <Grid item key={playlist.id} {...GridProps}>
-          <PlaylistTile playlist={playlist} showVisibility={isOwn} />
+          <PlaylistTile
+            playlist={playlist}
+            showVisibility={isOwn}
+            showAuthor={showAuthor}
+          />
         </Grid>
       ))}
     </Grid>

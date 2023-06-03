@@ -3,11 +3,11 @@ import axios, { AxiosError } from 'axios';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
 import {
+  GetPlaylist,
+  GetPlaylistBase,
   PostPlaylist,
   PostPlaylistResponse,
   PutPlaylist,
-  GetPlaylist,
-  GetPlaylistBase,
 } from '../types/PlaylistTypes';
 
 const playlistKey = 'playlist';
@@ -22,11 +22,12 @@ export function useUserPlaylists(userId?: string) {
   });
 }
 
-export function usePlaylistVideos(playlistId: string) {
+export function usePlaylistVideos(playlistId: string, enabled: boolean = true) {
   return useQuery<GetPlaylist, AxiosError>({
     queryKey: [playlistVideoKey, playlistId],
     queryFn: async () =>
       (await axios.get('playlist/video', { params: { id: playlistId } })).data,
+    enabled,
   });
 }
 

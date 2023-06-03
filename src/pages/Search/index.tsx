@@ -71,6 +71,7 @@ function Search() {
                   <PlaylistList
                     playlists={searchResults?.playlists ?? []}
                     isOwn={false}
+                    showAuthor
                   />
                 ),
               },
