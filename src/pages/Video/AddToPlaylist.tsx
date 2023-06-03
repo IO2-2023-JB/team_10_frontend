@@ -97,12 +97,12 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
         </Typography>
         <ContentSection error={error} isLoading={isLoading}>
           {playlists && (
-            <List>
-              <Box sx={{ marginX: 3, marginY: 1, minWidth: 400 }}>
+            <>
+              <Box sx={{ marginX: 3, marginY: 1 }}>
                 <NewPlaylistButton />
               </Box>
-              {playlistList}
-            </List>
+              <List>{playlistList}</List>
+            </>
           )}
         </ContentSection>
       </FormDialog>

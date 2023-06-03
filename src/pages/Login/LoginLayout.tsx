@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Stack } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import PageLayout from '../../components/layout/PageLayout';
@@ -20,7 +20,7 @@ function LoginLayout({ form, buttonText, buttonHref, hintText }: LoginLayoutProp
           paddingY: 10,
         }}
       >
-        <Box>{form}</Box>
+        <Box width='100%'>{form}</Box>
         <Stack
           sx={{
             alignItems: 'center',

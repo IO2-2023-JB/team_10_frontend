@@ -1,5 +1,5 @@
 import { Publish } from '@mui/icons-material';
-import { Skeleton, Stack } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useVideoUpload } from '../../api/video';
 import FormikAutocomplete from '../../components/formikFields/FormikAutocomplete';
@@ -106,20 +106,18 @@ function VideoUploadForm() {
   };
 
   return (
-    <Stack sx={{ alignItems: 'center' }}>
-      <BaseForm<VideoUploadFormValues>
-        title='Publikacja wideo'
-        buttonText='Publikuj'
-        icon={<Publish />}
-        formFields={formFields}
-        initialValues={formikInitialValues}
-        validationSchema={videoUploadValidationSchema}
-        onSubmit={handleSubmit}
-        errorMessage={getErrorMessage(error)}
-        isLoading={isLoading}
-        alertCollapse={false}
-      />
-    </Stack>
+    <BaseForm<VideoUploadFormValues>
+      title='Publikacja wideo'
+      buttonText='Publikuj'
+      icon={<Publish />}
+      formFields={formFields}
+      initialValues={formikInitialValues}
+      validationSchema={videoUploadValidationSchema}
+      onSubmit={handleSubmit}
+      errorMessage={getErrorMessage(error)}
+      isLoading={isLoading}
+      alertCollapse={false}
+    />
   );
 }
 
