@@ -51,7 +51,10 @@ function Playlist() {
                   )}
                 </Stack>
               </Stack>
-              <VideoList videos={playlist.videos} playlistId={playlistId!} />
+              <VideoList
+                videos={playlist.videos}
+                playlistId={isOwn ? playlistId! : undefined}
+              />
             </Stack>
           </>
         )}
