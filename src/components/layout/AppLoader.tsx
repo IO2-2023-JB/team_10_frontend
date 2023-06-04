@@ -8,9 +8,9 @@ interface AppLoaderProps {
 }
 
 function AppLoader({ children }: AppLoaderProps) {
-  const { isLoading, error, reload, logOut } = useLoggedInUserDetails();
+  const { isLoading, error, reload, logOut, showLoading } = useLoggedInUserDetails();
 
-  if (isLoading || error) {
+  if (showLoading && (isLoading || error)) {
     return (
       <Box
         sx={{

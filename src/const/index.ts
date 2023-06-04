@@ -1,4 +1,6 @@
-export const BACKEND_URL = import.meta.env.PROD ? '/api' : 'https://localhost:7004/api';
+export const DEFAULT_BACKEND_URL = import.meta.env.PROD
+  ? '/api'
+  : 'https://localhost:7004/api';
 
 export const PATHS_ALLOWED_FOR_UNAUTHORIZED = ['/login', '/register'];
 export const PATHS_ONLY_FOR_UNAUTHORIZED = ['/login', '/register'];
@@ -25,6 +27,7 @@ export const ROUTES = {
   VIDEO: '/video',
   PLAYLIST: '/playlist',
   SEARCH: '/search',
+  SWITCH_BACKEND: '/switch-backend',
 };
 
 export const SEARCH_PARAMS = {
