@@ -8,7 +8,6 @@ export const backendUrlState = atom<string>({
   effects: [
     ({ onSet }) => {
       onSet((newUrl) => {
-        console.log('newurl', newUrl);
         axios.defaults.baseURL = newUrl;
       });
     },
