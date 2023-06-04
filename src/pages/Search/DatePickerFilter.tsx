@@ -8,20 +8,30 @@ interface DatePickerFilterProps {
   width: number;
   queryKey: string;
   search: (key: string, value?: string) => void;
+  minDate: Date;
+  maxDate: Date;
+  setDate: (date: Date) => void;
 }
 
-const minDate = new Date('1970-01-01');
-const maxDate = new Date();
-
-function DatePickerFilter({ label, width, queryKey, search }: DatePickerFilterProps) {
+function DatePickerFilter({
+  label,
+  width,
+  queryKey,
+  search,
+  minDate,
+  maxDate,
+  setDate,
+}: DatePickerFilterProps) {
   const [searchParams] = useSearchParams();
   const queryValue = searchParams.get(queryKey);
 
   const { mobileQuery } = useMobileLayout();
 
   const handleChange = (value: Date | null) => {
-    if (value && value >= minDate && value <= maxDate)
+    if (value && value >= minDate && value <= maxDate) {
+      setDate(value);
       search(queryKey, format(value, 'yyyy-MM-dd'));
+    }
   };
 
   return (
