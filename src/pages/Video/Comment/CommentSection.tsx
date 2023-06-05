@@ -7,7 +7,7 @@ import Avatar from '../../../components/Avatar';
 import { useUserDetails } from '../../../api/user';
 import { useRecoilValue } from 'recoil';
 import { userDetailsState } from '../../../data/UserData';
-import { GetComment } from '../../../types/CommentTypes';
+import { CommentValues } from '../../../types/CommentTypes';
 
 interface CommentSectionProps {
   videoId?: string;
@@ -53,13 +53,13 @@ function CommentSection({ videoId, commentId, isResponse = false }: CommentSecti
       isLoading={isCommentLoading || isUserLoading}
     >
       <Stack sx={{ margin: 3 }} spacing={2}>
-        {commentData && commentData.length === 0 && !isResponse && (
+        {commentData && commentData.comments.length === 0 && !isResponse && (
           <Typography variant='h5'>
             Jeszcze nikt nie dodał komentarza, dodaj pierwszy!
           </Typography>
         )}
         {commentData &&
-          commentData.map((comment: GetComment) => (
+          commentData.comments.map((comment: CommentValues) => (
             <Comment
               key={comment.id}
               comment={comment}

@@ -8,7 +8,7 @@ const commentResponseKey = 'commentResponse';
 export function useComment(id: string | undefined, isResponse: boolean) {
   const key = isResponse ? commentResponseKey : commentKey;
   const address = isResponse ? 'comment/response' : 'comment';
-  return useQuery<GetComment[], AxiosError>({
+  return useQuery<GetComment, AxiosError>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: [key, id],
     enabled: id !== undefined,
