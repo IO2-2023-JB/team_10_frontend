@@ -1,8 +1,5 @@
 import { Button, MenuItem } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { useDonate } from '../../api/donate';
-import { snackbarState } from '../../data/SnackbarData';
+import { useState } from 'react';
 import DonateDialog from '../../pages/Donate/DonateDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
 import FormDialog from '../layout/FormDialog';
@@ -13,21 +10,9 @@ interface DonateButtonProps {
 }
 
 function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
-  const [_, setSnackbarState] = useRecoilState(snackbarState);
-  const mutation = useDonate(creator.id);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(0);
-
-  useEffect(() => {
-    setSnackbarState({
-      successMessage: `Pomyślnie przesłano ${amount} €🧽 do ${creator.nickname}`,
-      isSuccess: mutation.isSuccess,
-      reset: mutation.reset,
-    });
-  }, [amount, creator.nickname, mutation.isSuccess, mutation.reset, setSnackbarState]);
 
   const handleDialogOpen = () => {
-    mutation.reset();
     setDialogOpen(true);
   };
 
@@ -47,12 +32,7 @@ function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
     <>
       {button}
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <DonateDialog
-          creator={creator}
-          closeDialog={handleDialogClose}
-          mutation={mutation}
-          setAmount={setAmount}
-        />
+        <DonateDialog creator={creator} closeDialog={handleDialogClose} />
       </FormDialog>
     </>
   );

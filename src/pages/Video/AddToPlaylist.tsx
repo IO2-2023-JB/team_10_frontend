@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useAddVideoToPlaylist, useUserPlaylists } from '../../api/playlist';
 import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
@@ -32,7 +32,7 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string | null>(null);
   const loggedInUser = useRecoilValue(userDetailsState);
-  const [_, setSnackbarState] = useRecoilState(snackbarState);
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const { data: playlists, error, isLoading } = useUserPlaylists(loggedInUser?.id);
   const {
     mutate: addToPlaylist,
@@ -49,15 +49,13 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   };
 
   useEffect(() => {
-    if (isAddSuccess) setIsDialogOpen(false);
-  }, [isAddSuccess]);
-
-  useEffect(() => {
-    setSnackbarState({
-      successMessage: `Pomyślnie dodano do grajlisty ${playlistName}!`,
-      isSuccess: isAddSuccess,
-      reset,
-    });
+    if (isAddSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie dodano film do grajlisty ${playlistName}!`,
+      });
+      setIsDialogOpen(false);
+    }
   }, [isAddSuccess, playlistName, reset, setSnackbarState]);
 
   const playlistList =

@@ -1,7 +1,7 @@
 import { Mode } from '@mui/icons-material';
 import { Button, MenuItem } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { useEditVideoMetadata } from '../../api/video';
 import FormDialog from '../../components/layout/FormDialog';
 import { snackbarState } from '../../data/SnackbarData';
@@ -26,17 +26,19 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
   const { mutate, error, isLoading, isSuccess, reset } = useEditVideoMetadata(
     videoMetadata.id
   );
-  const [_, setSnackbarState] = useRecoilState(snackbarState);
+  const setSnackbarState = useSetRecoilState(snackbarState);
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [thumbnailImage, setThumbnailImage] = useState<Blob | null>(null);
 
   useEffect(() => {
-    setSnackbarState({
-      successMessage: `Pomyślnie edytowano dane filmu!`,
-      isSuccess,
-      reset,
-    });
+    if (isSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie edytowano dane filmu!`,
+      });
+      setIsDialogOpen(false);
+    }
   }, [isSuccess, reset, setSnackbarState]);
 
   const handleSubmit = async (values: MetadataFormValues) => {
@@ -54,10 +56,6 @@ function MetadataForm({ videoMetadata, asMenuItem = false }: MetadataFormProps) 
   useEffect(() => {
     prepareInitialValues();
   }, [prepareInitialValues]);
-
-  useEffect(() => {
-    if (isSuccess) setIsDialogOpen(false);
-  }, [isSuccess]);
 
   const formikInitialValues: MetadataFormValues = {
     title: videoMetadata.title,

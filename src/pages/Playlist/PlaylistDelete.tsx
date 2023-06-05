@@ -1,11 +1,12 @@
 import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { useDeletePlaylist } from '../../api/playlist';
 import SpinningButton from '../../components/SpinningButton';
-import StatusSnackbar from '../../components/StatusSnackbar';
 import FormDialog from '../../components/layout/FormDialog';
 import { ROUTES } from '../../const';
+import { snackbarState } from '../../data/SnackbarData';
 import { GetPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 
@@ -15,6 +16,7 @@ interface PlaylistDeleteProps {
 }
 
 function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const navigate = useNavigate();
 
   const {
@@ -32,8 +34,14 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
   };
 
   useEffect(() => {
-    if (isSuccess) navigate(`${ROUTES.USER}/${playlist.authorId}/playlists`);
-  }, [isSuccess, navigate, playlist.authorId]);
+    if (isSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie usunięto grajlistę ${playlist.name}.`,
+      });
+      navigate(`${ROUTES.USER}/${playlist.authorId}/playlists`);
+    }
+  }, [isSuccess, navigate, playlist.authorId, playlist.name, reset, setSnackbarState]);
 
   return (
     <>
@@ -59,11 +67,6 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
           </SpinningButton>
         </Stack>
       </FormDialog>
-      <StatusSnackbar
-        successMessage='Pomyślnie usunięto grajlistę.'
-        isSuccess={isSuccess}
-        reset={reset}
-      />
     </>
   );
 }
