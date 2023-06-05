@@ -38,8 +38,7 @@ function useIsSubscribed(
 function usePostSubscription(creatorId?: string, loggedInUserId?: string) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError>({
-    mutationFn: () =>
-      axios.post(subscriptionsKey, undefined, { params: { id: creatorId } }),
+    mutationFn: () => axios.post(subscriptionsKey, undefined, { params: { creatorId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [subscriptionsKey, loggedInUserId] });
       queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
@@ -50,7 +49,7 @@ function usePostSubscription(creatorId?: string, loggedInUserId?: string) {
 function useDeleteSubscription(creatorId?: string, loggedInUserId?: string) {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError>({
-    mutationFn: () => axios.delete(subscriptionsKey, { params: { id: creatorId } }),
+    mutationFn: () => axios.delete(subscriptionsKey, { params: { subId: creatorId } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [subscriptionsKey, loggedInUserId] });
       queryClient.invalidateQueries({ queryKey: [userKey, creatorId] });
