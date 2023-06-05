@@ -1,9 +1,10 @@
 import { Button, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { useDonate } from '../../api/donate';
+import { snackbarState } from '../../data/SnackbarData';
 import DonateDialog from '../../pages/Donate/DonateDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
-import StatusSnackbar from '../StatusSnackbar';
 import FormDialog from '../layout/FormDialog';
 
 interface DonateButtonProps {
@@ -12,11 +13,21 @@ interface DonateButtonProps {
 }
 
 function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
+  const [_, setSnackbarState] = useRecoilState(snackbarState);
   const mutation = useDonate(creator.id);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(0);
 
+  useEffect(() => {
+    setSnackbarState({
+      successMessage: `Pomyślnie przesłano ${amount} €🧽 do ${creator.nickname}`,
+      isSuccess: mutation.isSuccess,
+      reset: mutation.reset,
+    });
+  }, [amount, creator.nickname, mutation.isSuccess, mutation.reset, setSnackbarState]);
+
   const handleDialogOpen = () => {
+    mutation.reset();
     setDialogOpen(true);
   };
 
@@ -43,11 +54,6 @@ function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
           setAmount={setAmount}
         />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie przesłano ${amount} €🧽 do ${creator.nickname}`}
-        isSuccess={mutation.isSuccess}
-        reset={mutation.reset}
-      />
     </>
   );
 }

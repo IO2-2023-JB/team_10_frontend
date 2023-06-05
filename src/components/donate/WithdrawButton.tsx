@@ -1,9 +1,10 @@
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import { useWithdraw } from '../../api/donate';
+import { snackbarState } from '../../data/SnackbarData';
 import WithdrawDialog from '../../pages/Donate/WithdrawDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
-import StatusSnackbar from '../StatusSnackbar';
 import FormDialog from '../layout/FormDialog';
 
 interface WithdrawButtonProps {
@@ -11,10 +12,18 @@ interface WithdrawButtonProps {
 }
 
 function WithdrawButton({ creator }: WithdrawButtonProps) {
+  const [_, setSnackbarState] = useRecoilState(snackbarState);
   const mutation = useWithdraw();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState<number>(0);
 
+  useEffect(() => {
+    setSnackbarState({
+      successMessage: `Pomyślnie wypłacono ${amount} €🧽`,
+      isSuccess: mutation.isSuccess,
+      reset: mutation.reset,
+    });
+  }, [amount, creator.nickname, mutation.isSuccess, mutation.reset, setSnackbarState]);
   const handleDialogOpen = () => {
     setDialogOpen(true);
   };
@@ -36,11 +45,6 @@ function WithdrawButton({ creator }: WithdrawButtonProps) {
           mutation={mutation}
         />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie wypłacono ${amount} €🧽`}
-        isSuccess={mutation.isSuccess}
-        reset={mutation.reset}
-      />
     </>
   );
 }

@@ -1,14 +1,18 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, AlertColor, Snackbar } from '@mui/material';
+import { useRecoilValue } from 'recoil';
 import { AUTO_HIDE_DURATION } from '../const';
+import { snackbarState } from '../data/SnackbarData';
 
 interface StatusSnackbarProps {
-  successMessage: string;
-  isSuccess: boolean;
-  reset: () => void;
+  severity?: AlertColor;
 }
 
-function StatusSnackbar({ successMessage, isSuccess, reset }: StatusSnackbarProps) {
-  const severity = 'success';
+function StatusSnackbar({ severity = 'success' }: StatusSnackbarProps) {
+  const statusSnackbarData = useRecoilValue(snackbarState);
+
+  const successMessage = statusSnackbarData?.successMessage;
+  const isSuccess = statusSnackbarData?.isSuccess;
+  const reset = statusSnackbarData?.reset;
 
   const isOpen = isSuccess;
   const autoHideDuration = AUTO_HIDE_DURATION;
