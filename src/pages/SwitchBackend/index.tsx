@@ -26,7 +26,7 @@ const backendOptions: BackendOptionData[] = [
   { name: 'Zespół 10', url: 'https://mojewidelo.pl/api' },
   { name: 'Zespół 11', url: 'https://wetubeback.azurewebsites.net/api' },
   { name: 'Zespół 12', url: 'https://videoserviceapi.azurewebsites.net/api' },
-  { name: 'Zespół 13', url: 'https://io2.azurewebsites.net/api/' },
+  { name: 'Zespół 13', url: 'https://io2.azurewebsites.net/api' },
 ];
 
 const customOptionIndex = -1;
