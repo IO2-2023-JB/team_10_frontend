@@ -2,10 +2,12 @@ import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import SubscribeButton from '../../components/SubscribeButton';
+import TicketButton from '../../components/TicketButton';
 import DonateButton from '../../components/donate/DonateButton';
 import WithdrawButton from '../../components/donate/WithdrawButton';
 import FormDialog from '../../components/layout/FormDialog';
 import { useMobileLayout } from '../../theme';
+import { ButtonType } from '../../types/TicketTypes';
 import {
   AccountType,
   GetUserDetailsResponse,
@@ -15,8 +17,6 @@ import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclin
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
-import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/TicketTypes';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;

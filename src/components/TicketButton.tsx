@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import FormDialog from './layout/FormDialog';
-import TicketSubmitDialog from '../pages/Ticket/TicketDialog';
-import { ButtonType } from '../types/TicketTypes';
-import { Button, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { OutlinedFlag } from '@mui/icons-material';
-import { useSendOrResolveTicket } from '../api/ticket';
-import { useMobileLayout } from '../theme';
+import { Button, IconButton, MenuItem, Tooltip } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSendOrResolveTicket } from '../api/ticket';
 import { useUserDetails } from '../api/user';
-import { userDetailsState } from './../data/UserData';
-import { AccountType } from '../types/UserTypes';
 import { snackbarState } from '../data/SnackbarData';
+import TicketSubmitDialog from '../pages/Ticket/TicketDialog';
+import { useMobileLayout } from '../theme';
+import { ButtonType } from '../types/TicketTypes';
+import { AccountType } from '../types/UserTypes';
+import { userDetailsState } from './../data/UserData';
+import FormDialog from './layout/FormDialog';
 
 interface TicketButtonProps {
   buttonType: ButtonType;

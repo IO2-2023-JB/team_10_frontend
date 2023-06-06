@@ -3,16 +3,16 @@ import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { usePlaylistVideos } from '../../api/playlist';
 import TabTitle from '../../components/TabTitle';
+import TicketButton from '../../components/TicketButton';
 import ContentSection from '../../components/layout/ContentSection';
 import PageLayout from '../../components/layout/PageLayout';
 import VideoList from '../../components/video/VideoList';
 import { userDetailsState } from '../../data/UserData';
 import { useMobileLayout } from '../../theme';
+import { ButtonType } from '../../types/TicketTypes';
 import PlaylistDelete from './PlaylistDelete';
 import PlaylistEditForm from './PlaylistEditForm';
 import PlaylistInfo from './PlaylistInfo';
-import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/TicketTypes';
 
 function Playlist() {
   const { playlistId } = useParams();
