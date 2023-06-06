@@ -5,6 +5,7 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
+import { useMobileLayout } from '../../../theme';
 
 interface SearchInputProps {
   params: AutocompleteRenderInputParams;
@@ -13,13 +14,16 @@ interface SearchInputProps {
 }
 
 function SearchInput({ params, showButton, onSubmit }: SearchInputProps) {
+  const { isMobile } = useMobileLayout();
+
   return (
     <TextField
       {...params}
       variant='outlined'
-      placeholder='Szukaj filmów, użytkowników, grajlist…'
+      placeholder={isMobile ? 'Szukaj' : 'Szukaj filmów, użytkowników, grajlist…'}
       InputProps={{
         ...params.InputProps,
+        size: isMobile ? 'small' : undefined,
         sx: {
           backgroundColor: 'background.semiTransparent',
           '&:not(.Mui-focused)': {

@@ -28,6 +28,7 @@ function Player({ videoId, processingState }: PlayerProps) {
       {processingState !== ProcessingProgress.Ready ? (
         <Stack
           sx={{
+            padding: 3,
             backgroundColor: 'background.light',
             justifyContent: 'center',
             alignItems: 'center',
@@ -40,12 +41,12 @@ function Player({ videoId, processingState }: PlayerProps) {
           direction='column'
         >
           <HourglassFull sx={{ color: 'primary.main' }} />
-          <Typography variant='h5'>
+          <Typography variant='h5' textAlign='center'>
             Jesteśmy w trakcie przetwarzania tego filmu
           </Typography>
         </Stack>
       ) : (
-        <Box component='video' src={videoUrl} controls />
+        <Box component='video' src={videoUrl} controls display='block' />
       )}
     </Box>
   );
