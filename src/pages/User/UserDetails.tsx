@@ -17,6 +17,8 @@ import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclin
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
+import TicketButton from '../../components/TicketButton';
+import { ButtonType } from '../../types/DonateTypes';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -110,13 +112,21 @@ function UserDetails({ userDetails }: UserDetailsProps) {
               )}
             </>
           )}
-          {userDetails.id !== loggedUserDetails?.id &&
-            userDetails.userType === AccountType.Creator && (
-              <>
-                <DonateButton creator={userDetails} />
-                <SubscribeButton creatorId={userDetails.id} />
-              </>
-            )}
+          {userDetails.id !== loggedUserDetails?.id && (
+            <>
+              {userDetails.userType === AccountType.Creator && (
+                <>
+                  <DonateButton creator={userDetails} />
+                  <SubscribeButton creatorId={userDetails.id} />
+                </>
+              )}
+              <TicketButton
+                targetId={userDetails.id}
+                buttonType={ButtonType.Icon}
+                targetNameInTitle='konto'
+              />
+            </>
+          )}
         </Stack>
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
