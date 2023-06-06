@@ -49,6 +49,7 @@ function DatePickerFilter({
       label={label}
       value={queryValue ? new Date(queryValue) : null}
       onChange={handleChange}
+      format='dd-MM-yyyy'
       slotProps={{
         textField: {
           size: 'small',
