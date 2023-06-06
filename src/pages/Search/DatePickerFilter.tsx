@@ -1,5 +1,6 @@
 import { DatePicker } from '@mui/x-date-pickers';
 import { format } from 'date-fns';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useMobileLayout } from '../../theme';
 
@@ -10,7 +11,7 @@ interface DatePickerFilterProps {
   search: (key: string, value?: string) => void;
   minDate: Date;
   maxDate: Date;
-  setDate: (date: Date) => void;
+  setDate: (date?: Date) => void;
 }
 
 function DatePickerFilter({
@@ -24,15 +25,21 @@ function DatePickerFilter({
 }: DatePickerFilterProps) {
   const [searchParams] = useSearchParams();
   const queryValue = searchParams.get(queryKey);
-
   const { mobileQuery } = useMobileLayout();
 
   const handleChange = (value: Date | null) => {
-    if (value && value >= minDate && value <= maxDate) {
-      setDate(value);
-      search(queryKey, format(value, 'yyyy-MM-dd'));
+    if (value) {
+      value = new Date(value.getFullYear(), value.getMonth(), value.getDate());
+      if (value >= minDate && value <= maxDate) {
+        setDate(value);
+        search(queryKey, format(value, 'yyyy-MM-dd'));
+      }
     }
   };
+
+  useEffect(() => {
+    setDate(queryValue ? new Date(queryValue) : undefined);
+  }, [maxDate, queryValue, setDate]);
 
   return (
     <DatePicker
