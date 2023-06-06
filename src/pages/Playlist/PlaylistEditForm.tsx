@@ -1,20 +1,22 @@
 import { Mode } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
-import * as Yup from 'yup';
 import { useEditPlaylist } from '../../api/playlist';
 import FormDialog from '../../components/layout/FormDialog';
-import { formFields } from '../../data/formData/playlist';
+import {
+  PlaylistFormFields,
+  playlistValidationSchema,
+} from '../../data/formData/playlist';
 import { GetPlaylist, PutPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
 
-interface PlaylistEditForm {
+interface PlaylistEditFormProps {
   id: string;
   playlist: GetPlaylist;
 }
 
-function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
+function PlaylistEditForm({ id, playlist }: PlaylistEditFormProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const {
     mutate: editPlaylist,
@@ -44,9 +46,9 @@ function PlaylistEditForm({ id, playlist }: PlaylistEditForm) {
           title='Edycja grajlisty'
           buttonText='Zapisz zmiany'
           icon={<Mode />}
-          formFields={formFields}
+          formFields={<PlaylistFormFields />}
           initialValues={formikInitialValues}
-          validationSchema={Yup.object()}
+          validationSchema={playlistValidationSchema}
           onSubmit={handleSubmit}
           errorMessage={getErrorMessage(error)}
           isLoading={isLoading}

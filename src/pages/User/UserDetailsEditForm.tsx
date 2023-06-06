@@ -1,55 +1,28 @@
 import { Mode } from '@mui/icons-material';
-import { Skeleton } from '@mui/material';
 import { UseMutationResult } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import * as Yup from 'yup';
-import FormikTextField from '../../components/formikFields/FormikTextField';
-import { ALLOWED_IMAGE_FORMATS, ALLOWED_IMAGE_OBJECT } from '../../const';
-import { registerValidationSchema } from '../../data/formData/user';
-import { AccountType, PutUserDetails, UserDetails } from '../../types/UserTypes';
+import {
+  RegisterFormValues,
+  UserFormFields,
+  registerValidationSchema,
+} from '../../data/formData/user';
+import { PutUserDetails, UserDetails } from '../../types/UserTypes';
 import { useLoadImage } from '../../utils/hooks';
 import { getErrorMessage, shallowComparison, toBase64 } from '../../utils/utils';
 import BaseForm from '../Login/BaseForm';
-import FormikFileUploader from './../../components/formikFields/FormikFileUploader';
-import FormikSwitch from './../../components/formikFields/FormikSwitch';
 import { GetUserDetailsResponse } from './../../types/UserTypes';
 
-interface UserDetailsEditFormValues {
-  nickname: string;
-  name: string;
-  surname: string;
-  userType: AccountType;
-  avatarImage: Blob | null;
-}
+type UserDetailsEditFormValues = Omit<
+  RegisterFormValues,
+  'email' | 'password' | 'repeatPassword'
+>;
 
-const userDetailsEditValidationForm = new Yup.ObjectSchema({
-  name: registerValidationSchema.fields.name,
-  surname: registerValidationSchema.fields.surname,
-  nickname: registerValidationSchema.fields.nickname,
-});
-
-const formFields = (
-  <>
-    <FormikTextField name='nickname' label='Nazwa użytkownika' />
-    <FormikTextField name='name' label='Imię' />
-    <FormikTextField name='surname' label='Nazwisko' />
-    <FormikSwitch
-      name='userType'
-      labels={['Widz', 'Twórca']}
-      options={[AccountType.Simple, AccountType.Creator]}
-    />
-    <FormikFileUploader
-      name='avatarImage'
-      preview
-      acceptedFileTypes={ALLOWED_IMAGE_FORMATS}
-      acceptObject={ALLOWED_IMAGE_OBJECT}
-      label='Avatar'
-      previewProps={{ sx: { height: 70, width: 70 } }}
-      previewSkeleton={<Skeleton variant='circular' sx={{ width: 70, height: 70 }} />}
-    />
-  </>
-);
+const userDetailsEditValidationForm = registerValidationSchema.pick([
+  'name',
+  'surname',
+  'nickname',
+]);
 
 interface UserDetailsEditFormProps {
   userDetails: GetUserDetailsResponse;
@@ -102,7 +75,7 @@ function UserDetailsEditForm({
       title='Edycja danych'
       buttonText='Zmień dane'
       icon={<Mode />}
-      formFields={formFields}
+      formFields={<UserFormFields />}
       initialValues={formikInitialValues}
       validationSchema={userDetailsEditValidationForm}
       onSubmit={handleSubmit}
