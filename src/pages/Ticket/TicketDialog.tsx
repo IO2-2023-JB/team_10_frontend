@@ -17,7 +17,7 @@ function TicketSubmitDialog({ mutation, targetName, closeDialog }: TicketDialogP
   const { mutate, error, isLoading, isSuccess } = mutation;
 
   const isError = reason === '';
-  console.log(error?.message);
+
   const onValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTouched(true);
     setReason(event.currentTarget.value);
