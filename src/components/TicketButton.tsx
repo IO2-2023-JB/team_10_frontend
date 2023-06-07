@@ -12,6 +12,7 @@ import {
 import { OutlinedFlag } from '@mui/icons-material';
 import { useSendTicket } from '../api/ticket';
 import { useMobileLayout } from '../theme';
+import StatusSnackbar from './StatusSnackbar';
 
 interface TicketButtonProps {
   buttonType: ButtonType;
@@ -37,12 +38,12 @@ function TicketButton({ buttonType, targetId, targetNameInTitle }: TicketButtonP
   const button =
     buttonType === ButtonType.Standard ? (
       <Button variant='outlined' onClick={onDialogOpen}>
-        Zgłoś
+        Zgłoś {' ' + targetNameInTitle}
       </Button>
     ) : buttonType === ButtonType.MenuItem ? (
-      <MenuItem onClick={onDialogOpen}>Zgłoś</MenuItem>
+      <MenuItem onClick={onDialogOpen}>Zgłoś {' ' + targetNameInTitle}</MenuItem>
     ) : (
-      <Tooltip title='Zgłoś'>
+      <Tooltip title={'Zgłoś ' + targetNameInTitle}>
         <IconButton
           sx={{
             alignSelf: targetNameInTitle === 'komentarz' ? 'center' : undefined,
@@ -73,6 +74,11 @@ function TicketButton({ buttonType, targetId, targetNameInTitle }: TicketButtonP
           targetName={targetNameInTitle}
         ></TicketSubmitDialog>
       </FormDialog>
+      <StatusSnackbar
+        successMessage={`Pomyślnie zgłoszono ${targetNameInTitle}`}
+        isSuccess={mutation.isSuccess}
+        reset={mutation.reset}
+      />
     </>
   );
 }

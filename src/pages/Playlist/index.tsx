@@ -51,7 +51,7 @@ function Playlist() {
                       <PlaylistDelete id={playlistId!} playlist={playlist} />
                     </>
                   )}
-                  {isOwn && playlistId && (
+                  {!isOwn && playlistId && (
                     <TicketButton
                       targetId={playlistId}
                       buttonType={ButtonType.Icon}
