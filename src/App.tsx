@@ -33,6 +33,7 @@ const User = lazy(() => import('./pages/User'));
 const Video = lazy(() => import('./pages/Video'));
 const Playlist = lazy(() => import('./pages/Playlist'));
 const Search = lazy(() => import('./pages/Search'));
+const Ticket = lazy(() => import('./pages/Ticket'));
 
 function App() {
   const appModeData = useRecoilValue(appModeState);
@@ -61,6 +62,7 @@ function App() {
                         element={<Playlist />}
                       />
                       <Route path={`${ROUTES.SEARCH}/*`} element={<Search />} />
+                      <Route path={`${ROUTES.TICKETS}`} element={<Ticket />} />
                     </Routes>
                   </Suspense>
                 </AppLayout>
