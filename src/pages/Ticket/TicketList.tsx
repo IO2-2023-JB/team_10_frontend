@@ -1,5 +1,6 @@
-import { Alert, Stack, Typography } from '@mui/material';
+import { Alert, Stack } from '@mui/material';
 import { GetTicket } from '../../types/TicketTypes';
+import TicketListItem from './TicketListItem';
 
 interface TicketListProps {
   tickets: GetTicket[];
@@ -12,8 +13,8 @@ function TicketList({ tickets }: TicketListProps) {
 
   return (
     <Stack>
-      {tickets.map((ticket) => (
-        <Typography key={ticket.submitterId}>{ticket.reason}</Typography>
+      {tickets.map((ticket, index) => (
+        <TicketListItem key={index} ticket={ticket} />
       ))}
     </Stack>
   );
