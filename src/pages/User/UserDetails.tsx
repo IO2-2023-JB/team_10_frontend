@@ -18,7 +18,7 @@ import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
 import UserDetailsEditForm from './UserDetailsEditForm';
 import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/DonateTypes';
+import { ButtonType } from '../../types/TicketTypes';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;

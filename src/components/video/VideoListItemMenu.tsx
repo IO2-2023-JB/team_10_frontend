@@ -8,6 +8,8 @@ import VideoDelete from '../../pages/Video/VideoDelete';
 import { useMobileLayout } from '../../theme';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import RemoveVideoFromPlaylist from './RemoveVideoFromPlaylist';
+import { ButtonType } from '../../types/TicketTypes';
+import TicketButton from '../TicketButton';
 
 interface VideoListItemMenuProps {
   playlistId?: string;
@@ -58,6 +60,13 @@ function VideoListItemMenu({ playlistId, videoMetadata }: VideoListItemMenuProps
           <MetadataForm key='MetadataForm' videoMetadata={videoMetadata} asMenuItem />,
           <VideoDelete key='VideoDelete' videoId={videoMetadata.id} asMenuItem />,
         ]}
+        {!isAuthor && (
+          <TicketButton
+            targetId={videoMetadata.id}
+            buttonType={ButtonType.MenuItem}
+            targetNameInTitle='wideło'
+          />
+        )}
       </Menu>
     </>
   );

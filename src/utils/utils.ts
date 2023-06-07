@@ -31,7 +31,8 @@ export function getCurrentSubroute(path: string, root: string): string {
 
 export function getErrorMessage(error: AxiosError | null): string | null {
   if (error === null) return null;
-  if (typeof error.response?.data === 'string') return error.response?.data;
+  if (typeof error.response?.data === 'string' && error.response.data !== '')
+    return error.response?.data;
   return error.message;
 }
 

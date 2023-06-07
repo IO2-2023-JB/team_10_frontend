@@ -12,7 +12,7 @@ import PlaylistDelete from './PlaylistDelete';
 import PlaylistEditForm from './PlaylistEditForm';
 import PlaylistInfo from './PlaylistInfo';
 import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/DonateTypes';
+import { ButtonType } from '../../types/TicketTypes';
 
 function Playlist() {
   const { playlistId } = useParams();
