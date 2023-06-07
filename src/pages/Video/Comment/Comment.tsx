@@ -10,6 +10,8 @@ import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
 import { CommentValues } from '../../../types/CommentTypes';
 import CommentSection from './CommentSection';
+import TicketButton from '../../../components/TicketButton';
+import { ButtonType } from '../../../types/TicketTypes';
 
 interface CommentProps {
   comment: CommentValues;
@@ -118,6 +120,13 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
             >
               <DeleteOutlineIcon />
             </IconButton>
+          )}
+          {user?.id !== authorId && (
+            <TicketButton
+              targetId={commentId}
+              buttonType={ButtonType.Icon}
+              targetNameInTitle='komentarz'
+            />
           )}
         </Stack>
       </Paper>
