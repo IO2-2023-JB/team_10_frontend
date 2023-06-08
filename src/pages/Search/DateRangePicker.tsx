@@ -11,8 +11,8 @@ interface DateRangePickerProps {
 }
 
 function DateRangePicker({ minWidth: width, search }: DateRangePickerProps) {
-  const [beginDate, setBeginDate] = useState<Date | undefined>();
-  const [endDate, setEndDate] = useState<Date | undefined>();
+  const [beginDate, setBeginDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   return (
     <>

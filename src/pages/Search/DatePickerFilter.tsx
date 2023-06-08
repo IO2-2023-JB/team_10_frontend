@@ -11,7 +11,7 @@ interface DatePickerFilterProps {
   search: (key: string, value?: string) => void;
   minDate: Date;
   maxDate: Date;
-  setDate: (date?: Date) => void;
+  setDate: (date: Date | null) => void;
 }
 
 function DatePickerFilter({
@@ -38,7 +38,7 @@ function DatePickerFilter({
   };
 
   useEffect(() => {
-    setDate(queryValue ? new Date(queryValue) : undefined);
+    setDate(queryValue ? new Date(queryValue) : null);
   }, [maxDate, queryValue, setDate]);
 
   return (
@@ -49,7 +49,7 @@ function DatePickerFilter({
       label={label}
       value={queryValue ? new Date(queryValue) : null}
       onChange={handleChange}
-      format='dd-MM-yyyy'
+      format='dd.MM.yyyy'
       slotProps={{
         textField: {
           size: 'small',
