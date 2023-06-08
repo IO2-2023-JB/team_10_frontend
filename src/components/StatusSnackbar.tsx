@@ -1,26 +1,22 @@
-import { Alert, AlertColor, Snackbar } from '@mui/material';
+import { Alert, Snackbar } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { AUTO_HIDE_DURATION } from '../const';
 import { snackbarState } from '../data/SnackbarData';
 
-interface StatusSnackbarProps {
-  severity?: AlertColor;
-}
-
-function StatusSnackbar({ severity = 'success' }: StatusSnackbarProps) {
+function StatusSnackbar() {
   const statusSnackbarData = useRecoilValue(snackbarState);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (statusSnackbarData !== null) setOpen(true);
+    if (statusSnackbarData !== null) setIsOpen(true);
   }, [statusSnackbarData]);
 
   const successMessage = statusSnackbarData?.successMessage;
 
   const autoHideDuration = AUTO_HIDE_DURATION;
 
-  const closeSnackbar = () => setOpen(false);
+  const closeSnackbar = () => setIsOpen(false);
 
   return (
     <Snackbar
@@ -30,7 +26,7 @@ function StatusSnackbar({ severity = 'success' }: StatusSnackbarProps) {
       onClose={closeSnackbar}
       ClickAwayListenerProps={{ onClickAway: () => null }}
     >
-      <Alert severity={severity} variant='filled'>
+      <Alert severity='success' variant='filled'>
         {successMessage}
       </Alert>
     </Snackbar>

@@ -2,6 +2,7 @@ import { Alert, AlertTitle, Button, MenuItem, Stack, Typography } from '@mui/mat
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useDeleteVideo } from '../../api/video';
 import SpinningButton from '../../components/SpinningButton';
@@ -24,14 +25,12 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
   const queryClient = useQueryClient();
   const { mutate, error, isSuccess, isLoading, reset } = useDeleteVideo(videoId);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState<boolean>(false);
+  const location = useLocation();
+
+  const prevPageExists = location.key !== 'default';
 
   const handleDelete = () => {
-    mutate(undefined, {
-      onSuccess: () => {
-        setIsDeleteDialogOpen(false);
-        if (!asMenuItem) navigate('/');
-      },
-    });
+    mutate();
   };
 
   useEffect(() => {
@@ -41,7 +40,8 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
         successMessage: `Pomyślnie usunięto film.`,
       });
       setIsDeleteDialogOpen(false);
-      if (!asMenuItem) navigate(`${ROUTES.USER}/${loggedUserDetails?.id}`);
+      if (!asMenuItem) prevPageExists ? navigate(-1) : navigate(`/${ROUTES.HOMEPAGE}`);
+
       queryClient.invalidateQueries({ queryKey: [videoMetadataKey] });
     }
   }, [
@@ -49,6 +49,7 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
     isSuccess,
     loggedUserDetails?.id,
     navigate,
+    prevPageExists,
     queryClient,
     reset,
     setSnackbarState,
