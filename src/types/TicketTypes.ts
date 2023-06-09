@@ -10,8 +10,8 @@ export enum ButtonType {
 }
 
 export enum TicketStatus {
-  Submitted,
-  Resolved,
+  Submitted = 'Submitted',
+  Resolved = 'Resolved',
 }
 
 export interface GetTicketStatus {

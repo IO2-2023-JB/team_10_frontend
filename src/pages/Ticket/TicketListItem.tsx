@@ -1,7 +1,8 @@
 import { Card, ListItem, Stack, Typography } from '@mui/material';
-import { GetTicket } from '../../types/TicketTypes';
+import { GetTicket, TicketStatus } from '../../types/TicketTypes';
 import { transitionLong } from '../../theme';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { useMaxLines } from '../../utils/hooks';
 
 interface TicketListItemProps {
   ticket: GetTicket;
@@ -9,10 +10,12 @@ interface TicketListItemProps {
 
 function TicketListItem({ ticket }: TicketListItemProps) {
   const [expanded, setExpanded] = useState<boolean>(false);
-  const handleExpandClick = () => {
-    expanded ? setExpanded(false) : setExpanded(true);
-  };
+  const reasonRef = useRef<HTMLParagraphElement>(null);
+  const { isEllipsisActive, style: reasonMaxLinesStyle } = useMaxLines(1, reasonRef);
 
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
   return (
     <ListItem>
       <Card
@@ -27,10 +30,22 @@ function TicketListItem({ ticket }: TicketListItemProps) {
           },
         }}
       >
+        <Typography>Status:{` ${ticket.status.status}`}</Typography>
         <Typography>{`Target ID: ${ticket.targetId}`}</Typography>
         <Stack marginTop={1} spacing={1}>
-          <Typography>{ticket.reason}</Typography>
-          {expanded && (
+          <Typography>Reason:</Typography>
+          <Typography ref={reasonRef} sx={!expanded ? reasonMaxLinesStyle : null}>
+            {ticket.reason}
+          </Typography>
+          {expanded && ticket.status.status === TicketStatus.Resolved && (
+            <>
+              <Typography>Response:</Typography>
+              <Typography>{ticket.response}</Typography>
+            </>
+          )}
+          {(isEllipsisActive ||
+            expanded ||
+            ticket.status.status === TicketStatus.Resolved) && (
             <Typography
               onClick={handleExpandClick}
               sx={{
@@ -40,7 +55,7 @@ function TicketListItem({ ticket }: TicketListItemProps) {
                 },
               }}
             >
-              {expanded ? 'Pokaż mniej' : 'Pokaż więcej'}
+              {!expanded ? 'Rozwiń' : 'Zwiń'}
             </Typography>
           )}
         </Stack>
