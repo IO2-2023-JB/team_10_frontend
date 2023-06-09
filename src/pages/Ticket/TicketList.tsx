@@ -24,7 +24,7 @@ function TicketList({ tickets }: TicketListProps) {
         <TicketListItem
           key={index}
           ticket={ticket}
-          isAdmin={userDetails?.userType === AccountType.Administrator}
+          isAdmin={userDetails?.userType === AccountType.Creator}
         />
       ))}
     </Stack>

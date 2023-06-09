@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { GetUserDetailsResponse } from '../types/UserTypes';
+import { TicketStatus, TicketTargetType } from '../types/TicketTypes';
 
 export const shallowComparison = (obj1: object, obj2: object) => {
   return (
@@ -49,4 +50,32 @@ export const valueAsNumber = (value: string): number | null => {
   const number = parseFloat(value.replace(',', '.'));
   if (isNaN(number)) return null;
   return number;
+};
+
+export const translateTicketTargetType = (value: TicketTargetType): string => {
+  switch (value) {
+    case TicketTargetType.Video:
+      return 'wideło';
+    case TicketTargetType.Playlist:
+      return 'grajlista';
+    case TicketTargetType.User:
+      return 'konto użytkownika';
+    case TicketTargetType.Comment:
+      return 'komentarz';
+    case TicketTargetType.CommentResponse:
+      return 'odpowiedź do komentarza';
+    default:
+      return '';
+  }
+};
+
+export const translateTicketStatus = (value: TicketStatus): string => {
+  switch (value) {
+    case TicketStatus.Resolved:
+      return 'rozwiązane';
+    case TicketStatus.Submitted:
+      return 'oczekuje na odpowiedź';
+    default:
+      return '';
+  }
 };

@@ -1,11 +1,19 @@
 import { Card, ListItem, Stack, Typography } from '@mui/material';
-import { ButtonType, GetTicket, TicketStatus } from '../../types/TicketTypes';
+import {
+  ButtonType,
+  GetTicket,
+  TicketStatus,
+  TicketTargetType,
+} from '../../types/TicketTypes';
 import { transitionLong } from '../../theme';
 import { useRef, useState } from 'react';
 import { useMaxLines } from '../../utils/hooks';
 import { useUserDetails } from '../../api/user';
 import UserInfo from '../User/UserInfo';
 import TicketButton from '../../components/TicketButton';
+import TypographyLink from '../../components/TypographyLink';
+import { ROUTES } from '../../const';
+import { translateTicketStatus, translateTicketTargetType } from '../../utils/utils';
 interface TicketListItemProps {
   ticket: GetTicket;
   isAdmin: boolean;
@@ -20,6 +28,15 @@ function TicketListItem({ ticket, isAdmin }: TicketListItemProps) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const link =
+    ticket.targetType === TicketTargetType.Video
+      ? `${ROUTES.VIDEO}/${ticket.targetId}`
+      : ticket.targetType === TicketTargetType.User
+      ? `${ROUTES.USER}/${ticket.targetId}`
+      : ticket.targetType === TicketTargetType.Playlist
+      ? `${ROUTES.PLAYLIST}/${ticket.targetId}`
+      : undefined;
 
   return (
     <ListItem>
@@ -48,16 +65,20 @@ function TicketListItem({ ticket, isAdmin }: TicketListItemProps) {
             )}
           </Stack>
         )}
-        <Typography>{`Status: ${ticket.status.status}`}</Typography>
-        <Typography>{`Typ zgłaszanego obiektu: ${ticket.targetType}`}</Typography>
+        <Typography>{`Status: ${translateTicketStatus(ticket.status.status)} ${
+          ticket.status.status === TicketStatus.Submitted ? '🟡' : '🟢'
+        }`}</Typography>
+        <TypographyLink to={link}>{`Zgłaszany obiekt: ${translateTicketTargetType(
+          ticket.targetType
+        )}`}</TypographyLink>
         <Stack marginTop={1} spacing={1}>
-          <Typography>Uzasadnienie:</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>Uzasadnienie:</Typography>
           <Typography ref={reasonRef} sx={!expanded ? reasonMaxLinesStyle : null}>
             {ticket.reason}
           </Typography>
           {expanded && ticket.status.status === TicketStatus.Resolved && (
             <>
-              <Typography>Odpowiedź:</Typography>
+              <Typography sx={{ fontWeight: 'bold' }}>Odpowiedź:</Typography>
               <Typography>{ticket.response}</Typography>
             </>
           )}
