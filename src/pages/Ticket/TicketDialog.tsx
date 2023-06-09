@@ -9,9 +9,15 @@ interface TicketDialogProps {
   mutation: UseMutationResult<void, AxiosError, string>;
   targetName: string;
   closeDialog: () => void;
+  isResponse: boolean;
 }
 
-function TicketSubmitDialog({ mutation, targetName, closeDialog }: TicketDialogProps) {
+function TicketSubmitDialog({
+  mutation,
+  targetName,
+  closeDialog,
+  isResponse,
+}: TicketDialogProps) {
   const [reason, setReason] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
   const { mutate, error, isLoading, isSuccess } = mutation;
@@ -40,17 +46,23 @@ function TicketSubmitDialog({ mutation, targetName, closeDialog }: TicketDialogP
           {getErrorMessage(error)}
         </Alert>
       )}
-      <Typography variant='h4'>Zgłoś {targetName.toLowerCase()}</Typography>
+      <Typography variant='h4'>{`${
+        isResponse ? 'Rozwiąż' : 'Zgłoś'
+      } ${targetName.toLowerCase()}`}</Typography>
       <TextField
         fullWidth
         value={reason}
-        helperText={isError && touched ? 'Należy podać powód' : undefined}
-        label='Podaj powód'
+        helperText={
+          isError && touched
+            ? `Należy podać ${isResponse ? 'odpowiedź' : 'powód'}`
+            : undefined
+        }
+        label={`Podaj ${isResponse ? 'odpowiedź' : 'powód'}`}
         onChange={onValueChange}
         error={isError && touched}
       />
       <SpinningButton variant='contained' isLoading={isLoading} onClick={onSubmit}>
-        Wyślij zgłoszenie
+        {`${isResponse ? 'Rozwiąż' : 'Wyślij'} zgłoszenie`}
       </SpinningButton>
     </Stack>
   );

@@ -2,15 +2,9 @@ import { useState } from 'react';
 import FormDialog from './layout/FormDialog';
 import TicketSubmitDialog from '../pages/Ticket/TicketDialog';
 import { ButtonType } from '../types/TicketTypes';
-import {
-  Button,
-  ButtonPropsColorOverrides,
-  IconButton,
-  MenuItem,
-  Tooltip,
-} from '@mui/material';
+import { Button, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { OutlinedFlag } from '@mui/icons-material';
-import { useSendTicket } from '../api/ticket';
+import { useSendOrResolveTicket } from '../api/ticket';
 import { useMobileLayout } from '../theme';
 import StatusSnackbar from './StatusSnackbar';
 
@@ -18,12 +12,16 @@ interface TicketButtonProps {
   buttonType: ButtonType;
   targetId: string;
   targetNameInTitle: string;
-  size?: ButtonPropsColorOverrides;
-  color?: ButtonPropsColorOverrides;
+  isResponse?: boolean;
 }
 
-function TicketButton({ buttonType, targetId, targetNameInTitle }: TicketButtonProps) {
-  const mutation = useSendTicket(targetId);
+function TicketButton({
+  buttonType,
+  targetId,
+  targetNameInTitle,
+  isResponse = false,
+}: TicketButtonProps) {
+  const mutation = useSendOrResolveTicket(targetId, isResponse);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { isMobile } = useMobileLayout();
 
@@ -37,13 +35,15 @@ function TicketButton({ buttonType, targetId, targetNameInTitle }: TicketButtonP
 
   const button =
     buttonType === ButtonType.Standard ? (
-      <Button variant='outlined' onClick={onDialogOpen}>
-        Zgłoś {' ' + targetNameInTitle}
+      <Button variant='contained' onClick={onDialogOpen}>
+        {(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}
       </Button>
     ) : buttonType === ButtonType.MenuItem ? (
-      <MenuItem onClick={onDialogOpen}>Zgłoś {' ' + targetNameInTitle}</MenuItem>
+      <MenuItem onClick={onDialogOpen}>
+        {(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}
+      </MenuItem>
     ) : (
-      <Tooltip title={'Zgłoś ' + targetNameInTitle}>
+      <Tooltip title={(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}>
         <IconButton
           sx={{
             alignSelf: targetNameInTitle === 'komentarz' ? 'center' : undefined,
@@ -72,10 +72,13 @@ function TicketButton({ buttonType, targetId, targetNameInTitle }: TicketButtonP
           mutation={mutation}
           closeDialog={onDialogClose}
           targetName={targetNameInTitle}
+          isResponse={isResponse}
         ></TicketSubmitDialog>
       </FormDialog>
       <StatusSnackbar
-        successMessage={`Pomyślnie zgłoszono ${targetNameInTitle}`}
+        successMessage={`Pomyślnie ${
+          isResponse ? 'rozwiązano' : 'zgłoszono'
+        } ${targetNameInTitle}`}
         isSuccess={mutation.isSuccess}
         reset={mutation.reset}
       />

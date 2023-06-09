@@ -17,10 +17,24 @@ export enum TicketStatus {
 export interface GetTicketStatus {
   status: TicketStatus;
 }
+
+export enum TicketTargetType {
+  Video = 'Video',
+  User = 'User',
+  Playlist = 'Playlist',
+  Comment = 'Comment',
+  CommentResponse = 'CommentResponse',
+}
 export interface GetTicket {
+  ticketId: string;
   submitterId: string;
   targetId: string;
+  targetType: TicketTargetType;
   reason: string;
   status: GetTicketStatus;
+  response: string;
+}
+
+export interface PutTicket {
   response: string;
 }
