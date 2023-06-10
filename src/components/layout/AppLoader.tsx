@@ -1,7 +1,10 @@
 import { Alert, AlertTitle, Box, Button, CircularProgress, Stack } from '@mui/material';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useLoggedInUserDetails } from '../../api/user';
 import { getErrorMessage } from '../../utils/utils';
+import { useRecoilState } from 'recoil';
+import { AppModes, appModeState } from '../../data/AppStateData';
+import theme from '../../theme';
 
 interface AppLoaderProps {
   children: ReactNode;
@@ -9,6 +12,30 @@ interface AppLoaderProps {
 
 function AppLoader({ children }: AppLoaderProps) {
   const { isLoading, error, reload, logOut, showLoading } = useLoggedInUserDetails();
+  const [appMode, setAppMode] = useRecoilState(appModeState);
+
+  useEffect(() => {
+    setInterval(() => {
+      const now = new Date(Date.now());
+      if (now.getMinutes() === 37 && now.getHours() === 21) setAppMode(AppModes.Papiesz);
+      if (now.getMinutes() === 20 && now.getHours() === 4) setAppMode(AppModes.Green);
+      setAppMode(AppModes.Papiesz);
+    }, 60000);
+  }, [setAppMode]);
+
+  useEffect(() => {
+    switch (appMode) {
+      case AppModes.Papiesz:
+        theme.palette.primary.main = '#ffc603';
+        break;
+      case AppModes.Green:
+        theme.palette.primary.main = '#00FF00';
+        break;
+      default:
+        theme.palette.primary.main = '#FF9000';
+        break;
+    }
+  }, [appMode]);
 
   if (showLoading && (isLoading || error)) {
     return (
