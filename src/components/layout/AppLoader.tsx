@@ -1,10 +1,11 @@
 import { Alert, AlertTitle, Box, Button, CircularProgress, Stack } from '@mui/material';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { useLoggedInUserDetails } from '../../api/user';
 import { getErrorMessage } from '../../utils/utils';
 import { useRecoilState } from 'recoil';
 import { AppModes, appModeState } from '../../data/AppStateData';
 import theme from '../../theme';
+import { MODE_DURATION } from '../../const';
 
 interface AppLoaderProps {
   children: ReactNode;
@@ -13,14 +14,20 @@ interface AppLoaderProps {
 function AppLoader({ children }: AppLoaderProps) {
   const { isLoading, error, reload, logOut, showLoading } = useLoggedInUserDetails();
   const [appMode, setAppMode] = useRecoilState(appModeState);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     setInterval(() => {
       const now = new Date(Date.now());
-      if (now.getMinutes() === 37 && now.getHours() === 21) setAppMode(AppModes.Papiesz);
+      if (now.getMinutes() === 37 && now.getHours() === 21) {
+        setAppMode(AppModes.Papiesz);
+        audioRef.current?.play();
+        setTimeout(() => {
+          audioRef.current?.pause();
+        }, MODE_DURATION);
+      }
       if (now.getMinutes() === 20 && now.getHours() === 4) setAppMode(AppModes.Green);
-      setAppMode(AppModes.Papiesz);
-    }, 60000);
+    }, MODE_DURATION);
   }, [setAppMode]);
 
   useEffect(() => {
@@ -62,7 +69,12 @@ function AppLoader({ children }: AppLoaderProps) {
     );
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <audio ref={audioRef} src='/barka.mp3' />
+      {children}
+    </>
+  );
 }
 
 export default AppLoader;

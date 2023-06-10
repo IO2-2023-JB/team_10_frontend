@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { MODE_DURATION } from '../const';
 
 export enum AppModes {
   Standard,
@@ -15,7 +16,7 @@ export const appModeState = atom<AppModes>({
         if (newState !== AppModes.Standard)
           setTimeout(() => {
             setSelf(AppModes.Standard);
-          }, 60000);
+          }, MODE_DURATION);
       });
     },
   ],
