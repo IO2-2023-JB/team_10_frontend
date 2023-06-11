@@ -1,6 +1,7 @@
-import { createTheme, useMediaQuery, useTheme } from '@mui/material';
+import { PaletteMode, useMediaQuery, useTheme } from '@mui/material';
+import { AppMode } from './data/AppStateData';
 
-const theme = createTheme({
+export const getTheme = (appMode: AppMode) => ({
   typography: {
     fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
     h1: {
@@ -8,9 +9,14 @@ const theme = createTheme({
     },
   },
   palette: {
-    mode: 'dark',
+    mode: 'dark' as PaletteMode,
     primary: {
-      main: '#FF9000',
+      main:
+        appMode === AppMode.Papiesz
+          ? '#FFC603'
+          : appMode === AppMode.Green
+          ? '#00FF00'
+          : '#FF9000',
     },
     background: {
       lighter: '#272727',
@@ -78,4 +84,4 @@ declare module '@mui/material/styles' {
   }
 }
 
-export default theme;
+export default getTheme;

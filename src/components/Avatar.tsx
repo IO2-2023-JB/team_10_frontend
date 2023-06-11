@@ -2,7 +2,7 @@ import { Avatar as MuiAvatar } from '@mui/material';
 import { getInitials } from '../utils/utils';
 import { GetUserDetailsResponse } from './../types/UserTypes';
 import { useRecoilValue } from 'recoil';
-import { AppModes, appModeState } from '../data/AppStateData';
+import { AppMode, appModeState } from '../data/AppStateData';
 
 interface AvatarProps {
   userDetails?: GetUserDetailsResponse;
@@ -15,7 +15,7 @@ function Avatar({ userDetails, size }: AvatarProps) {
   return (
     <MuiAvatar
       src={
-        appMode === AppModes.Papiesz
+        appMode === AppMode.Papiesz
           ? '/papiesz.png'
           : userDetails?.avatarImage ?? undefined
       }
