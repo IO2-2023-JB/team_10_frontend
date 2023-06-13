@@ -1,8 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { GetComment } from './../types/CommentTypes';
+import {
+  GetComment,
+  GetCommentById,
+  GetCommentResponseById,
+} from './../types/CommentTypes';
 
 const commentKey = 'comment';
+const commentByIdKey = 'commentById';
+const commentResponseByIdKey = 'commentResponseById';
 const commentResponseKey = 'commentResponse';
 
 export function useComment(id: string | undefined, isResponse: boolean) {
@@ -60,5 +66,23 @@ export function usePostCommentResponse(id: string | undefined) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [commentResponseKey, id] });
     },
+  });
+}
+
+export function useCommentById(id: string | undefined) {
+  return useQuery<GetCommentById, AxiosError>({
+    queryKey: [commentByIdKey, id],
+    enabled: id !== undefined,
+    queryFn: async () =>
+      (await axios.get('comment/commentById', { params: { id } })).data,
+  });
+}
+
+export function useCommentResponseById(id: string | undefined) {
+  return useQuery<GetCommentResponseById, AxiosError>({
+    queryKey: [commentResponseByIdKey, id],
+    enabled: id !== undefined,
+    queryFn: async () =>
+      (await axios.get('comment/commentResponseById', { params: { id } })).data,
   });
 }

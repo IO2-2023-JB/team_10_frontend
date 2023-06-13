@@ -24,6 +24,7 @@ function TicketList({ tickets }: TicketListProps) {
         <TicketListItem
           key={index}
           ticket={ticket}
+          // todo: adjust condition to admin
           isAdmin={userDetails?.userType === AccountType.Creator}
         />
       ))}

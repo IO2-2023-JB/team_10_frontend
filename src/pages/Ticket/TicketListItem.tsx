@@ -1,4 +1,4 @@
-import { Card, ListItem, Stack, Typography } from '@mui/material';
+import { Box, Card, ListItem, Stack, Typography } from '@mui/material';
 import {
   ButtonType,
   GetTicket,
@@ -14,6 +14,8 @@ import TicketButton from '../../components/TicketButton';
 import TypographyLink from '../../components/TypographyLink';
 import { ROUTES } from '../../const';
 import { translateTicketStatus, translateTicketTargetType } from '../../utils/utils';
+import { useCommentById } from '../../api/comment';
+import Comment from '../Video/Comment/Comment';
 interface TicketListItemProps {
   ticket: GetTicket;
   isAdmin: boolean;
@@ -24,6 +26,12 @@ function TicketListItem({ ticket, isAdmin }: TicketListItemProps) {
   const reasonRef = useRef<HTMLParagraphElement>(null);
   const { isEllipsisActive, style: reasonMaxLinesStyle } = useMaxLines(1, reasonRef);
   const { data: submitterDetails } = useUserDetails(ticket.submitterId);
+  const { data: commentDetails } = useCommentById(
+    ticket.targetType === TicketTargetType.Comment ? ticket.targetId : undefined
+  );
+  const { data: commentResponseDetails } = useCommentById(
+    ticket.targetType === TicketTargetType.CommentResponse ? ticket.targetId : undefined
+  );
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -53,7 +61,7 @@ function TicketListItem({ ticket, isAdmin }: TicketListItemProps) {
         }}
       >
         {isAdmin && (
-          <Stack direction='row'>
+          <Stack direction='row' sx={{ paddingBottom: 2 }}>
             {submitterDetails && <UserInfo userDetails={submitterDetails} isSelf />}
             {ticket.status.status !== TicketStatus.Resolved && (
               <TicketButton
@@ -71,6 +79,18 @@ function TicketListItem({ ticket, isAdmin }: TicketListItemProps) {
         <TypographyLink to={link}>{`Zgłaszany obiekt: ${translateTicketTargetType(
           ticket.targetType
         )}`}</TypographyLink>
+        {(commentDetails || commentResponseDetails) && (
+          <Box sx={{ marginY: 2 }}>
+            <Comment
+              comment={commentDetails ?? commentResponseDetails!}
+              originId={ticket.targetId}
+              isOpen={false}
+              isResponse={commentDetails !== null ? false : true}
+              open={() => null}
+              isOnTicketList
+            />
+          </Box>
+        )}
         <Stack marginTop={1} spacing={1}>
           <Typography sx={{ fontWeight: 'bold' }}>Uzasadnienie:</Typography>
           <Typography ref={reasonRef} sx={!expanded ? reasonMaxLinesStyle : null}>
