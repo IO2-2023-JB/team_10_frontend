@@ -11,12 +11,14 @@ interface VideoListItemProps {
   videoMetadata: GetVideoMetadataResponse;
   disableAuthorLink: boolean;
   playlistId?: string;
+  isPlaylistOwner?: boolean;
 }
 
 function VideoListItem({
   videoMetadata,
   disableAuthorLink,
   playlistId,
+  isPlaylistOwner,
 }: VideoListItemProps) {
   const navigate = useNavigate();
 
@@ -54,7 +56,11 @@ function VideoListItem({
             disableAuthorLink={disableAuthorLink}
             videoMetadata={videoMetadata}
           />
-          <VideoListItemMenu playlistId={playlistId} videoMetadata={videoMetadata} />
+          <VideoListItemMenu
+            playlistId={playlistId}
+            videoMetadata={videoMetadata}
+            isPlaylistOwner={isPlaylistOwner}
+          />
         </Stack>
       </Stack>
     </Grid>

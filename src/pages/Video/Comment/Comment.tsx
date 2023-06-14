@@ -4,14 +4,14 @@ import { Stack } from '@mui/system';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { useDeleteComment } from '../../../api/comment';
-import { useUserDetails } from '../../../api/user';
+import { useAdmin, useUserDetails } from '../../../api/user';
 import Avatar from '../../../components/Avatar';
+import TicketButton from '../../../components/TicketButton';
 import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
 import { CommentValues } from '../../../types/CommentTypes';
-import CommentSection from './CommentSection';
-import TicketButton from '../../../components/TicketButton';
 import { ButtonType } from '../../../types/TicketTypes';
+import CommentSection from './CommentSection';
 
 interface CommentProps {
   comment: CommentValues;
@@ -34,6 +34,7 @@ function Comment({
   const user = useRecoilValue(userDetailsState);
   const { data: authorDetails } = useUserDetails(authorId);
   const { mutate } = useDeleteComment(originId, commentId);
+  const isAdmin = useAdmin();
 
   const handleDelete = () => {
     mutate();
@@ -124,7 +125,7 @@ function Comment({
               </Typography>
             )}
           </Stack>
-          {user?.id === authorId && (
+          {(isAdmin || user?.id === authorId) && (
             <IconButton
               onClick={handleDelete}
               sx={{ alignSelf: 'center', color: 'grey.800' }}
@@ -132,7 +133,7 @@ function Comment({
               <DeleteOutlineIcon />
             </IconButton>
           )}
-          {user?.id !== authorId && !isOnTicketList && (
+          {!isAdmin && user?.id !== authorId && !isOnTicketList && (
             <TicketButton
               targetId={commentId}
               buttonType={ButtonType.Icon}

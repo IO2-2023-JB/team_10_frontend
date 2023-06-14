@@ -1,5 +1,5 @@
 export enum ButtonType {
-    Standard,
-    MenuItem,
-    Icon,
-} 
+  Standard,
+  MenuItem,
+  Icon,
+}

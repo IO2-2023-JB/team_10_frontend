@@ -55,12 +55,14 @@ function VideoDelete({ videoId, asMenuItem = false }: VideoDeleteProps) {
     setSnackbarState,
   ]);
 
+  const deleteVideoText = 'Usuń wideło';
+
   return (
     <>
       {asMenuItem ? (
-        <MenuItem onClick={() => setIsDeleteDialogOpen(true)}>Usuń</MenuItem>
+        <MenuItem onClick={() => setIsDeleteDialogOpen(true)}>{deleteVideoText}</MenuItem>
       ) : (
-        <Button onClick={() => setIsDeleteDialogOpen(true)}>Usuń</Button>
+        <Button onClick={() => setIsDeleteDialogOpen(true)}>{deleteVideoText}</Button>
       )}
       <FormDialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)}>
         <Stack spacing={3}>

@@ -17,7 +17,7 @@ function UsersListItem({ userId }: UsersListItemProps) {
       <UserInfo
         isSelf={loggedUserDetails?.id === userId}
         userDetails={userDetails}
-        width='100%'
+        fullWidth
       />
     </ListItem>
   );

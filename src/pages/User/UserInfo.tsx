@@ -12,16 +12,16 @@ const avatarSize = 60;
 interface UserInfoProps {
   userDetails?: GetUserDetailsResponse;
   isSelf: boolean;
-  width?: string;
+  fullWidth?: boolean;
 }
 
-function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
+function UserInfo({ userDetails, isSelf: isAuthor, fullWidth }: UserInfoProps) {
   const isCreator = userDetails?.userType === AccountType.Creator;
 
   const { isMobile } = useMobileLayout();
 
   return (
-    <Stack direction='row' alignItems='center' width={width} flex={1}>
+    <Stack direction='row' alignItems='center' flex={1}>
       <Stack
         direction='row'
         color='inherit'
@@ -60,7 +60,11 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
         </Stack>
       </Stack>
       {!isAuthor && userDetails && isCreator && (
-        <UserInfoButtons userDetails={userDetails} asMenu={isMobile} />
+        <UserInfoButtons
+          userDetails={userDetails}
+          asMenu={isMobile}
+          fullWidth={fullWidth}
+        />
       )}
     </Stack>
   );

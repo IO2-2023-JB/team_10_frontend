@@ -1,5 +1,6 @@
 import { Skeleton } from '@mui/material';
 import * as Yup from 'yup';
+import { useAdmin } from '../../api/user';
 import FormikFileUploader from '../../components/formikFields/FormikFileUploader';
 import FormikSwitch from '../../components/formikFields/FormikSwitch';
 import FormikTextField from '../../components/formikFields/FormikTextField';
@@ -44,6 +45,8 @@ interface UserFormFieldsProps {
 }
 
 export function UserFormFields({ showRegisterFields = false }: UserFormFieldsProps) {
+  const isAdmin = useAdmin();
+
   return (
     <>
       {showRegisterFields && <FormikTextField name='email' label='E-mail' type='email' />}
@@ -56,11 +59,13 @@ export function UserFormFields({ showRegisterFields = false }: UserFormFieldsPro
           <FormikTextField name='repeatPassword' label='Powtórz hasło' type='password' />
         </>
       )}
-      <FormikSwitch
-        name='userType'
-        labels={['Widz', 'Twórca']}
-        options={[AccountType.Simple, AccountType.Creator]}
-      />
+      {!isAdmin && (
+        <FormikSwitch
+          name='userType'
+          labels={['Widz', 'Twórca']}
+          options={[AccountType.Simple, AccountType.Creator]}
+        />
+      )}
       <FormikFileUploader
         name='avatarImage'
         label='Avatar'

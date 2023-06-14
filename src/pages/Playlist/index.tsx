@@ -2,6 +2,7 @@ import { Stack } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { usePlaylistVideos } from '../../api/playlist';
+import { useAdmin } from '../../api/user';
 import TabTitle from '../../components/TabTitle';
 import TicketButton from '../../components/TicketButton';
 import ContentSection from '../../components/layout/ContentSection';
@@ -17,7 +18,7 @@ import PlaylistInfo from './PlaylistInfo';
 function Playlist() {
   const { playlistId } = useParams();
   const { data: playlist, error, isLoading } = usePlaylistVideos(playlistId!);
-
+  const isAdmin = useAdmin();
   const { mobileQuery } = useMobileLayout();
 
   const loggedInUser = useRecoilValue(userDetailsState);
@@ -48,10 +49,12 @@ function Playlist() {
                   {isOwn && (
                     <>
                       <PlaylistEditForm id={playlistId!} playlist={playlist} />
-                      <PlaylistDelete id={playlistId!} playlist={playlist} />
                     </>
                   )}
-                  {!isOwn && playlistId && (
+                  {(isAdmin || isOwn) && (
+                    <PlaylistDelete id={playlistId!} playlist={playlist} />
+                  )}
+                  {!isAdmin && !isOwn && playlistId && (
                     <TicketButton
                       targetId={playlistId}
                       buttonType={ButtonType.Icon}
@@ -62,7 +65,8 @@ function Playlist() {
               </Stack>
               <VideoList
                 videos={playlist.videos}
-                playlistId={isOwn ? playlistId! : undefined}
+                playlistId={playlistId!}
+                isPlaylistOwner={isOwn}
               />
             </Stack>
           </>

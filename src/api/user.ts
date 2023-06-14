@@ -5,7 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { userDetailsState } from '../data/UserData';
 import { LoginFormValues } from '../data/formData/user';
-import { PostUserDetails, PutUserDetails, UserDetails } from '../types/UserTypes';
+import {
+  AccountType,
+  PostUserDetails,
+  PutUserDetails,
+  UserDetails,
+} from '../types/UserTypes';
 import { GetUserDetailsResponse } from './../types/UserTypes';
 
 export const userKey = 'user';
@@ -112,6 +117,22 @@ export function useUserDetailsEdit() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user', userDetails?.id] });
+    },
+  });
+}
+
+export function useAdmin(): boolean {
+  const loggedUser = useRecoilValue(userDetailsState);
+  const { data: userDetails } = useUserDetails(loggedUser?.id);
+  return userDetails?.userType === AccountType.Administrator;
+}
+
+export function useDeleteUser(userId: string) {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError>({
+    mutationFn: () => axios.delete(userKey, { params: { id: userId } }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [userKey, userId] });
     },
   });
 }
