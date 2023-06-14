@@ -7,9 +7,9 @@ import {
 } from './../types/CommentTypes';
 
 const commentKey = 'comment';
+const commentResponseKey = 'commentResponse';
 const commentByIdKey = 'commentById';
 const commentResponseByIdKey = 'commentResponseById';
-const commentResponseKey = 'commentResponse';
 
 export function useComment(id: string | undefined, isResponse: boolean) {
   const key = isResponse ? commentResponseKey : commentKey;
@@ -48,6 +48,8 @@ export function useDeleteComment(originId: string | undefined, commentId: string
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [commentKey, originId] });
       queryClient.invalidateQueries({ queryKey: [commentResponseKey, originId] });
+      queryClient.invalidateQueries({ queryKey: [commentByIdKey, originId] });
+      queryClient.invalidateQueries({ queryKey: [commentResponseByIdKey, originId] });
     },
   });
 }

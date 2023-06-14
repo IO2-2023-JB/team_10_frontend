@@ -1,12 +1,13 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import { GetTicket, PostTicket, PutTicket } from '../types/TicketTypes';
 import { userDetailsState } from '../data/UserData';
 import { useRecoilValue } from 'recoil';
 
 const ticketKey = 'ticket';
-// todo: insert 'ticket' and 'ticket/list' paths in axios methods
+
 export function useSendOrResolveTicket(targetId: string, isResponse: boolean) {
+  const queryClient = useQueryClient();
   return useMutation<void, AxiosError, string>({
     mutationFn: (message: string) => {
       let body;
@@ -15,10 +16,13 @@ export function useSendOrResolveTicket(targetId: string, isResponse: boolean) {
         : (body = { targetId: targetId, reason: message } as PostTicket);
 
       return isResponse
-        ? axios.put('http://localhost:3000/ticket', body, {
+        ? axios.put('ticket', body, {
             params: { id: targetId },
           })
-        : axios.post('http://localhost:3000/ticket', body);
+        : axios.post('ticket', body);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [ticketKey] });
     },
   });
 }
@@ -29,7 +33,7 @@ export function useTicketList() {
     queryKey: [ticketKey, loggedInUser?.id],
     queryFn: async () =>
       (
-        await axios.get('http://localhost:3000/ticket/', {
+        await axios.get('ticket/list', {
           params: { id: loggedInUser?.id },
         })
       ).data,

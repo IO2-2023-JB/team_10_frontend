@@ -14,10 +14,6 @@ export enum TicketStatus {
   Resolved = 'Resolved',
 }
 
-export interface GetTicketStatus {
-  status: TicketStatus;
-}
-
 export enum TicketTargetType {
   Video = 'Video',
   User = 'User',
@@ -31,7 +27,7 @@ export interface GetTicket {
   targetId: string;
   targetType: TicketTargetType;
   reason: string;
-  status: GetTicketStatus;
+  status: TicketStatus;
   response: string;
 }
 
