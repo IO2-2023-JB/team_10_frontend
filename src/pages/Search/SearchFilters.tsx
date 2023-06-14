@@ -5,7 +5,7 @@ import { createSearchParams, useNavigate, useSearchParams } from 'react-router-d
 import { ROUTES, SEARCH_PARAMS } from '../../const';
 import { useMobileLayout } from '../../theme';
 import { removeEmptySearchParams } from '../../utils/utils';
-import DatePickerFilter from './DatePickerFilter';
+import DateRangePicker from './DateRangePicker';
 import SortingDirectionField from './SortingDirectionField';
 import SortingTypeField from './SortingTypeField';
 
@@ -57,18 +57,8 @@ function SearchFilters() {
       >
         <SortingTypeField minWidth={minWidth} search={search} />
         <SortingDirectionField minWidth={minWidth} search={search} />
-        <DatePickerFilter
-          width={minWidth}
-          label='Dodano po'
-          queryKey={SEARCH_PARAMS.START_DATE}
-          search={search}
-        />
-        <DatePickerFilter
-          width={minWidth}
-          label='Dodano przed'
-          queryKey={SEARCH_PARAMS.END_DATE}
-          search={search}
-        />
+        <DateRangePicker minWidth={minWidth} search={search} />
+
         <Button onClick={handleClearFilters}>Wyczyść</Button>
       </Stack>
     </LocalizationProvider>
