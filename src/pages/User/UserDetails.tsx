@@ -1,8 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { useUserDetailsEdit } from '../../api/user';
-import StatusSnackbar from '../../components/StatusSnackbar';
 import SubscribeButton from '../../components/SubscribeButton';
 import DonateButton from '../../components/donate/DonateButton';
 import WithdrawButton from '../../components/donate/WithdrawButton';
@@ -24,7 +22,6 @@ interface UserDetailsProps {
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
-  const mutationResult = useUserDetailsEdit();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -120,17 +117,8 @@ function UserDetails({ userDetails }: UserDetailsProps) {
         </Stack>
       </Stack>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <UserDetailsEditForm
-          closeDialog={handleDialogClose}
-          userDetails={userDetails}
-          mutation={mutationResult}
-        />
+        <UserDetailsEditForm closeDialog={handleDialogClose} userDetails={userDetails} />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie edytowano dane użytkownika ${userDetails.nickname}!`}
-        isSuccess={mutationResult.isSuccess}
-        reset={mutationResult.reset}
-      />
     </>
   );
 }

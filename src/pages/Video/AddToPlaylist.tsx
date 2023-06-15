@@ -1,6 +1,7 @@
 import { PlaylistAdd } from '@mui/icons-material';
 import {
   Alert,
+  AlertTitle,
   Box,
   IconButton,
   List,
@@ -11,11 +12,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useAddVideoToPlaylist, useUserPlaylists } from '../../api/playlist';
-import StatusSnackbar from '../../components/StatusSnackbar';
 import ContentSection from '../../components/layout/ContentSection';
 import FormDialog from '../../components/layout/FormDialog';
+import { snackbarState } from '../../data/SnackbarData';
 import { userDetailsState } from '../../data/UserData';
 import { useMobileLayout } from '../../theme';
 import { GetPlaylistBase } from '../../types/PlaylistTypes';
@@ -31,6 +32,7 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string | null>(null);
   const loggedInUser = useRecoilValue(userDetailsState);
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const { data: playlists, error, isLoading } = useUserPlaylists(loggedInUser?.id);
   const {
     mutate: addToPlaylist,
@@ -47,8 +49,14 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
   };
 
   useEffect(() => {
-    if (isAddSuccess) setIsDialogOpen(false);
-  }, [isAddSuccess]);
+    if (isAddSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie dodano film do grajlisty ${playlistName}!`,
+      });
+      setIsDialogOpen(false);
+    }
+  }, [isAddSuccess, playlistName, reset, setSnackbarState]);
 
   const playlistList =
     playlists !== undefined && playlists.length > 0 ? (
@@ -88,7 +96,8 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
         disablePadding
       >
         {addToPlaylistError && (
-          <Alert severity='info' variant='filled' sx={{ marginBottom: 1 }}>
+          <Alert severity='error' variant='filled' sx={{ marginBottom: 1 }}>
+            <AlertTitle>Wystąpił błąd!</AlertTitle>
             {getErrorMessage(addToPlaylistError)}
           </Alert>
         )}
@@ -106,11 +115,6 @@ function AddToPlaylist({ videoId }: AddToPlaylistProps) {
           )}
         </ContentSection>
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie dodano do grajlisty ${playlistName}!`}
-        isSuccess={isAddSuccess}
-        reset={reset}
-      />
     </>
   );
 }

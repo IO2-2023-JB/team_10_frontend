@@ -1,9 +1,10 @@
 import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { useCreatePlaylist } from '../../../api/playlist';
-import StatusSnackbar from '../../../components/StatusSnackbar';
 import FormDialog from '../../../components/layout/FormDialog';
+import { snackbarState } from '../../../data/SnackbarData';
 import {
   PlaylistFormFields,
   playlistValidationSchema,
@@ -18,6 +19,7 @@ const initialValues = {
 };
 
 function NewPlaylistButton() {
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [newPlaylistName, setNewPlaylistName] = useState<string | null>(null);
 
@@ -29,14 +31,20 @@ function NewPlaylistButton() {
     reset,
   } = useCreatePlaylist();
 
+  useEffect(() => {
+    if (isSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie utworzono grajlistę ${newPlaylistName}!`,
+      });
+      setIsDialogOpen(false);
+    }
+  }, [isSuccess, newPlaylistName, reset, setSnackbarState]);
+
   const handleSubmit = (values: PostPlaylist) => {
     setNewPlaylistName(values.name);
     createPlaylist(values);
   };
-
-  useEffect(() => {
-    if (isSuccess) setIsDialogOpen(false);
-  }, [isSuccess]);
 
   return (
     <>
@@ -67,11 +75,6 @@ function NewPlaylistButton() {
           onSubmit={handleSubmit}
         />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie utworzono grajlistę ${newPlaylistName}!`}
-        isSuccess={isSuccess}
-        reset={reset}
-      />
     </>
   );
 }

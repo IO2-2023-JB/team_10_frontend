@@ -1,9 +1,7 @@
 import { Button, MenuItem } from '@mui/material';
 import { useState } from 'react';
-import { useDonate } from '../../api/donate';
 import DonateDialog from '../../pages/Donate/DonateDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
-import StatusSnackbar from '../StatusSnackbar';
 import FormDialog from '../layout/FormDialog';
 
 interface DonateButtonProps {
@@ -12,9 +10,7 @@ interface DonateButtonProps {
 }
 
 function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
-  const mutation = useDonate(creator.id);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(0);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -36,18 +32,8 @@ function DonateButton({ creator, asMenuItem = false }: DonateButtonProps) {
     <>
       {button}
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <DonateDialog
-          creator={creator}
-          closeDialog={handleDialogClose}
-          mutation={mutation}
-          setAmount={setAmount}
-        />
+        <DonateDialog creator={creator} closeDialog={handleDialogClose} />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie przesłano ${amount} €🧽 do ${creator.nickname}`}
-        isSuccess={mutation.isSuccess}
-        reset={mutation.reset}
-      />
     </>
   );
 }

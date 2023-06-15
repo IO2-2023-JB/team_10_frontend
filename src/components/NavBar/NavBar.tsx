@@ -2,9 +2,10 @@ import { Close, Logout, Publish, Search } from '@mui/icons-material';
 import { IconButton, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { ROUTES } from '../../const';
+import { snackbarState } from '../../data/SnackbarData';
 import { userDetailsState } from '../../data/UserData';
 import { uploadProgressState, uploadingVideoState } from '../../data/VideoData';
 import { useMobileLayout } from '../../theme';
@@ -17,6 +18,7 @@ import SearchField from './SearchField/SearchField';
 
 function NavBar() {
   const [userDetails, setUserDetails] = useRecoilState(userDetailsState);
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const { data: userDetailsFull } = useUserDetails(userDetails?.id);
   const uploadingVideo = useRecoilValue(uploadingVideoState);
   const uploadProgress = useRecoilValue(uploadProgressState);
@@ -32,6 +34,7 @@ function NavBar() {
   const isUploading = uploadingVideo !== null;
 
   const handleLogout = () => {
+    setSnackbarState(null);
     setUserDetails(null);
     navigate(ROUTES.LOGIN);
   };
