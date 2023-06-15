@@ -1,7 +1,7 @@
 import { PaletteMode, useMediaQuery, useTheme } from '@mui/material';
 import { AppMode } from './data/AppStateData';
 
-export const getTheme = (appMode: AppMode) => ({
+const getTheme = (appMode: AppMode) => ({
   typography: {
     fontFamily: ['Source Sans Pro', 'sans-serif'].join(','),
     h1: {

@@ -1,10 +1,11 @@
 import { Alert, AlertTitle, Box, Button, CircularProgress, Stack } from '@mui/material';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useRef } from 'react';
 import { useLoggedInUserDetails } from '../../api/user';
 import { getErrorMessage } from '../../utils/utils';
-import { useSetRecoilState } from 'recoil';
-import { AppMode, appModeState } from '../../data/AppStateData';
-import { MODE_DURATION } from '../../const';
+import { useRecoilState } from 'recoil';
+import { AppMode, appModeState, isBarkaPlaying } from '../../data/AppStateData';
+import { MODE_DURATION, MODE_INTERVAL_FREQUENCY } from '../../const';
+import { useInterval } from 'usehooks-ts';
 
 interface AppLoaderProps {
   children: ReactNode;
@@ -12,22 +13,24 @@ interface AppLoaderProps {
 
 function AppLoader({ children }: AppLoaderProps) {
   const { isLoading, error, reload, logOut, showLoading } = useLoggedInUserDetails();
-  const setAppMode = useSetRecoilState(appModeState);
+  const [appMode, setAppMode] = useRecoilState(appModeState);
+  const [isPlaying, setIsPlaying] = useRecoilState(isBarkaPlaying);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => {
-    setInterval(() => {
-      const now = new Date(Date.now());
-      if (now.getHours() === 21 && now.getMinutes() === 37) {
-        setAppMode(AppMode.Papiesz);
-        audioRef.current?.play();
-        setTimeout(() => {
-          audioRef.current?.pause();
-        }, MODE_DURATION);
-      }
-      if (now.getHours() === 4 && now.getMinutes() === 20) setAppMode(AppMode.Green);
-    }, MODE_DURATION);
-  }, [setAppMode]);
+  useInterval(() => {
+    const now = new Date();
+    if (!isPlaying && appMode === AppMode.Papiesz) {
+      audioRef.current?.play();
+      setIsPlaying(true);
+      setTimeout(() => {
+        audioRef.current?.pause();
+        setIsPlaying(false);
+      }, MODE_DURATION);
+    }
+    if (appMode !== AppMode.Standard) return;
+    if (now.getHours() === 21 && now.getMinutes() === 37) setAppMode(AppMode.Papiesz);
+    if (now.getHours() === 16 && now.getMinutes() === 20) setAppMode(AppMode.Green);
+  }, MODE_INTERVAL_FREQUENCY);
 
   if (showLoading && (isLoading || error)) {
     return (
