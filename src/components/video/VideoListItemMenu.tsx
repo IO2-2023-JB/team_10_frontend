@@ -24,9 +24,6 @@ function VideoListItemMenu({ playlistId, videoMetadata }: VideoListItemMenuProps
 
   const loggedInUser = useRecoilValue(userDetailsState);
   const isAuthor = videoMetadata.authorId === loggedInUser?.id;
-  const showMenu = Boolean(!isAuthor || playlistId);
-
-  if (!showMenu) return null;
 
   return (
     <>

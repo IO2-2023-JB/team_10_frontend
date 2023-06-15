@@ -39,17 +39,17 @@ function TicketButton({
     setDialogOpen(false);
   };
 
+  const actionText = `${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`;
+
   const button =
     buttonType === ButtonType.Standard ? (
       <Button variant='contained' onClick={onDialogOpen}>
-        {`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}
+        {actionText}
       </Button>
     ) : buttonType === ButtonType.MenuItem ? (
-      <MenuItem onClick={onDialogOpen}>
-        {`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}
-      </MenuItem>
+      <MenuItem onClick={onDialogOpen}>{actionText}</MenuItem>
     ) : (
-      <Tooltip title={`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}>
+      <Tooltip title={actionText}>
         <IconButton
           sx={{
             alignSelf: targetNameInTitle === 'komentarz' ? 'center' : undefined,
@@ -71,7 +71,7 @@ function TicketButton({
       </Tooltip>
     );
 
-  if (loggedInUser?.userType === AccountType.Administrator) return null;
+  if (loggedInUser?.userType !== AccountType.Administrator) return null;
 
   return (
     <>
