@@ -16,6 +16,8 @@ import {
 } from '../../../types/SearchTypes';
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
+import { useRecoilState } from 'recoil';
+import { AppMode, appModeState } from '../../../data/AppStateData';
 
 function prepareSearchResults(searchResults: GetSearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
@@ -68,6 +70,7 @@ function SearchField({ sx, onClick }: SearchFieldProps) {
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
   const { data: searchResults } = useSearch({ query: queryDebounced });
+  const [appModeData, setAppModeData] = useRecoilState(appModeState);
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
@@ -91,6 +94,11 @@ function SearchField({ sx, onClick }: SearchFieldProps) {
   ) => {
     if (reason === 'input') setQuery(value);
     else setQuery(defaultQuery);
+
+    if (value === '2137' && appModeData.appMode !== AppMode.Papiesz)
+      setAppModeData({ appMode: AppMode.Papiesz, timeout: null });
+    if (value === '420' && appModeData.appMode !== AppMode.Green)
+      setAppModeData({ appMode: AppMode.Green, timeout: null });
   };
 
   const defaultQuery = location.pathname.startsWith(ROUTES.SEARCH)

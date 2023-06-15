@@ -1,6 +1,8 @@
 import { Avatar as MuiAvatar } from '@mui/material';
 import { getInitials } from '../utils/utils';
 import { GetUserDetailsResponse } from './../types/UserTypes';
+import { useRecoilValue } from 'recoil';
+import { AppMode, appModeState } from '../data/AppStateData';
 
 interface AvatarProps {
   userDetails?: GetUserDetailsResponse;
@@ -8,9 +10,15 @@ interface AvatarProps {
 }
 
 function Avatar({ userDetails, size }: AvatarProps) {
+  const appMode = useRecoilValue(appModeState);
+
   return (
     <MuiAvatar
-      src={userDetails?.avatarImage ?? undefined}
+      src={
+        appMode.appMode === AppMode.Papiesz
+          ? '/papaj-jp2gmd.gif'
+          : userDetails?.avatarImage ?? undefined
+      }
       sx={{
         width: size,
         height: size,

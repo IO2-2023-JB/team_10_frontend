@@ -40,3 +40,6 @@ export const SEARCH_PARAMS = {
 
 export const AUTO_HIDE_DURATION = 5000;
 export const METADATA_REFETCH_INTERVAL = 1000;
+
+export const MODE_DURATION = 60000;
+export const MODE_INTERVAL_FREQUENCY = 1000;
