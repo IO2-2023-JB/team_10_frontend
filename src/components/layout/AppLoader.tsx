@@ -13,26 +13,32 @@ interface AppLoaderProps {
 
 function AppLoader({ children }: AppLoaderProps) {
   const { isLoading, error, reload, logOut, showLoading } = useLoggedInUserDetails();
-  const [appMode, setAppMode] = useRecoilState(appModeState);
+  const [appModeData, setAppModeData] = useRecoilState(appModeState);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useInterval(() => {
     const now = new Date();
-    if (appMode !== AppMode.Standard) return;
-    if (now.getHours() === 21 && now.getMinutes() === 37) setAppMode(AppMode.Papiesz);
-    if (now.getHours() === 16 && now.getMinutes() === 20) setAppMode(AppMode.Green);
+    if (appModeData.appMode !== AppMode.Standard) return;
+    if (now.getHours() === 21 && now.getMinutes() === 37)
+      setAppModeData({ appMode: AppMode.Papiesz, timeout: null });
+    if (now.getHours() === 16 && now.getMinutes() === 20)
+      setAppModeData({ appMode: AppMode.Green, timeout: null });
   }, MODE_INTERVAL_FREQUENCY);
 
   useEffect(() => {
     if (audioRef.current) {
-      if (appMode === AppMode.Papiesz) {
-        audioRef.current.currentTime = 0;
+      audioRef.current.currentTime = 0;
+      if (appModeData.appMode === AppMode.Papiesz) {
+        audioRef.current.src = '/wapiesz.mp3';
+        audioRef.current?.play();
+      } else if (appModeData.appMode === AppMode.Green) {
+        audioRef.current.src = '/snoop.mp3';
         audioRef.current?.play();
       } else {
         audioRef.current?.pause();
       }
     }
-  }, [appMode]);
+  }, [appModeData.appMode]);
 
   if (showLoading && (isLoading || error)) {
     return (
@@ -61,7 +67,7 @@ function AppLoader({ children }: AppLoaderProps) {
 
   return (
     <>
-      <audio ref={audioRef} src='/wapiesz.mp3' />
+      <audio ref={audioRef} />
       {children}
     </>
   );

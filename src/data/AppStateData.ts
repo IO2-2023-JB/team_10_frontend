@@ -7,16 +7,25 @@ export enum AppMode {
   Green,
 }
 
-export const appModeState = atom<AppMode>({
+export interface AppModeData {
+  appMode: AppMode;
+  timeout: NodeJS.Timeout | null;
+}
+
+export const appModeState = atom<AppModeData>({
   key: 'appModeState',
-  default: AppMode.Standard,
+  default: { appMode: AppMode.Standard, timeout: null } as AppModeData,
   effects: [
     ({ onSet, setSelf }) => {
-      onSet((newState) => {
-        if (newState !== AppMode.Standard)
-          setTimeout(() => {
-            setSelf(AppMode.Standard);
+      onSet((newState, oldState) => {
+        if (newState.appMode !== AppMode.Standard) {
+          if ((oldState as AppModeData).timeout !== null)
+            clearTimeout((oldState as AppModeData).timeout!);
+          const timeout = setTimeout(() => {
+            setSelf({ appMode: AppMode.Standard, timeout: null });
           }, MODE_DURATION);
+          setSelf({ appMode: newState.appMode, timeout: timeout });
+        }
       });
     },
   ],

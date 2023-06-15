@@ -70,7 +70,7 @@ function SearchField({ sx, onClick }: SearchFieldProps) {
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
   const { data: searchResults } = useSearch({ query: queryDebounced });
-  const [appMode, setAppMode] = useRecoilState(appModeState);
+  const [appModeData, setAppModeData] = useRecoilState(appModeState);
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
@@ -95,8 +95,10 @@ function SearchField({ sx, onClick }: SearchFieldProps) {
     if (reason === 'input') setQuery(value);
     else setQuery(defaultQuery);
 
-    if (value === '2137' && appMode !== AppMode.Papiesz) setAppMode(AppMode.Papiesz);
-    if (value === '420' && appMode !== AppMode.Green) setAppMode(AppMode.Green);
+    if (value === '2137' && appModeData.appMode !== AppMode.Papiesz)
+      setAppModeData({ appMode: AppMode.Papiesz, timeout: null });
+    if (value === '420' && appModeData.appMode !== AppMode.Green)
+      setAppModeData({ appMode: AppMode.Green, timeout: null });
   };
 
   const defaultQuery = location.pathname.startsWith(ROUTES.SEARCH)

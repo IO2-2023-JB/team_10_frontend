@@ -35,8 +35,8 @@ const Playlist = lazy(() => import('./pages/Playlist'));
 const Search = lazy(() => import('./pages/Search'));
 
 function App() {
-  const appMode = useRecoilValue(appModeState);
-  const theme = useMemo(() => createTheme(getTheme(appMode)), [appMode]);
+  const appModeData = useRecoilValue(appModeState);
+  const theme = useMemo(() => createTheme(getTheme(appModeData.appMode)), [appModeData]);
 
   return (
     <BrowserRouter>
