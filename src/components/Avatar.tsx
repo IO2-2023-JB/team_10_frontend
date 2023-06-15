@@ -16,7 +16,7 @@ function Avatar({ userDetails, size }: AvatarProps) {
     <MuiAvatar
       src={
         appMode === AppMode.Papiesz
-          ? '/papiesz.png'
+          ? '/papaj-jp2gmd.gif'
           : userDetails?.avatarImage ?? undefined
       }
       sx={{

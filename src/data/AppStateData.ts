@@ -21,8 +21,3 @@ export const appModeState = atom<AppMode>({
     },
   ],
 });
-
-export const isBarkaPlaying = atom<boolean>({
-  key: 'isBarkaPlaying',
-  default: false,
-});
