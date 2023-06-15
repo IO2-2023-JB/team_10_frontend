@@ -120,7 +120,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
               <TicketButton
                 targetId={userDetails.id}
                 buttonType={ButtonType.Icon}
-                targetNameInTitle='konto'
+                targetNameInTitle='użytkownika'
               />
             </>
           )}

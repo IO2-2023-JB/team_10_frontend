@@ -41,7 +41,7 @@ function UserInfoButtons({ userDetails, asMenu }: UserInfoButtonsProps) {
             <TicketButton
               targetId={userDetails.id}
               buttonType={ButtonType.MenuItem}
-              targetNameInTitle='konto'
+              targetNameInTitle='użytkownika'
             />
           )}
         </Menu>
@@ -57,7 +57,7 @@ function UserInfoButtons({ userDetails, asMenu }: UserInfoButtonsProps) {
         <TicketButton
           targetId={userDetails.id}
           buttonType={ButtonType.Icon}
-          targetNameInTitle='konto'
+          targetNameInTitle='użytkownika'
         />
       )}
     </Stack>

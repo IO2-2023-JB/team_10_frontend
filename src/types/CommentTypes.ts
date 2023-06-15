@@ -13,4 +13,4 @@ export interface GetComment {
 
 export type GetCommentById = CommentValues;
 
-export type GetCommentResponseById = Omit<CommentValues, 'hasResponses'>;
+export type GetCommentResponseById = CommentValues;

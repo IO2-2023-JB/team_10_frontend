@@ -7,6 +7,10 @@ import { OutlinedFlag } from '@mui/icons-material';
 import { useSendOrResolveTicket } from '../api/ticket';
 import { useMobileLayout } from '../theme';
 import StatusSnackbar from './StatusSnackbar';
+import { useRecoilValue } from 'recoil';
+import { useUserDetails } from '../api/user';
+import { userDetailsState } from './../data/UserData';
+import { AccountType } from '../types/UserTypes';
 
 interface TicketButtonProps {
   buttonType: ButtonType;
@@ -24,6 +28,8 @@ function TicketButton({
   const mutation = useSendOrResolveTicket(targetId, isResponse);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const { isMobile } = useMobileLayout();
+  const loggedInUserDetails = useRecoilValue(userDetailsState);
+  const { data: loggedInUser } = useUserDetails(loggedInUserDetails?.id);
 
   const onDialogOpen = () => {
     setDialogOpen(true);
@@ -36,18 +42,19 @@ function TicketButton({
   const button =
     buttonType === ButtonType.Standard ? (
       <Button variant='contained' onClick={onDialogOpen}>
-        {(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}
+        {`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}
       </Button>
     ) : buttonType === ButtonType.MenuItem ? (
       <MenuItem onClick={onDialogOpen}>
-        {(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}
+        {`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}
       </MenuItem>
     ) : (
-      <Tooltip title={(isResponse ? 'Rozwiąż ' : 'Zgłoś ') + targetNameInTitle}>
+      <Tooltip title={`${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`}>
         <IconButton
           sx={{
             alignSelf: targetNameInTitle === 'komentarz' ? 'center' : undefined,
             color: targetNameInTitle === 'komentarz' ? 'grey.800' : 'primary.main',
+            padding: isMobile ? '5px' : undefined,
           }}
           onClick={onDialogOpen}
         >
@@ -64,6 +71,8 @@ function TicketButton({
       </Tooltip>
     );
 
+  if (loggedInUser?.userType === AccountType.Administrator) return null;
+
   return (
     <>
       {button}
@@ -73,7 +82,7 @@ function TicketButton({
           closeDialog={onDialogClose}
           targetName={targetNameInTitle}
           isResponse={isResponse}
-        ></TicketSubmitDialog>
+        />
       </FormDialog>
       <StatusSnackbar
         successMessage={`Pomyślnie ${

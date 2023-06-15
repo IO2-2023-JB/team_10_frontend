@@ -1,10 +1,10 @@
 import { Alert, Stack } from '@mui/material';
-import { GetTicket } from '../../types/TicketTypes';
-import TicketListItem from './TicketListItem';
 import { useRecoilValue } from 'recoil';
 import { useUserDetails } from '../../api/user';
 import { userDetailsState } from '../../data/UserData';
+import { GetTicket } from '../../types/TicketTypes';
 import { AccountType } from '../../types/UserTypes';
+import TicketListItem from './TicketListItem';
 
 interface TicketListProps {
   tickets: GetTicket[];
@@ -18,11 +18,13 @@ function TicketList({ tickets }: TicketListProps) {
     return <Alert severity='info'>Brak zgłoszeń do wyświetlenia</Alert>;
   }
 
+  if (!userDetails) return null;
+
   return (
     <Stack>
-      {tickets.map((ticket, index) => (
+      {tickets.map((ticket) => (
         <TicketListItem
-          key={index}
+          key={ticket.ticketId}
           ticket={ticket}
           isAdmin={userDetails?.userType === AccountType.Administrator}
         />

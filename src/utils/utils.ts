@@ -64,8 +64,6 @@ export const translateTicketTargetType = (value: TicketTargetType): string => {
       return 'komentarz';
     case TicketTargetType.CommentResponse:
       return 'odpowiedź do komentarza';
-    default:
-      return '';
   }
 };
 
@@ -75,7 +73,5 @@ export const translateTicketStatus = (value: TicketStatus): string => {
       return 'rozwiązane';
     case TicketStatus.Submitted:
       return 'oczekuje na odpowiedź';
-    default:
-      return '';
   }
 };

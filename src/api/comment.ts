@@ -75,6 +75,7 @@ export function useCommentById(id: string | undefined) {
   return useQuery<GetCommentById, AxiosError>({
     queryKey: [commentByIdKey, id],
     enabled: id !== undefined,
+    retry: false,
     queryFn: async () =>
       (await axios.get('comment/commentById', { params: { id } })).data,
   });
@@ -84,6 +85,7 @@ export function useCommentResponseById(id: string | undefined) {
   return useQuery<GetCommentResponseById, AxiosError>({
     queryKey: [commentResponseByIdKey, id],
     enabled: id !== undefined,
+    retry: false,
     queryFn: async () =>
       (await axios.get('comment/commentResponseById', { params: { id } })).data,
   });
