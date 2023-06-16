@@ -79,13 +79,13 @@ function NavBar() {
             onClick={handleClickUpload}
           />
         )}
-        <ResponsiveButton
-          icon={<Report />}
-          label='Zgłoszenia'
-          onClick={handleClickTickets}
-        />
         {userDetails !== null && (
           <>
+            <ResponsiveButton
+              icon={<Report />}
+              label='Zgłoszenia'
+              onClick={handleClickTickets}
+            />
             {isDesktop ? (
               <SearchField
                 sx={{

@@ -30,9 +30,6 @@ function VideoListItemMenu({
   const isAdmin = useAdmin();
   const loggedInUser = useRecoilValue(userDetailsState);
   const isAuthor = videoMetadata.authorId === loggedInUser?.id;
-  const showMenu = Boolean(isAuthor || playlistId || isAdmin);
-
-  if (!showMenu) return null;
 
   return (
     <>
