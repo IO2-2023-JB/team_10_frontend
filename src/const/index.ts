@@ -28,6 +28,7 @@ export const ROUTES = {
   PLAYLIST: '/playlist',
   SEARCH: '/search',
   SWITCH_BACKEND: '/switch-backend',
+  TICKETS: '/tickets',
 };
 
 export const SEARCH_PARAMS = {

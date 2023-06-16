@@ -1,4 +1,4 @@
-import { Close, Logout, Publish, Search } from '@mui/icons-material';
+import { Close, Logout, Publish, Report, Search } from '@mui/icons-material';
 import { IconButton, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -43,6 +43,10 @@ function NavBar() {
     navigate(ROUTES.UPLOAD);
   };
 
+  const handleClickTickets = () => {
+    navigate(ROUTES.TICKETS);
+  };
+
   let content;
 
   if (isSearchOpen) {
@@ -75,6 +79,11 @@ function NavBar() {
             onClick={handleClickUpload}
           />
         )}
+        <ResponsiveButton
+          icon={<Report />}
+          label='Zgłoszenia'
+          onClick={handleClickTickets}
+        />
         {userDetails !== null && (
           <>
             {isDesktop ? (

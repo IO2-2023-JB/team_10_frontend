@@ -10,3 +10,7 @@ export interface CommentValues {
 export interface GetComment {
   comments: CommentValues[];
 }
+
+export type GetCommentById = CommentValues;
+
+export type GetCommentResponseById = CommentValues;

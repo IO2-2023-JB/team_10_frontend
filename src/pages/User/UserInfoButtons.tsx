@@ -4,6 +4,10 @@ import { useState } from 'react';
 import SubscribeButton from '../../components/SubscribeButton';
 import DonateButton from '../../components/donate/DonateButton';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
+import TicketButton from '../../components/TicketButton';
+import { ButtonType } from '../../types/TicketTypes';
+import { useRecoilValue } from 'recoil';
+import { userDetailsState } from '../../data/UserData';
 
 interface UserInfoButtonsProps {
   userDetails: GetUserDetailsResponse;
@@ -11,6 +15,7 @@ interface UserInfoButtonsProps {
 }
 
 function UserInfoButtons({ userDetails, asMenu }: UserInfoButtonsProps) {
+  const loggedInUser = useRecoilValue(userDetailsState);
   const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
   const isOpen = menuAnchorElement !== null;
 
@@ -32,6 +37,13 @@ function UserInfoButtons({ userDetails, asMenu }: UserInfoButtonsProps) {
         >
           <SubscribeButton creatorId={userDetails.id} asMenuItem />
           <DonateButton creator={userDetails} asMenuItem />
+          {loggedInUser?.id !== userDetails.id && (
+            <TicketButton
+              targetId={userDetails.id}
+              buttonType={ButtonType.MenuItem}
+              targetNameInTitle='użytkownika'
+            />
+          )}
         </Menu>
       </>
     );
@@ -41,6 +53,13 @@ function UserInfoButtons({ userDetails, asMenu }: UserInfoButtonsProps) {
     <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
       <SubscribeButton creatorId={userDetails.id} />
       <DonateButton creator={userDetails} />
+      {loggedInUser?.id !== userDetails.id && (
+        <TicketButton
+          targetId={userDetails.id}
+          buttonType={ButtonType.Icon}
+          targetNameInTitle='użytkownika'
+        />
+      )}
     </Stack>
   );
 }

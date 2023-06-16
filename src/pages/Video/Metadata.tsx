@@ -10,6 +10,8 @@ import MetadataButtons from './MetadataButtons';
 import Reaction from './Reaction';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
+import TicketButton from '../../components/TicketButton';
+import { ButtonType } from '../../types/TicketTypes';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -39,6 +41,13 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
           <VideoTags tags={videoMetadata.tags} />
         </Stack>
         <Stack direction='row' alignItems='start' sx={{ flexShrink: 0 }}>
+          {!isAuthor && (
+            <TicketButton
+              targetId={videoMetadata.id}
+              buttonType={ButtonType.Icon}
+              targetNameInTitle='wideło'
+            />
+          )}
           <AddToPlaylist videoId={videoMetadata.id} />
           <Reaction videoId={videoMetadata.id} />
         </Stack>

@@ -10,6 +10,8 @@ import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
 import { CommentValues } from '../../../types/CommentTypes';
 import CommentSection from './CommentSection';
+import TicketButton from '../../../components/TicketButton';
+import { ButtonType } from '../../../types/TicketTypes';
 
 interface CommentProps {
   comment: CommentValues;
@@ -17,9 +19,17 @@ interface CommentProps {
   open: (id: string | null) => void;
   isResponse: boolean;
   isOpen: boolean;
+  isOnTicketList?: boolean;
 }
 
-function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) {
+function Comment({
+  comment,
+  originId,
+  isResponse,
+  isOpen,
+  open,
+  isOnTicketList = false,
+}: CommentProps) {
   const { authorId, content, hasResponses, id: commentId } = comment;
   const user = useRecoilValue(userDetailsState);
   const { data: authorDetails } = useUserDetails(authorId);
@@ -75,6 +85,7 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
         sx={{
           alignSelf: 'flex-start',
           padding: 1,
+          paddingRight: 2,
           backgroundColor: 'background.default',
           borderRadius: 3,
           ...hover,
@@ -107,9 +118,11 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
               <Skeleton width={120} variant='rectangular' />
             )}
             <Typography sx={{ wordWrap: 'anywhere' }}>{content}</Typography>
-            <Typography fontSize={12} color='text.secondary'>
-              {message}
-            </Typography>
+            {!isOnTicketList && (
+              <Typography fontSize={12} color='text.secondary'>
+                {message}
+              </Typography>
+            )}
           </Stack>
           {user?.id === authorId && (
             <IconButton
@@ -118,6 +131,13 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
             >
               <DeleteOutlineIcon />
             </IconButton>
+          )}
+          {user?.id !== authorId && !isOnTicketList && (
+            <TicketButton
+              targetId={commentId}
+              buttonType={ButtonType.Icon}
+              targetNameInTitle='komentarz'
+            />
           )}
         </Stack>
       </Paper>

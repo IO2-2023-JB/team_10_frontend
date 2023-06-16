@@ -11,6 +11,8 @@ import { useMobileLayout } from '../../theme';
 import PlaylistDelete from './PlaylistDelete';
 import PlaylistEditForm from './PlaylistEditForm';
 import PlaylistInfo from './PlaylistInfo';
+import TicketButton from '../../components/TicketButton';
+import { ButtonType } from '../../types/TicketTypes';
 
 function Playlist() {
   const { playlistId } = useParams();
@@ -48,6 +50,13 @@ function Playlist() {
                       <PlaylistEditForm id={playlistId!} playlist={playlist} />
                       <PlaylistDelete id={playlistId!} playlist={playlist} />
                     </>
+                  )}
+                  {!isOwn && playlistId && (
+                    <TicketButton
+                      targetId={playlistId}
+                      buttonType={ButtonType.Icon}
+                      targetNameInTitle='playlistę'
+                    />
                   )}
                 </Stack>
               </Stack>
