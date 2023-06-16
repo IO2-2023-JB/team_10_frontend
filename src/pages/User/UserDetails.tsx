@@ -1,11 +1,14 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useAdmin } from '../../api/user';
 import SubscribeButton from '../../components/SubscribeButton';
+import TicketButton from '../../components/TicketButton';
 import DonateButton from '../../components/donate/DonateButton';
 import WithdrawButton from '../../components/donate/WithdrawButton';
 import FormDialog from '../../components/layout/FormDialog';
 import { useMobileLayout } from '../../theme';
+import { ButtonType } from '../../types/TicketTypes';
 import {
   AccountType,
   GetUserDetailsResponse,
@@ -14,9 +17,8 @@ import {
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import Avatar from './../../components/Avatar';
 import { userDetailsState } from './../../data/UserData';
+import DeleteUserButton from './DeleteUserButton';
 import UserDetailsEditForm from './UserDetailsEditForm';
-import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/TicketTypes';
 
 interface UserDetailsProps {
   userDetails: GetUserDetailsResponse;
@@ -24,11 +26,12 @@ interface UserDetailsProps {
 
 function UserDetails({ userDetails }: UserDetailsProps) {
   const loggedUserDetails = useRecoilValue(userDetailsState);
-
+  const isAdmin = useAdmin();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const { mobileQuery, desktopQuery, isMobile, isDesktop } = useMobileLayout();
 
+  const isSelf = userDetails.id === loggedUserDetails?.id;
   const textTop = `${userDetails.name} ${userDetails.surname}`;
 
   let textBottom = getUserTypeString(userDetails);
@@ -99,7 +102,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
           spacing={1}
           sx={{ [desktopQuery]: { marginInlineStart: 'auto' } }}
         >
-          {userDetails.id === loggedUserDetails?.id && (
+          {isSelf && (
             <>
               <Button onClick={handleDialogOpen} variant='contained'>
                 Edytuj profil
@@ -109,7 +112,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
               )}
             </>
           )}
-          {userDetails.id !== loggedUserDetails?.id && (
+          {!isSelf && (
             <>
               {userDetails.userType === AccountType.Creator && (
                 <>
@@ -117,12 +120,17 @@ function UserDetails({ userDetails }: UserDetailsProps) {
                   <SubscribeButton creatorId={userDetails.id} />
                 </>
               )}
-              <TicketButton
-                targetId={userDetails.id}
-                buttonType={ButtonType.Icon}
-                targetNameInTitle='użytkownika'
-              />
+              {!isAdmin && (
+                <TicketButton
+                  targetId={userDetails.id}
+                  buttonType={ButtonType.Icon}
+                  targetNameInTitle='konto'
+                />
+              )}
             </>
+          )}
+          {(isSelf || isAdmin) && userDetails.userType !== AccountType.Administrator && (
+            <DeleteUserButton userId={userDetails.id} />
           )}
         </Stack>
       </Stack>

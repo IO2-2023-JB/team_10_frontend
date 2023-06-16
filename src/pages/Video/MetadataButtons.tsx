@@ -1,6 +1,7 @@
 import { MoreVert } from '@mui/icons-material';
 import { IconButton, Menu, Stack } from '@mui/material';
 import { useState } from 'react';
+import { useAdmin } from '../../api/user';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import MetadataForm from './MetadataForm';
 import VideoDelete from './VideoDelete';
@@ -8,10 +9,12 @@ import VideoDelete from './VideoDelete';
 interface MetadataButtonsProps {
   videoMetadata: GetVideoMetadataResponse;
   asMenu: boolean;
+  isAuthor: boolean;
 }
 
-function MetadataButtons({ videoMetadata, asMenu }: MetadataButtonsProps) {
+function MetadataButtons({ videoMetadata, asMenu, isAuthor }: MetadataButtonsProps) {
   const [menuAnchorElement, setMenuAnchorElement] = useState<HTMLElement | null>(null);
+  const isAdmin = useAdmin();
   const isOpen = menuAnchorElement !== null;
 
   if (asMenu) {
@@ -30,8 +33,8 @@ function MetadataButtons({ videoMetadata, asMenu }: MetadataButtonsProps) {
           anchorEl={menuAnchorElement}
           onClose={() => setMenuAnchorElement(null)}
         >
-          <MetadataForm videoMetadata={videoMetadata} asMenuItem />
-          <VideoDelete videoId={videoMetadata.id} asMenuItem />
+          {isAuthor && <MetadataForm videoMetadata={videoMetadata} asMenuItem />}
+          {(isAdmin || isAuthor) && <VideoDelete videoId={videoMetadata.id} asMenuItem />}
         </Menu>
       </>
     );
@@ -39,8 +42,8 @@ function MetadataButtons({ videoMetadata, asMenu }: MetadataButtonsProps) {
 
   return (
     <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
-      <MetadataForm videoMetadata={videoMetadata} />
-      <VideoDelete videoId={videoMetadata.id} />
+      {isAuthor && <MetadataForm videoMetadata={videoMetadata} />}
+      {(isAdmin || isAuthor) && <VideoDelete videoId={videoMetadata.id} />}
     </Stack>
   );
 }

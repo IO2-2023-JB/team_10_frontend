@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
-import { GetTicket, PostTicket, PutTicket } from '../types/TicketTypes';
-import { userDetailsState } from '../data/UserData';
 import { useRecoilValue } from 'recoil';
+import { userDetailsState } from '../data/UserData';
+import { GetTicket, PostTicket, PutTicket } from '../types/TicketTypes';
 
 const ticketKey = 'ticket';
 

@@ -7,9 +7,15 @@ interface VideoListProps {
   videos: GetVideoMetadataResponse[];
   disableAuthorLink?: boolean;
   playlistId?: string;
+  isPlaylistOwner?: boolean;
 }
 
-function VideoList({ videos, disableAuthorLink = false, playlistId }: VideoListProps) {
+function VideoList({
+  videos,
+  disableAuthorLink = false,
+  playlistId,
+  isPlaylistOwner,
+}: VideoListProps) {
   const { isMobile } = useMobileLayout();
 
   if (videos.length === 0) {
@@ -25,6 +31,7 @@ function VideoList({ videos, disableAuthorLink = false, playlistId }: VideoListP
             videoMetadata={videoData}
             disableAuthorLink={disableAuthorLink}
             playlistId={playlistId}
+            isPlaylistOwner={isPlaylistOwner}
           />
         ))}
       </Grid>

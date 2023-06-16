@@ -1,8 +1,10 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import { useUserDetails } from '../../api/user';
+import { useAdmin, useUserDetails } from '../../api/user';
+import TicketButton from '../../components/TicketButton';
 import { userDetailsState } from '../../data/UserData';
 import { useMobileLayout } from '../../theme';
+import { ButtonType } from '../../types/TicketTypes';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 import UserInfo from '../User/UserInfo';
 import AddToPlaylist from './AddToPlaylist';
@@ -10,8 +12,6 @@ import MetadataButtons from './MetadataButtons';
 import Reaction from './Reaction';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import TicketButton from '../../components/TicketButton';
-import { ButtonType } from '../../types/TicketTypes';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -23,6 +23,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
   const isAuthor = loggedInUserDetails?.id === videoMetadata.authorId;
 
   const { isMobile } = useMobileLayout();
+  const isAdmin = useAdmin();
 
   return (
     <Stack spacing={2}>
@@ -41,7 +42,7 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
           <VideoTags tags={videoMetadata.tags} />
         </Stack>
         <Stack direction='row' alignItems='start' sx={{ flexShrink: 0 }}>
-          {!isAuthor && (
+          {!isAuthor && !isAdmin && (
             <TicketButton
               targetId={videoMetadata.id}
               buttonType={ButtonType.Icon}
@@ -55,9 +56,11 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
       <Stack direction='row' alignItems='center'>
         <UserInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
-          {isAuthor && (
-            <MetadataButtons videoMetadata={videoMetadata} asMenu={isMobile} />
-          )}
+          <MetadataButtons
+            videoMetadata={videoMetadata}
+            asMenu={isMobile}
+            isAuthor={isAuthor}
+          />
         </Box>
       </Stack>
       <VideoDescription
