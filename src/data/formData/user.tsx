@@ -49,14 +49,26 @@ export function UserFormFields({ showRegisterFields = false }: UserFormFieldsPro
 
   return (
     <>
-      {showRegisterFields && <FormikTextField name='email' label='E-mail' type='email' />}
+      {showRegisterFields && (
+        <FormikTextField name='email' label='E-mail' type='email' autoComplete='email' />
+      )}
       <FormikTextField name='nickname' label='Nazwa użytkownika' />
       <FormikTextField name='name' label='Imię' />
       <FormikTextField name='surname' label='Nazwisko' />
       {showRegisterFields && (
         <>
-          <FormikTextField name='password' label='Hasło' type='password' />
-          <FormikTextField name='repeatPassword' label='Powtórz hasło' type='password' />
+          <FormikTextField
+            name='password'
+            label='Hasło'
+            type='password'
+            autoComplete='new-password'
+          />
+          <FormikTextField
+            name='repeatPassword'
+            label='Powtórz hasło'
+            type='password'
+            autoComplete='new-password'
+          />
         </>
       )}
       {!isAdmin && (

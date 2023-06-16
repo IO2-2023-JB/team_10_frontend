@@ -23,8 +23,8 @@ const formikInitialValues = {
 function RegisterForm() {
   const { isLoading, error, mutate } = useRegister();
 
-  const handleSubmit = async (values: RegisterFormValues) => {
-    delete values.repeatPassword;
+  const handleSubmit = async (formValues: RegisterFormValues) => {
+    const { repeatPassword: _repeatPassword, ...values } = formValues;
     const avatarImage =
       values.avatarImage !== null ? await toBase64(values.avatarImage) : null;
     const payload: PostUserDetails = { ...values, avatarImage };

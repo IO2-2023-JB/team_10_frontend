@@ -12,7 +12,7 @@ const formikInitialValues = {
 
 const formFields = (
   <>
-    <FormikTextField name='email' label='E-mail' type='email' />
+    <FormikTextField name='email' label='E-mail' type='email' autoComplete='email' />
     <FormikTextField name='password' label='Hasło' type='password' />
   </>
 );
