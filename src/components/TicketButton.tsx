@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FormDialog from './layout/FormDialog';
 import TicketSubmitDialog from '../pages/Ticket/TicketDialog';
 import { ButtonType } from '../types/TicketTypes';
@@ -6,11 +6,11 @@ import { Button, IconButton, MenuItem, Tooltip } from '@mui/material';
 import { OutlinedFlag } from '@mui/icons-material';
 import { useSendOrResolveTicket } from '../api/ticket';
 import { useMobileLayout } from '../theme';
-import StatusSnackbar from './StatusSnackbar';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useUserDetails } from '../api/user';
 import { userDetailsState } from './../data/UserData';
 import { AccountType } from '../types/UserTypes';
+import { snackbarState } from '../data/SnackbarData';
 
 interface TicketButtonProps {
   buttonType: ButtonType;
@@ -30,6 +30,7 @@ function TicketButton({
   const { isMobile } = useMobileLayout();
   const loggedInUserDetails = useRecoilValue(userDetailsState);
   const { data: loggedInUser } = useUserDetails(loggedInUserDetails?.id);
+  const setSnackbarState = useSetRecoilState(snackbarState);
 
   const onDialogOpen = () => {
     setDialogOpen(true);
@@ -38,6 +39,20 @@ function TicketButton({
   const onDialogClose = () => {
     setDialogOpen(false);
   };
+
+  const message = `Pomyślnie ${
+    isResponse ? 'rozwiązano' : 'zgłoszono'
+  } ${targetNameInTitle}`;
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      mutation.reset();
+      setSnackbarState({
+        successMessage: message,
+      });
+      setDialogOpen(false);
+    }
+  }, [mutation.isSuccess, message, mutation, setSnackbarState]);
 
   const actionText = `${isResponse ? 'Rozwiąż' : 'Zgłoś'} ${targetNameInTitle}`;
 
@@ -84,13 +99,6 @@ function TicketButton({
           isResponse={isResponse}
         />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie ${
-          isResponse ? 'rozwiązano' : 'zgłoszono'
-        } ${targetNameInTitle}`}
-        isSuccess={mutation.isSuccess}
-        reset={mutation.reset}
-      />
     </>
   );
 }
