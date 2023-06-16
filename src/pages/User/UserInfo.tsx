@@ -1,25 +1,27 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Avatar from '../../components/Avatar';
-import SubscribeButton from '../../components/SubscribeButton';
-import DonateButton from '../../components/donate/DonateButton';
 import { ROUTES } from '../../const';
+import { useMobileLayout } from '../../theme';
 import { AccountType, GetUserDetailsResponse } from '../../types/UserTypes';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
+import UserInfoButtons from './UserInfoButtons';
 
 const avatarSize = 60;
 
 interface UserInfoProps {
   userDetails?: GetUserDetailsResponse;
   isSelf: boolean;
-  width?: string;
+  fullWidth?: boolean;
 }
 
-function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
+function UserInfo({ userDetails, isSelf: isAuthor, fullWidth }: UserInfoProps) {
   const isCreator = userDetails?.userType === AccountType.Creator;
 
+  const { isMobile } = useMobileLayout();
+
   return (
-    <Stack direction='row' alignItems='center' width={width}>
+    <Stack direction='row' alignItems='center' flex={1}>
       <Stack
         direction='row'
         color='inherit'
@@ -39,11 +41,7 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
         ) : (
           <Skeleton variant='circular' width={avatarSize} height={avatarSize} />
         )}
-        <Stack
-          sx={{
-            marginX: 2,
-          }}
-        >
+        <Stack sx={{ marginX: 2 }}>
           <Typography variant='h6'>
             {userDetails ? userDetails.nickname : <Skeleton width={150} />}
           </Typography>
@@ -62,10 +60,11 @@ function UserInfo({ userDetails, isSelf: isAuthor, width }: UserInfoProps) {
         </Stack>
       </Stack>
       {!isAuthor && userDetails && isCreator && (
-        <Stack direction='row' spacing={1} sx={{ marginInlineStart: 'auto' }}>
-          <SubscribeButton creatorId={userDetails.id} />
-          <DonateButton creator={userDetails} />
-        </Stack>
+        <UserInfoButtons
+          userDetails={userDetails}
+          asMenu={isMobile}
+          fullWidth={fullWidth}
+        />
       )}
     </Stack>
   );

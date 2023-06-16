@@ -1,6 +1,7 @@
 import { Close } from '@mui/icons-material';
 import { Dialog, DialogActions, DialogContent, IconButton } from '@mui/material';
 import { ReactNode } from 'react';
+import { useMobileLayout } from '../../theme';
 
 interface FormDialogProps {
   children: ReactNode;
@@ -15,13 +16,19 @@ function FormDialog({
   onClose,
   disablePadding = false,
 }: FormDialogProps) {
+  const { isMobile, desktopQuery } = useMobileLayout();
+
   return (
     <Dialog
+      fullScreen={isMobile}
       scroll='body'
       PaperProps={{
         sx: {
-          borderRadius: 3,
           backgroundColor: 'background.default',
+
+          [desktopQuery]: {
+            borderRadius: 3,
+          },
         },
       }}
       open={open}
@@ -32,7 +39,14 @@ function FormDialog({
           <Close fontSize='large' />
         </IconButton>
       </DialogActions>
-      <DialogContent sx={{ padding: disablePadding ? 0 : null }}>
+      <DialogContent
+        sx={{
+          padding: disablePadding ? 0 : null,
+          width: 400,
+          maxWidth: '100%',
+          margin: '0 auto',
+        }}
+      >
         {children}
       </DialogContent>
     </Dialog>

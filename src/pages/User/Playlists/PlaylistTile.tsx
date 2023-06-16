@@ -1,6 +1,8 @@
-import { Paper, Stack } from '@mui/material';
+import { Box, Paper, Skeleton, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { usePlaylistVideos } from '../../../api/playlist';
 import OneLineTypography from '../../../components/OneLineTypography';
+import TypographyLink from '../../../components/TypographyLink';
 import { ROUTES } from '../../../const';
 import { transitionShort } from '../../../theme';
 import { GetPlaylistBase } from '../../../types/PlaylistTypes';
@@ -9,10 +11,17 @@ import PlaylistVisibilityLabel from '../../Playlist/PlaylistVisibilityLabel';
 interface PlaylistTileProps {
   playlist: GetPlaylistBase;
   showVisibility: boolean;
+  showAuthor?: boolean;
 }
 
-function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
+function PlaylistTile({
+  playlist,
+  showVisibility,
+  showAuthor = false,
+}: PlaylistTileProps) {
   const playlistUrl = `${ROUTES.PLAYLIST}/${playlist.id}`;
+
+  const { data: playlistDetails } = usePlaylistVideos(playlist.id, showAuthor);
 
   return (
     <Paper
@@ -39,6 +48,16 @@ function PlaylistTile({ playlist, showVisibility }: PlaylistTileProps) {
           {playlist.name}
         </OneLineTypography>
         {showVisibility && <PlaylistVisibilityLabel visibility={playlist.visibility} />}
+        {showAuthor &&
+          (playlistDetails !== undefined ? (
+            <Box color='text.secondary' fontSize='0.875rem'>
+              <TypographyLink to={`${ROUTES.USER}/${playlistDetails?.authorId}`}>
+                {playlistDetails?.authorNickname}
+              </TypographyLink>
+            </Box>
+          ) : (
+            <Skeleton width={150} />
+          ))}
       </Stack>
     </Paper>
   );

@@ -1,18 +1,23 @@
 import { Box, Skeleton } from '@mui/material';
 import { useState } from 'react';
+import { useMobileLayout } from '../../theme';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
 
 interface VideoThumbnailProps {
   videoMetadata: GetVideoMetadataResponse;
   height?: number;
   hideDuration?: boolean;
+  forceHeight?: boolean;
 }
 
 function VideoThumbnail({
   videoMetadata,
   height = 150,
   hideDuration = false,
+  forceHeight = false,
 }: VideoThumbnailProps) {
+  const { desktopQuery } = useMobileLayout();
+
   const [isSkeleton, setIsSkeleton] = useState<boolean>(true);
 
   return (
@@ -20,7 +25,10 @@ function VideoThumbnail({
       sx={{
         position: 'relative',
         aspectRatio: '16 / 9',
-        height,
+        height: forceHeight ? height : null,
+        [desktopQuery]: {
+          height,
+        },
       }}
     >
       <Box

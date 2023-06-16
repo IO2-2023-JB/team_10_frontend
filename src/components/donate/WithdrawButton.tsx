@@ -1,9 +1,7 @@
 import { Button } from '@mui/material';
 import { useState } from 'react';
-import { useWithdraw } from '../../api/donate';
 import WithdrawDialog from '../../pages/Donate/WithdrawDialog';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
-import StatusSnackbar from '../StatusSnackbar';
 import FormDialog from '../layout/FormDialog';
 
 interface WithdrawButtonProps {
@@ -11,9 +9,7 @@ interface WithdrawButtonProps {
 }
 
 function WithdrawButton({ creator }: WithdrawButtonProps) {
-  const mutation = useWithdraw();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number>(0);
 
   const handleDialogOpen = () => {
     setDialogOpen(true);
@@ -29,18 +25,8 @@ function WithdrawButton({ creator }: WithdrawButtonProps) {
         Wypłać środki
       </Button>
       <FormDialog open={dialogOpen} onClose={handleDialogClose}>
-        <WithdrawDialog
-          creator={creator}
-          closeDialog={handleDialogClose}
-          setAmount={setAmount}
-          mutation={mutation}
-        />
+        <WithdrawDialog creator={creator} closeDialog={handleDialogClose} />
       </FormDialog>
-      <StatusSnackbar
-        successMessage={`Pomyślnie wypłacono ${amount} €🧽`}
-        isSuccess={mutation.isSuccess}
-        reset={mutation.reset}
-      />
     </>
   );
 }

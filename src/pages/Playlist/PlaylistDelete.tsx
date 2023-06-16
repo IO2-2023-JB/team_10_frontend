@@ -1,11 +1,12 @@
 import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import { useDeletePlaylist } from '../../api/playlist';
 import SpinningButton from '../../components/SpinningButton';
-import StatusSnackbar from '../../components/StatusSnackbar';
 import FormDialog from '../../components/layout/FormDialog';
 import { ROUTES } from '../../const';
+import { snackbarState } from '../../data/SnackbarData';
 import { GetPlaylist } from '../../types/PlaylistTypes';
 import { getErrorMessage } from '../../utils/utils';
 
@@ -15,6 +16,8 @@ interface PlaylistDeleteProps {
 }
 
 function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
+  const location = useLocation();
+  const setSnackbarState = useSetRecoilState(snackbarState);
   const navigate = useNavigate();
 
   const {
@@ -27,13 +30,30 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
 
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
+  const prevPageExists = location.key !== 'default';
+
   const handleDelete = () => {
     deletePlaylist();
   };
 
   useEffect(() => {
-    if (isSuccess) navigate(`${ROUTES.USER}/${playlist.authorId}/playlists`);
-  }, [isSuccess, navigate, playlist.authorId]);
+    if (isSuccess) {
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie usunięto grajlistę ${playlist.name}.`,
+      });
+      prevPageExists ? navigate(-1) : navigate(`/${ROUTES.HOMEPAGE}`);
+      setIsDialogOpen(false);
+    }
+  }, [
+    isSuccess,
+    navigate,
+    playlist.authorId,
+    playlist.name,
+    prevPageExists,
+    reset,
+    setSnackbarState,
+  ]);
 
   return (
     <>
@@ -59,11 +79,6 @@ function PlaylistDelete({ id, playlist }: PlaylistDeleteProps) {
           </SpinningButton>
         </Stack>
       </FormDialog>
-      <StatusSnackbar
-        successMessage='Pomyślnie usunięto grajlistę.'
-        isSuccess={isSuccess}
-        reset={reset}
-      />
     </>
   );
 }

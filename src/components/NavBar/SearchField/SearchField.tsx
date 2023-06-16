@@ -1,5 +1,5 @@
-import { Autocomplete, AutocompleteInputChangeReason } from '@mui/material';
-import { useEffect, SyntheticEvent, useMemo, useState } from 'react';
+import { Autocomplete, AutocompleteInputChangeReason, SxProps } from '@mui/material';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 import {
   createSearchParams,
   useLocation,
@@ -10,12 +10,14 @@ import { useDebounce } from 'usehooks-ts';
 import { useSearch } from '../../../api/search';
 import { ROUTES, SEARCH_PARAMS } from '../../../const';
 import {
+  GetSearchResults,
   PreparedSearchResult,
   SearchResultType,
-  GetSearchResults,
 } from '../../../types/SearchTypes';
 import SearchInput from './SearchInput';
 import SearchSuggestion from './SearchSuggestion';
+import { useRecoilState } from 'recoil';
+import { AppMode, appModeState } from '../../../data/AppStateData';
 
 function prepareSearchResults(searchResults: GetSearchResults): PreparedSearchResult[] {
   const topVideos = searchResults.videos.slice(0, 3).map((result) => ({
@@ -55,7 +57,12 @@ function getResultUrl(searchResult: PreparedSearchResult): string {
   return `${urlPrefix}/${searchResult.result.id}`;
 }
 
-function SearchField() {
+interface SearchFieldProps {
+  sx?: SxProps;
+  onClick?: () => void;
+}
+
+function SearchField({ sx, onClick }: SearchFieldProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const location = useLocation();
@@ -63,6 +70,7 @@ function SearchField() {
   const [query, setQuery] = useState<string>('');
   const queryDebounced = useDebounce(query);
   const { data: searchResults } = useSearch({ query: queryDebounced });
+  const [appModeData, setAppModeData] = useRecoilState(appModeState);
 
   const preparedSearchResults = useMemo<PreparedSearchResult[] | undefined>(() => {
     if (searchResults === undefined) return undefined;
@@ -86,6 +94,11 @@ function SearchField() {
   ) => {
     if (reason === 'input') setQuery(value);
     else setQuery(defaultQuery);
+
+    if (value === '2137' && appModeData.appMode !== AppMode.Papiesz)
+      setAppModeData({ appMode: AppMode.Papiesz, timeout: null });
+    if (value === '420' && appModeData.appMode !== AppMode.Green)
+      setAppModeData({ appMode: AppMode.Green, timeout: null });
   };
 
   const defaultQuery = location.pathname.startsWith(ROUTES.SEARCH)
@@ -95,13 +108,15 @@ function SearchField() {
   useEffect(() => setQuery(defaultQuery), [defaultQuery, location, searchParams]);
 
   const handleRedirect = () => {
-    if (query)
+    if (query) {
+      onClick?.();
       navigate({
         pathname: ROUTES.SEARCH,
         search: createSearchParams({
           query: query,
         }).toString(),
       });
+    }
   };
 
   return (
@@ -118,7 +133,11 @@ function SearchField() {
         if (event.key === 'Enter') handleRedirect();
       }}
       renderOption={(props, option) => (
-        <SearchSuggestion props={props} option={option} key={option.result.id} />
+        <SearchSuggestion
+          props={{ ...props, onClick }}
+          option={option}
+          key={option.result.id}
+        />
       )}
       renderInput={(params) => (
         <SearchInput
@@ -132,6 +151,7 @@ function SearchField() {
       }}
       sx={{
         flex: '0 1 500px',
+        ...sx,
       }}
     />
   );

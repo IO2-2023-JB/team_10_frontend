@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import { ReactNode } from 'react';
 import NavBar from '../NavBar/NavBar';
+import StatusSnackbar from '../StatusSnackbar';
 import UploadStatusSnackbar from './UploadStatusSnackbar';
 
 interface AppLayoutProps {
@@ -15,6 +16,7 @@ function AppLayout({ children }: AppLayoutProps) {
         {children}
       </Stack>
       <UploadStatusSnackbar />
+      <StatusSnackbar />
     </>
   );
 }

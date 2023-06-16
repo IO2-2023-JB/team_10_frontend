@@ -1,29 +1,40 @@
-import { Paper, Typography, IconButton, Collapse, Skeleton } from '@mui/material';
-import { Stack } from '@mui/system';
-import { GetComment } from '../../../types/CommentTypes';
-import { Link } from 'react-router-dom';
-import { useUserDetails } from '../../../api/user';
-import Avatar from '../../../components/Avatar';
-import { useDeleteComment } from '../../../api/comment';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import CommentSection from './CommentSection';
+import { Box, Collapse, IconButton, Paper, Skeleton, Typography } from '@mui/material';
+import { Stack } from '@mui/system';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useDeleteComment } from '../../../api/comment';
+import { useAdmin, useUserDetails } from '../../../api/user';
+import Avatar from '../../../components/Avatar';
+import TicketButton from '../../../components/TicketButton';
 import { userDetailsState } from '../../../data/UserData';
 import { transitionLong } from '../../../theme';
+import { CommentValues } from '../../../types/CommentTypes';
+import { ButtonType } from '../../../types/TicketTypes';
+import CommentSection from './CommentSection';
 
 interface CommentProps {
-  comment: GetComment;
+  comment: CommentValues;
   originId: string | undefined;
   open: (id: string | null) => void;
   isResponse: boolean;
   isOpen: boolean;
+  isOnTicketList?: boolean;
 }
 
-function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) {
+function Comment({
+  comment,
+  originId,
+  isResponse,
+  isOpen,
+  open,
+  isOnTicketList = false,
+}: CommentProps) {
   const { authorId, content, hasResponses, id: commentId } = comment;
   const user = useRecoilValue(userDetailsState);
   const { data: authorDetails } = useUserDetails(authorId);
   const { mutate } = useDeleteComment(originId, commentId);
+  const isAdmin = useAdmin();
 
   const handleDelete = () => {
     mutate();
@@ -75,6 +86,7 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
         sx={{
           alignSelf: 'flex-start',
           padding: 1,
+          paddingRight: 2,
           backgroundColor: 'background.default',
           borderRadius: 3,
           ...hover,
@@ -107,11 +119,13 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
               <Skeleton width={120} variant='rectangular' />
             )}
             <Typography sx={{ wordWrap: 'anywhere' }}>{content}</Typography>
-            <Typography fontSize={12} color='text.secondary'>
-              {message}
-            </Typography>
+            {!isOnTicketList && (
+              <Typography fontSize={12} color='text.secondary'>
+                {message}
+              </Typography>
+            )}
           </Stack>
-          {user?.id === authorId && (
+          {(isAdmin || user?.id === authorId) && (
             <IconButton
               onClick={handleDelete}
               sx={{ alignSelf: 'center', color: 'grey.800' }}
@@ -119,10 +133,21 @@ function Comment({ comment, originId, isResponse, isOpen, open }: CommentProps) 
               <DeleteOutlineIcon />
             </IconButton>
           )}
+          {!isAdmin && user?.id !== authorId && !isOnTicketList && (
+            <TicketButton
+              targetId={commentId}
+              buttonType={ButtonType.Icon}
+              targetNameInTitle='komentarz'
+            />
+          )}
         </Stack>
       </Paper>
       <Collapse in={isOpen} timeout='auto'>
-        {isOpen && <CommentSection commentId={comment.id} isResponse />}
+        {isOpen && (
+          <Box marginX={2}>
+            <CommentSection commentId={comment.id} isResponse />
+          </Box>
+        )}
       </Collapse>
     </Stack>
   );

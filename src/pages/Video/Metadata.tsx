@@ -1,15 +1,17 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { useRecoilValue } from 'recoil';
-import { useUserDetails } from '../../api/user';
+import { useAdmin, useUserDetails } from '../../api/user';
+import TicketButton from '../../components/TicketButton';
 import { userDetailsState } from '../../data/UserData';
+import { useMobileLayout } from '../../theme';
+import { ButtonType } from '../../types/TicketTypes';
 import { GetVideoMetadataResponse } from '../../types/VideoTypes';
+import UserInfo from '../User/UserInfo';
 import AddToPlaylist from './AddToPlaylist';
-import MetadataForm from './MetadataForm';
+import MetadataButtons from './MetadataButtons';
 import Reaction from './Reaction';
-import VideoDelete from './VideoDelete';
 import VideoDescription from './VideoDescription';
 import VideoTags from './VideoTags';
-import UserInfo from '../User/UserInfo';
 
 interface VideoMetadataProps {
   videoMetadata: GetVideoMetadataResponse;
@@ -20,18 +22,17 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
   const loggedInUserDetails = useRecoilValue(userDetailsState);
   const isAuthor = loggedInUserDetails?.id === videoMetadata.authorId;
 
+  const { isMobile } = useMobileLayout();
+  const isAdmin = useAdmin();
+
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        paddingY: 3,
-      }}
-    >
+    <Stack spacing={2}>
       <Stack
         direction='row'
         sx={{
           justifyContent: 'flex-end',
           alignItems: 'center',
+          marginTop: 2,
         }}
       >
         <Stack sx={{ marginInlineEnd: 'auto' }} spacing={1}>
@@ -40,7 +41,14 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
           </Typography>
           <VideoTags tags={videoMetadata.tags} />
         </Stack>
-        <Stack direction='row' alignItems='start' sx={{ marginRight: 2, flexShrink: 0 }}>
+        <Stack direction='row' alignItems='start' sx={{ flexShrink: 0 }}>
+          {!isAuthor && !isAdmin && (
+            <TicketButton
+              targetId={videoMetadata.id}
+              buttonType={ButtonType.Icon}
+              targetNameInTitle='wideło'
+            />
+          )}
           <AddToPlaylist videoId={videoMetadata.id} />
           <Reaction videoId={videoMetadata.id} />
         </Stack>
@@ -48,12 +56,11 @@ function Metadata({ videoMetadata }: VideoMetadataProps) {
       <Stack direction='row' alignItems='center'>
         <UserInfo userDetails={userDetails} isSelf={isAuthor} />
         <Box sx={{ marginInlineStart: 'auto' }}>
-          {isAuthor && (
-            <>
-              <MetadataForm videoMetadata={videoMetadata} />
-              <VideoDelete videoId={videoMetadata.id} />
-            </>
-          )}
+          <MetadataButtons
+            videoMetadata={videoMetadata}
+            asMenu={isMobile}
+            isAuthor={isAuthor}
+          />
         </Box>
       </Stack>
       <VideoDescription

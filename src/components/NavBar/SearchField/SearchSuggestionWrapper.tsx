@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import {
   HTMLAttributes,
-  ReactNode,
-  MouseEvent as ReactMouseEvent,
   KeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+  ReactNode,
 } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -26,7 +26,6 @@ function SearchSuggestionWrapper({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLLIElement>) => {
-    console.log('aaa', event);
     if (event.key === 'Enter') {
       navigate(url);
     }

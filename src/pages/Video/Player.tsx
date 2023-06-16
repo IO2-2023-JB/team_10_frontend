@@ -1,6 +1,7 @@
-import { Box, Typography, Stack } from '@mui/material';
-import { BACKEND_URL } from '../../const';
 import { HourglassFull } from '@mui/icons-material';
+import { Box, Stack, Typography } from '@mui/material';
+import { useRecoilValue } from 'recoil';
+import { backendUrlState } from '../../data/UrlData';
 import { ProcessingProgress } from '../../types/VideoTypes';
 
 interface PlayerProps {
@@ -9,7 +10,9 @@ interface PlayerProps {
 }
 
 function Player({ videoId, processingState }: PlayerProps) {
-  const videoUrl = `${BACKEND_URL}/video/${videoId}?access_token=${localStorage.getItem(
+  const backendUrl = useRecoilValue(backendUrlState);
+
+  const videoUrl = `${backendUrl}/video/${videoId}?access_token=${localStorage.getItem(
     'bearerToken'
   )}`;
 
@@ -25,6 +28,7 @@ function Player({ videoId, processingState }: PlayerProps) {
       {processingState !== ProcessingProgress.Ready ? (
         <Stack
           sx={{
+            padding: 3,
             backgroundColor: 'background.light',
             justifyContent: 'center',
             alignItems: 'center',
@@ -37,12 +41,12 @@ function Player({ videoId, processingState }: PlayerProps) {
           direction='column'
         >
           <HourglassFull sx={{ color: 'primary.main' }} />
-          <Typography variant='h5'>
+          <Typography variant='h5' textAlign='center'>
             Jesteśmy w trakcie przetwarzania tego filmu
           </Typography>
         </Stack>
       ) : (
-        <Box component='video' src={videoUrl} controls />
+        <Box component='video' src={videoUrl} controls display='block' />
       )}
     </Box>
   );

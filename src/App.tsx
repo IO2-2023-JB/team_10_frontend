@@ -1,16 +1,18 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import axios from 'axios';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import AppLayout from './components/layout/AppLayout';
 import AppLoader from './components/layout/AppLoader';
 import AuthGate from './components/layout/AuthGate';
+import BackendSwitcher from './components/layout/BackendSwitcher';
 import LinearProgress from './components/layout/LinearProgress';
-import { BACKEND_URL, ROUTES } from './const';
-import theme from './theme';
+import { DEFAULT_BACKEND_URL, ROUTES } from './const';
+import { appModeState } from './data/AppStateData';
+import getTheme from './theme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +21,8 @@ const queryClient = new QueryClient({
     },
   },
 });
-axios.defaults.baseURL = BACKEND_URL;
+
+axios.defaults.baseURL = DEFAULT_BACKEND_URL;
 
 const PageNotFound = lazy(() => import('./pages/PageNotFound'));
 const Homepage = lazy(() => import('./pages/Homepage'));
@@ -30,14 +33,18 @@ const User = lazy(() => import('./pages/User'));
 const Video = lazy(() => import('./pages/Video'));
 const Playlist = lazy(() => import('./pages/Playlist'));
 const Search = lazy(() => import('./pages/Search'));
+const Ticket = lazy(() => import('./pages/Ticket'));
 
 function App() {
+  const appModeData = useRecoilValue(appModeState);
+  const theme = useMemo(() => createTheme(getTheme(appModeData.appMode)), [appModeData]);
+
   return (
     <BrowserRouter>
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline enableColorScheme />
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline enableColorScheme />
+          <BackendSwitcher>
             <AppLoader>
               <AuthGate>
                 <AppLayout>
@@ -55,15 +62,16 @@ function App() {
                         element={<Playlist />}
                       />
                       <Route path={`${ROUTES.SEARCH}/*`} element={<Search />} />
+                      <Route path={`${ROUTES.TICKETS}`} element={<Ticket />} />
                     </Routes>
                   </Suspense>
                 </AppLayout>
               </AuthGate>
             </AppLoader>
-          </ThemeProvider>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
-      </RecoilRoot>
+          </BackendSwitcher>
+        </ThemeProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </BrowserRouter>
   );
 }

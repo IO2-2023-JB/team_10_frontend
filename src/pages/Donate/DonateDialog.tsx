@@ -6,36 +6,38 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useDonate } from '../../api/donate';
 import Avatar from '../../components/Avatar';
 import SpinningButton from '../../components/SpinningButton';
+import { snackbarState } from '../../data/SnackbarData';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
 import { getErrorMessage, valueAsNumber } from '../../utils/utils';
 
 interface DonateDialogProps {
   creator: GetUserDetailsResponse;
   closeDialog: () => void;
-  mutation: UseMutationResult<void, AxiosError, number>;
-  setAmount: (amount: number) => void;
 }
 
 const minValue = 0.0;
 const regex = /^(\d*,?\d{0,2}|\d+)$/;
 
-function DonateDialog({ creator, closeDialog, mutation, setAmount }: DonateDialogProps) {
+function DonateDialog({ creator, closeDialog }: DonateDialogProps) {
+  const setSnackbarState = useSetRecoilState(snackbarState);
+  const { mutate, error, isLoading, isSuccess, reset } = useDonate(creator.id);
   const [value, setValue] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
 
-  const { mutate, error, isLoading, isSuccess } = mutation;
-
   useEffect(() => {
     if (isSuccess) {
-      setAmount(valueAsNumber(value) ?? 0);
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie przesłano ${value} €🧽 do ${creator.nickname}`,
+      });
       closeDialog();
     }
-  }, [isSuccess, closeDialog, setAmount, value]);
+  }, [closeDialog, creator.nickname, isSuccess, reset, setSnackbarState, value]);
 
   const numberValue = valueAsNumber(value);
   const isValueValid = numberValue === null ? false : numberValue > minValue;

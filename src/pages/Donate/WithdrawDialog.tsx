@@ -6,10 +6,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { UseMutationResult } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { useWithdraw } from '../../api/donate';
 import SpinningButton from '../../components/SpinningButton';
+import { snackbarState } from '../../data/SnackbarData';
 import { GetUserDetailsResponse } from '../../types/UserTypes';
 import { NumberDeclinedNoun, getNumberWithLabel } from '../../utils/numberDeclinedNouns';
 import { getErrorMessage, valueAsNumber } from '../../utils/utils';
@@ -17,29 +18,26 @@ import { getErrorMessage, valueAsNumber } from '../../utils/utils';
 interface WithdrawDialogProps {
   creator: GetUserDetailsResponse;
   closeDialog: () => void;
-  mutation: UseMutationResult<void, AxiosError, number>;
-  setAmount: (amount: number) => void;
 }
 
 const minValue = 0.0;
 const regex = /^(\d*,?\d{0,2}|\d+)$/;
 
-function WithdrawDialog({
-  creator,
-  closeDialog,
-  mutation,
-  setAmount,
-}: WithdrawDialogProps) {
+function WithdrawDialog({ creator, closeDialog }: WithdrawDialogProps) {
+  const setSnackbarState = useSetRecoilState(snackbarState);
+  const { mutate, isSuccess, isLoading, error, reset } = useWithdraw();
   const [value, setValue] = useState<string>('');
   const [touched, setTouched] = useState<boolean>(false);
-  const { mutate, isSuccess, isLoading, error } = mutation;
 
   useEffect(() => {
     if (isSuccess) {
-      setAmount(valueAsNumber(value) ?? 0);
+      reset();
+      setSnackbarState({
+        successMessage: `Pomyślnie wypłacono ${value} €🧽`,
+      });
       closeDialog();
     }
-  }, [isSuccess, closeDialog, setAmount, value]);
+  }, [closeDialog, isSuccess, reset, setSnackbarState, value]);
 
   const numberValue = valueAsNumber(value);
   const isValueValid =
