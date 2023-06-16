@@ -86,7 +86,7 @@ function TicketButton({
       </Tooltip>
     );
 
-  if (loggedInUser?.userType !== AccountType.Administrator) return null;
+  if (loggedInUser?.userType === AccountType.Administrator && !isResponse) return null;
 
   return (
     <>
