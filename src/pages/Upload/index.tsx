@@ -15,11 +15,11 @@ function Upload() {
     if (isAdmin) navigate(`/${ROUTES.HOMEPAGE}`, { replace: true });
   });
 
-  if (!isAdmin) return null;
+  console.log(isAdmin);
 
   return (
     <>
-      {isAdmin && (
+      {!isAdmin && (
         <PageLayout>
           <TabTitle title={TabTitles.Upload} />
           <VideoUploadForm />
