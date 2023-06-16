@@ -15,13 +15,17 @@ function Upload() {
     if (isAdmin) navigate(`/${ROUTES.HOMEPAGE}`, { replace: true });
   });
 
+  if (isAdmin) return null;
+
   return (
-    isAdmin !== undefined && (
-      <PageLayout>
-        <TabTitle title={TabTitles.Upload} />
-        <VideoUploadForm />
-      </PageLayout>
-    )
+    <>
+      {isAdmin !== undefined && (
+        <PageLayout>
+          <TabTitle title={TabTitles.Upload} />
+          <VideoUploadForm />
+        </PageLayout>
+      )}
+    </>
   );
 }
 

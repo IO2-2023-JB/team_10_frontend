@@ -54,7 +54,7 @@ function App() {
                       <Route path={`${ROUTES.HOMEPAGE}/*`} element={<Homepage />} />
                       <Route path={ROUTES.LOGIN} element={<Login />} />
                       <Route path={ROUTES.REGISTER} element={<Register />} />
-                      <Route path={ROUTES.UPLOAD} element={<Upload />} />
+                      {theme && <Route path={ROUTES.UPLOAD} element={<Upload />} />}
                       <Route path={`${ROUTES.USER}/:userId/*`} element={<User />} />
                       <Route path={`${ROUTES.VIDEO}/:videoId`} element={<Video />} />
                       <Route
