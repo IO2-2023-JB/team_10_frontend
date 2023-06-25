@@ -10,6 +10,7 @@ export enum SortingDirections {
 }
 
 export enum SortingTypes {
+  BestMatch = 'BestMatch',
   PublishDate = 'PublishDate',
   Alphabetical = 'Alphabetical',
   Popularity = 'Popularity',
@@ -63,6 +64,8 @@ export function getSortingTypeString(sortingType: SortingTypes): string {
       return 'Popularność';
     case SortingTypes.PublishDate:
       return 'Data publikacji';
+    case SortingTypes.BestMatch:
+      return 'Dopasowanie';
   }
 }
 

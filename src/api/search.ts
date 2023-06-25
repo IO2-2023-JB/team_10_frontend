@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosError } from 'axios';
 import {
-  SearchParams,
   GetSearchResults,
+  SearchParams,
   SortingDirections,
   SortingTypes,
 } from '../types/SearchTypes';
@@ -10,7 +10,7 @@ import {
 const searchKey = 'search';
 
 export function useSearch(searchParams: SearchParams) {
-  const sortBy = searchParams.sortBy ?? SortingTypes.Popularity;
+  const sortBy = searchParams.sortBy ?? SortingTypes.BestMatch;
 
   const sortDirection = searchParams.sortDirection ?? SortingDirections.Descending;
   const startDate = searchParams.startDate ?? null;
