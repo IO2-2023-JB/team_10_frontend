@@ -5,9 +5,9 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
-import { SortingTypes, getSortingTypeString } from '../../types/SearchTypes';
 import { useSearchParams } from 'react-router-dom';
 import { SEARCH_PARAMS } from '../../const';
+import { SortingTypes, getSortingTypeString } from '../../types/SearchTypes';
 
 interface SortingTypeFieldProps {
   minWidth: number;
@@ -21,7 +21,7 @@ function SortingTypeField({ minWidth, search }: SortingTypeFieldProps) {
 
   const value =
     SortingTypes[searchParams.get(SEARCH_PARAMS.SORT_BY) as keyof typeof SortingTypes] ??
-    SortingTypes.Popularity;
+    SortingTypes.BestMatch;
 
   const handleChange = (event: SelectChangeEvent<SortingTypes>) => {
     search(SEARCH_PARAMS.SORT_BY, event.target.value);
@@ -31,6 +31,9 @@ function SortingTypeField({ minWidth, search }: SortingTypeFieldProps) {
     <FormControl sx={{ minWidth }} size='small'>
       <InputLabel>{label}</InputLabel>
       <Select label={label} value={value} onChange={handleChange}>
+        <MenuItem value={SortingTypes.BestMatch}>
+          {getSortingTypeString(SortingTypes.BestMatch)}
+        </MenuItem>
         <MenuItem value={SortingTypes.Popularity}>
           {getSortingTypeString(SortingTypes.Popularity)}
         </MenuItem>
